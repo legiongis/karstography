@@ -122,14 +122,15 @@ getSinkId = function (e) {
                 success : function (response) {
                     $("#panel-content").html(response);
                     $("#sink-form").submit(function(event) {
-                    // Stop form from submitting normally to avoid a redirect
-                    event.preventDefault();
-                    $.ajax({
-                        url:'/sink-update/'+sink_id+'/',
-                        type:'post',
-                        data:$('#sink-form').serialize(),
-                        success:function(){
-                            $('#sink-form').find(':input[type=submit]').attr('disabled', 'disabled');
+                        // Stop form from submitting normally to avoid a redirect
+                        event.preventDefault();
+                        $.ajax({
+                            url:'/sink-update/'+sink_id+'/',
+                            type:'post',
+                            data:$('#sink-form').serialize(),
+                            success:function(){
+                                $("#panel-content").html('<div style="text-align:center;color:#182F4C;    margin-top:20px;"><i class="fa fa-check" style="font-size:40px;"></i><p style="font-weight:900;font-size:20px;">saved</p></div>');
+                                
                             }
                         });
                     });
