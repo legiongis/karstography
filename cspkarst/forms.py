@@ -4,5 +4,5 @@ from cspkarst.models import Sink
 class SinkForm(ModelForm):
     class Meta:
         model = Sink
-        fields = ['dem_check','img_check','comment']
+        fields = ['type','dem_check','img_check','evidence','comment','in_nfhl']
         

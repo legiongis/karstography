@@ -58,6 +58,23 @@ html body {
     font-weight:900;
 }
 
+.input-form-panel a {
+    color:#182F4C;
+    font-weight:900;
+}
+
+#panel-content input {
+    display: block;
+}
+
+#panel-content label {
+    display: block;
+}
+
+#panel-content select {
+    display: block;
+}
+
 button[disabled], html input[disabled] {
     cursor:not-allowed;
 }
