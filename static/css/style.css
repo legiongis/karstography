@@ -1,0 +1,88 @@
+html body {
+    height: 100vh;
+    font-family: 'Raleway', sans-serif;
+}
+
+.container-fluid {
+    position:relative;
+    z-index: 50000;
+}
+
+.header-row {
+    background-color: #85BF6F;
+    border-radius: 0;
+    border: 0;
+    box-shadow: 0px 0px 10px 2px #003300;
+}
+
+.header-row a {
+    color:#003300;
+    font-weight:900;
+}
+
+.login-panel {
+    background-color: #85BF6F;
+    box-shadow: 0px 0px 10px 2px #003300;
+}
+
+.login-panel-content {
+    padding: 20px 5px;
+}
+
+.leaflet-container {
+    height:100%;
+    width:100%;
+    position:fixed;
+    top:0px;
+    z-index:0;
+    cursor:default;
+}
+
+.leaflet-top {
+    top: 50px;
+}
+
+.input-form-panel {
+    z-index: 2147483647 !important;
+    height: 100vh;
+    top:0;
+    background-color:#6493CE;
+    position:absolute;
+    box-shadow: 0px 0px 10px 2px #182F4C;
+    width: 250px;
+    display:none;
+}
+
+.input-form-panel a {
+    color:#182F4C;
+    font-weight:900;
+}
+
+button[disabled], html input[disabled] {
+    cursor:not-allowed;
+}
+
+.leaflet-popup {
+}
+
+.leaflet-popup-content-wrapper {
+}
+
+.leaflet-control-layers-overlays {
+    overflow-y: auto;
+    height: 250px;
+}
+
+.latlong-popup .leaflet-popup-content-wrapper {
+    border-radius:5px;
+}
+
+.latlong-popup .leaflet-popup-content-wrapper .leaflet-popup-content {
+    margin:10px 20px 10px 10px;
+    font-family:'Lato',sans-serif
+}
+
+/* set bluimp gallery on top of fullscreen */
+.blueimp-gallery {
+    z-index: 2147483647 !important;
+}

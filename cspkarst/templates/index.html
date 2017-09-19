@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load leaflet_tags %}
+{% block header %}{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row header-row" style="">
+        <div class="col-xs-4">
+            {% if user.is_authenticated %}
+            <h5><a id="open-panel" href="javascript:void(0)">open sinkhole editor</a></h5>
+            {% endif %}
+        </div>
+        <div class="col-xs-4">
+            <div style="display:inline;text-align:center;">
+                <h5>CSP karst viewer, in progress...</h5>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div style="display:inline; float:right">
+                <h5>
+                {% if user.is_authenticated %}<span class="hidden-xs">
+                currently logged in as </span><span style="font-weight:900">{{user.username}} | </span>
+                <a href="{% url 'logout' %}?next={{ request.get_full_path }}&logout=true">logout</a>
+                {% else %}
+                <a href="{% url 'login' %}?next={{ request.get_full_path }}">login</a>
+                {% endif %}
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>
+{% if user.is_authenticated %}
+<div id="info-panel" class="input-form-panel">
+    <div class="container-fluid">
+        <div class="row" style="">
+            <div class="col-xs-12">
+                <h5><a id="close-panel" href="javascript:void(0)">close sinkhole editor</a></h5>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-xs-12">
+                <h4>hello neighbor!</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="panel-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div id="karstmap" class="map"></div>
+
+<!-- <script src="{% static 'js/layers.js' %}" type="text/javascript"></script> -->
+<script src="{% static 'js/karstmap.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/pane-behavior.js' %}" type="text/javascript"></script>
+
+{% endblock %}

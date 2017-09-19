@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container-fluid" style="height:100%;background-color:#6493ce">
+    <div class="row" style="height:50px;">
+        <div class="col-xs-12"></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-4 col-sm-offset-4 login-panel">
+            <div class="login-panel-content">
+                <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="height:100%;">
+        <div class="col-xs-12"></div>
+    </div>
+</div>
+{% endblock %}
