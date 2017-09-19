@@ -74,6 +74,9 @@ html body {
 #panel-content select {
     display: block;
 }
+#panel-content textarea {
+    width: 100%;
+}
 
 button[disabled], html input[disabled] {
     cursor:not-allowed;
