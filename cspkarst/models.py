@@ -15,7 +15,7 @@ class Sink(models.Model):
         ("OTHER","Other"),
     )
 
-    sink_id = models.IntegerField(primary_key=True)
+    sink_id = models.IntegerField(null=True,blank=True)
     type = models.CharField(max_length=20,choices=CLASS_CHOICES,blank=True)
     dem_check = models.IntegerField(null=True,blank=True)
     img_check = models.IntegerField(null=True,blank=True)
