@@ -45,21 +45,21 @@ var frac = L.tileLayer.wms(legionows, {
     attribution: "HUC boundaries from WIDNR"
 })
 var sinks = L.tileLayer.wms(legionows, {
-    layers: 'csp:sinkholes_0817',
+    layers: 'csp:cspkarst_sink',
     format: 'image/png',
     transparent: true,
     attribution: "LiDAR-Derived Sink Locations",
-    styles: 'sink_depth',
+    styles: 'sink_evaluation_2.0',
     maxNativeZoom:18,
     maxZoom:19,
-    CQL_FILTER: "nfhl_flag <> 1 AND row_flag <> 1"
+    CQL_FILTER: "in_nfhl <> true AND in_row <> true",
+    tiled: 'false',
 })
 
 var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
-    layers: 'csp:sinkholes_0817',
+    layers: 'csp:cspkarst_sink',
     transparent: true,
     format: 'image/png',
-    tiled: 'false',
 });
 
 
@@ -106,47 +106,6 @@ map.addControl(c_fullscreen);
 // map.addControl(c_gps);
 
 
-//###################### following section is for wfs posting
-// get feature service operation
-var owsrootUrl = legionows;
-
-var defaultParameters = {
-    service : 'WFS',
-    version : '2.0',
-    request : 'GetFeature',
-    typeName : 'csp:sinkholes_0817',
-    outputFormat : 'text/javascript',
-    format_options : 'callback:getJson',
-    SrsName : 'EPSG:4326'
-};
-
-var parameters = L.Util.extend(defaultParameters);
-var URL = owsrootUrl + L.Util.getParamString(parameters);
-
-var WFSLayer = null;
-// var ajax = $.ajax({
-    // url : URL,
-    // dataType : 'jsonp',
-    // jsonpCallback : 'getJson',
-    // success : function (response) {
-        // WFSLayer = L.geoJson(response, {
-            // style: function (feature) {
-                // return {
-                    // stroke: false,
-                    // fillColor: 'FFFFFF',
-                    // fillOpacity: 0
-                // };
-            // },
-            // onEachFeature: function (feature, layer) {
-                // popupOptions = {maxWidth: 200};
-                // layer.bindPopup("Popup text, access attributes with feature.properties.ATTRIBUTE_NAME"
-                    // ,popupOptions);
-            // }
-        // }).addTo(map);
-    // }
-// });
-
-
 getSinkId = function (e) {
     var getFeatureUrl = sinkIdentifyLayer.getFeatureInfoUrl(e.latlng,'application/json');
     $.ajax({
@@ -156,6 +115,7 @@ getSinkId = function (e) {
                 console.log("no sink here!");
                 return
             }
+            console.log(data.features);
             var sink_id = data.features[0].properties['sink_id'];
             $.ajax({
                 url : "/sink-update/"+sink_id+"/",
