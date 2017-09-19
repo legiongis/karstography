@@ -8,7 +8,7 @@
     <div class="row header-row" style="">
         <div class="col-xs-4">
             {% if user.is_authenticated %}
-            <h5><a id="open-panel" href="javascript:void(0)">open sinkhole editor</a></h5>
+            <h5><a id="open-panel" href="javascript:void(0)">open sink editor</a></h5>
             {% endif %}
         </div>
         <div class="col-xs-4">
@@ -35,13 +35,19 @@
     <div class="container-fluid">
         <div class="row" style="">
             <div class="col-xs-12">
-                <h5><a id="close-panel" href="javascript:void(0)">close sinkhole editor</a></h5>
+                <h5><a id="close-panel" href="javascript:void(0)">close sink editor</a></h5>
             </div>
         </div>
-    
         <div class="row">
             <div class="col-xs-12">
                 <h4>hello neighbor!</h4>
+                <ol style="padding-left:15px;">
+                    <li>activate the "Sinks (sized by depth)" layer with the layers panel on the right</li>
+                    <li>zoom in and click on a BIG point</li>
+                    <li>change the <em>Sink type</em> value</li>
+                    <li>click <strong>Submit</strong></li>
+                    <li>next time you click to drag the map, you'll see the color of the point change</li>
+                </ol>
             </div>
         </div>
         <div class="row">
