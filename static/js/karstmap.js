@@ -12,13 +12,24 @@ var esri_aerial = L.tileLayer(
         maxZoom: 18,
         });
         
-var counties = L.tileLayer.wms(legionows, {
-    layers: 'wi_ref:wi_counties_nrcs_4269',
-    format: 'image/png',
-    transparent: true,
-    attribution: "",
-    CQL_FILTER: "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')"
-})
+// use the overlay class from leaflet.wms.js to make a non-tiled layer.
+// necessary for better labeling apparently
+var counties = L.WMS.overlay(legionows, {
+    'layers': 'wi_ref:wi_counties_nrcs_4269',
+    'transparent': true,
+    'format':'image/png',
+    'CQL_FILTER': "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
+});
+
+var mcd = L.WMS.overlay(legionows, {
+    'layers': 'wi_ref:cities_towns_and_villages',
+    'format': 'image/png',
+    'transparent': true,
+    'attribution': "Minor Civil Divisions, Fall 2017",
+    'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
+});
+
+var boundaries = L.layerGroup([mcd,counties]);
 
 var hillshade = L.tileLayer.wms(legionows, {
     layers: 'elevation:driftless_hillshade',
@@ -73,24 +84,21 @@ var c_minimap = new L.Control.MiniMap(osm_minimap,{toggleDisplay:true,minimized:
 
 // create all layers
 
-
-  
 map.addLayer(outdoors);
-map.addLayer(counties);
+map.addLayer(boundaries);
 
 var baseLayers = {
     "Open Street Map": outdoors,
     "Aerial Imagery": esri_aerial
 };
 
-
 var overlaysDict = {
     "SW WI Hillshade":hillshade,
     "Crawford Co Bedrock":bedrock,
+    "Boundaries":boundaries,
     "Watersheds":watersheds,
     "Fracture Lines":frac,
     "Sinkholes (sized by depth)":sinks,
-    "County Boundaries":counties,
 };
 
 var c_layers = new L.control.layers(baseLayers, overlaysDict,{position:'topright'});
