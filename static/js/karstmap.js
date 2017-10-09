@@ -7,10 +7,10 @@ var mapbox_osm = L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.streets/{z}
 mapLink = '<a href="http://www.esri.com/">Esri</a>';
 wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
 var esri_aerial = L.tileLayer(
-        'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '&copy; '+mapLink+', '+wholink,
-        maxZoom: 18,
-        });
+    'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '&copy; '+mapLink+', '+wholink,
+    maxZoom: 18,
+});
         
 // use the overlay class from leaflet.wms.js to make a non-tiled layer.
 // necessary for better labeling apparently
@@ -35,26 +35,31 @@ var hillshade = L.tileLayer.wms(legionows, {
     layers: 'elevation:driftless_hillshade',
     format: 'image/png',
     transparent: true,
-    attribution: "Hillshade derived from WisconsinView LiDAR"
-})
+    attribution: "Hillshade derived from WisconsinView LiDAR",
+    tiled: true,
+});
 var watersheds = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:wi_watersheds',
     format: 'image/png',
     transparent: true,
-    attribution: "HUC boundaries from WIDNR"
-})
+    attribution: "HUC boundaries from WIDNR",
+    tiled: true,
+});
+
 var bedrock = L.tileLayer.wms(legionows, {
     layers: 'csp:Crawford_Depth_to_Bedrock',
     format: 'image/png',
     transparent: true,
-    attribution: "HUC boundaries from WIDNR"
-})
+    attribution: "HUC boundaries from WIDNR",
+    tiled: true,
+});
 var frac = L.tileLayer.wms(legionows, {
     layers: 'csp:fracture_lines',
     format: 'image/png',
     transparent: true,
-    attribution: "HUC boundaries from WIDNR"
-})
+    attribution: "HUC boundaries from WIDNR",
+    tiled: true,
+});
 var sinks = L.tileLayer.wms(legionows, {
     layers: 'csp:cspkarst_sink',
     format: 'image/png',
@@ -65,12 +70,20 @@ var sinks = L.tileLayer.wms(legionows, {
     maxZoom:19,
     CQL_FILTER: "in_nfhl <> true AND in_row <> true",
     tiled: 'false',
-})
+});
 
 var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
     layers: 'csp:cspkarst_sink',
     transparent: true,
     format: 'image/png',
+});
+
+var crawhillshade = L.tileLayer.wms('http://52.43.72.30:8080/geoserver/wms?'+Math.random(), {
+    layers: 'work:Lafayette_Hillshade-3857',
+    format: 'image/png',
+    transparent: true,
+    attribution: "Hillshade derived from WisconsinView LiDAR",
+    tiled: true,
 });
 
 
@@ -112,7 +125,6 @@ map.addControl(c_zoom);
 
 map.addControl(c_fullscreen);
 // map.addControl(c_gps);
-
 
 getSinkId = function (e) {
     var getFeatureUrl = sinkIdentifyLayer.getFeatureInfoUrl(e.latlng,'application/json');
