@@ -13,7 +13,7 @@ import sys
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "karstography.settings")
-sys.path.append('/srv/karstography/karstography')
-sys.path.append('/srv/karstography')
+sys.path.append('/srv/csp/karstography/karstography')
+sys.path.append('/srv/csp/karstography')
 
 application = get_wsgi_application()
