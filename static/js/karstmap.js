@@ -145,7 +145,7 @@ getSinkId = function (e) {
                         // Stop form from submitting normally to avoid a redirect
                         event.preventDefault();
                         $.ajax({
-                            url:'/sink-update/'+sink_id+'/',
+                            url:root_url+'sink-update/'+sink_id+'/',
                             type:'post',
                             data:$('#sink-form').serialize(),
                             success:function(){
