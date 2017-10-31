@@ -68,7 +68,7 @@ var sinks = L.tileLayer.wms(legionows, {
     styles: 'sink_evaluation_2.0',
     maxNativeZoom:18,
     maxZoom:19,
-    CQL_FILTER: "in_nfhl <> true AND in_row <> true",
+    CQL_FILTER: "in_nfhl <> true OR in_row <> true",
     tiled: 'false',
 });
 
