@@ -13,6 +13,7 @@ html body {
     border-radius: 0;
     border: 0;
     box-shadow: 0px 0px 10px 2px #003300;
+    color: #003300;
 }
 
 .header-row a {
@@ -46,10 +47,10 @@ html body {
     z-index: 2147483647 !important;
     height: 100vh;
     top:0;
-    background-color:#6493CE;
+    background-color:#ffe78f;
     position:absolute;
     box-shadow: 0px 0px 10px 2px #182F4C;
-    width: 250px;
+    width: 300px;
     display:none;
     overflow-y:auto;
 }
