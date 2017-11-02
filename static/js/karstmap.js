@@ -157,26 +157,50 @@ var map = L.map('karstmap',{zoomControl:false}).setView([43.22219, -90.9201], 10
 var osm_minimap = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
 var c_minimap = new L.Control.MiniMap(osm_minimap,{toggleDisplay:true,minimized:true});map.addControl(c_minimap);
 
-// create all layers
-
+// add initial layers to map
 map.addLayer(outdoors);
 map.addLayer(boundaries);
+map.addLayer(sinks);
 
 var baseLayers = {
-    "Open Street Map": outdoors,
-    "Aerial Imagery": esri_aerial
-};
-
-var overlaysDict = {
+    "Open Street Map":outdoors,
+    "Aerial Imagery":esri_aerial,
     "SW WI Hillshade":hillshade,
-    "Crawford Co Bedrock":bedrock,
-    "Boundaries":boundaries,
-    "Watersheds":watersheds,
-    "Fracture Lines":frac,
-    "Sinkholes (sized by depth)":sinks,
+    "USGS Topo *":usgs
 };
 
-var c_layers = new L.control.layers(baseLayers, overlaysDict,{position:'topright'});
+var overlayLayers = {
+    "Carbonate Bedrock":wi_geology,
+    "Depth to Bedrock *":bedrock,
+    "Civil Boundaries":boundaries,
+    "Watershed Boundaries":watersheds,
+    "Fracture Lines *":frac,
+    "PLSS &frac14; &frac14; Sections":qqsections,
+    "PLSS &frac14; Sections":qsections,
+    "PLSS Sections":sections,
+    "PLSS Townships":townships,
+    "Sink Locations *":sinks
+};
+
+// explicitly set all of the layer zindex values. this is necessary because
+// the auto z-indexing doesn't seem to work on the L.WMS.overlay layers
+outdoors.setZIndex(1);
+esri_aerial.setZIndex(2);
+hillshade.setZIndex(3);
+usgs.setZIndex(4);
+wi_geology.setZIndex(5);
+bedrock.setZIndex(6);
+mcd.options['zIndex'] = 7;
+counties.options['zIndex'] = 8;
+watersheds.setZIndex(9);
+frac.setZIndex(10);
+qqsections.setZIndex(11);
+qsections.setZIndex(12);
+sections.setZIndex(13);
+townships.setZIndex(14);
+sinks.setZIndex(15);
+
+var c_layers = new L.control.layers(baseLayers, overlayLayers,{position:'topright',collapsed:false,autoZIndex:false});
 var c_zoom = new L.control.zoom({position:'topright'});
 var c_fullscreen = new L.Control.Fullscreen({position:'topright'});
 var c_gps = new L.Control.Gps();
