@@ -44,7 +44,7 @@ html body {
 }
 
 .input-form-panel {
-    z-index: 2147483647 !important;
+    z-index: 2147483646 !important;
     height: 100vh;
     top:0;
     background-color:#ffe78f;
@@ -61,7 +61,7 @@ html body {
 }
 
 .layer-control-panel {
-    z-index: 2147483647 !important;
+    z-index: 2147483646 !important;
     height: 100vh;
     top:0;
     right:0;
@@ -79,7 +79,7 @@ html body {
 }
 
 .legend-panel {
-    z-index: 2147483647 !important;
+    z-index: 2147483646 !important;
     top:0;
     right:0;
     background-color:#96BEF1;
@@ -92,6 +92,23 @@ html body {
 
 .legend-panel a {
     color:#182F4C;
+    font-weight:900;
+}
+
+.example-bottom-panel {
+    z-index: 2147483647 !important;
+    bottom:0;
+    /* height:75px; */
+    background-color:#ff9f8f;
+    position:absolute;
+    box-shadow: 0px 0px 10px 2px #182F4C;
+    width: 100%;
+    display:none;
+    overflow-y:auto;
+}
+
+.example-bottom-panel a {
+    color:#540000;
     font-weight:900;
 }
 

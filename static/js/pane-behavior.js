@@ -26,6 +26,43 @@ $(document).ready(
             $("#legend-side-panel").fadeOut();
         });
         
+        $("#open-example-panel").click(function() {
+            $("#example-panel").fadeIn();
+            $.ajax ({
+                url:root_url+"/example-locations",
+                success: function (data) {
+                    console.log(data);
+                    var html = ''
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            var name = data[key]['name'];
+                            var latlong = data[key]['latlong'];
+                            var desc = data[key]['desc'];
+                            html += '<button onclick="zoomToExample(['+latlong+'], 18)" title="'+desc+'" class="example-zoom-button">'+name+'</a>';
+                        }
+                    }
+                    console.log(html);
+                    $("#put-examples-here").html(html);
+                }
+            });
+        });
+        $("#close-example-panel").click(function() {
+            $("#example-panel").fadeOut();
+        });
+        
+        
+        $("#save-location").click(function() {
+            if ($(this).text() == "bookmark current view") {
+                saveView();
+                $(this).html("return to bookmarked view");
+            } else {
+                returnView();
+                $(this).html("bookmark current view");
+            }
+        });
+        
+        
+        
         $(".leaflet-control-layers-separator").html("<h5>Overlays</h5>");
         $("#get-form").click(function() {
             var ajax = $.ajax({
@@ -36,5 +73,7 @@ $(document).ready(
                 }
             });
         });
-    });
+        
+    }
+);
     

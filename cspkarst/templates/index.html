@@ -71,6 +71,7 @@
         </div>
     </div>
 </div>
+
 {% if user.is_authenticated %}
 <div id="info-panel" class="input-form-panel">
     <div class="container-fluid">
@@ -93,8 +94,29 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
+                <p><a id="open-example-panel" href="javascript:void(0)">zoom to some examples</a></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
                 <div id="panel-content"></div>
             </div>
+        </div>
+    </div>
+</div>
+<div id="example-panel" class="example-bottom-panel">
+    <div class="container-fluid">
+        <div class="row" style="">
+            <div class="col-xs-12">
+                <div style="margin-top:5px">
+                    <p style="margin-bottom:5px;"><a id="save-location" href="javascript:void(0)">bookmark current view</a> (you may want to do this before zooming to an example)
+                    <a style="float:right" id="close-example-panel" href="javascript:void(0)"><i class="fa fa-times-circle-o" style="font-size:20px;"></i></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="">
+            <div id="put-examples-here" class="col-xs-12" style="margin-bottom:5px;"></div>
         </div>
     </div>
 </div>
