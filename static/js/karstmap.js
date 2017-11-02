@@ -234,6 +234,35 @@ var getSinkForm = function (e) {
                 $("#panel-content").html('<div class="form-msg" style="text-align:center;margin-top:20px;"><p style="font-weight:900;font-size:20px;">no sink here...</p></div>')
                 return
             }
+            
+            //// trying many different ways to add a marker of some sort to the selected sink
+            //// ultimately the problem is that coordinates returned by GetFeatureInfo do not
+            //// seem to be the same as the displayed coordinates of the feature itself. So
+            //// using those to create a new feature makes things look weird.
+            //// also tried using a WFS request to get the sink id and coords, but ran into
+            //// different problems with that... See the bottom of this script.
+            // coords = data.features[0].geometry['coordinates']
+            // marker = new L.circle([coords[1],coords[0]], {
+                // color: 'red',
+                // fillOpacity: 0,
+                // weight:0.5,
+                // radius: 12
+            // }).addTo(map);
+            // L.MakiMarkers.accessToken = mapbox_api_key;
+            // var icon = L.MakiMarkers.icon({icon:'hospital', color: "#e3e311", size: "s"});
+            // var icon = L.divIcon({className: 'map-icon',html:'<i class="fa fa-edit" style="font-size:20px;"></i>'});
+            // var icon = L.divIcon({className: 'map-icon',html:'<p><strong>*</strong></p>'});
+            // $(".map-icon").html('');
+            // marker = new L.marker([coords[1],coords[0]], {icon: icon}).addTo(map);
+            // console.log(data.features[0].geometry['coordinates']);
+            // var bounds = make_square_from_pt_bbox(data.features[0].properties['bbox']);
+            // console.log(bounds);
+            // marker = new L.rectangle(bounds, {
+                // color: 'red',
+                // fillColor: '#f03',
+                // fillOpacity: 0,
+                // weight:0.5,
+            // }).addTo(map);
             console.log(data.features);
             var sink_id = data.features[0].properties['sink_id'];
             $.ajax({
@@ -295,3 +324,41 @@ map.on("contextmenu", function (event) {
         .setContent(latitude+', '+longitude+'<br>zoom level: '+map.getZoom()+gmlink)
         .openOn(map);
 });
+
+//// This is working example of using a WFS request instead of WFS GetFeatureInfo request
+//// However, it seems that the Distance property units are based on the EPSG of the 
+//// data that is being queried, regardless of what unit is specified in the call.
+//// So, putting this on hold for a bit...
+// map.on("click", function(e){
+    // var point = L.Projection.Mercator.project(e.latlng)
+    // var wfsreq = "<Filter xmlns:gml='http://www.opengis.net/gml'>" +
+        // "<DWithin>" +
+          // "<PropertyName>geom</PropertyName>" +
+          // "<gml:Point srsName='http://www.opengis.net/gml/srs/epsg.xml#3857'>" +
+            // "<gml:coordinates>"+point['x']+","+point['y']+"</gml:coordinates>" +
+          // "</gml:Point>" +
+          // "<Distance units='meters'>1</Distance>" +
+        // "</DWithin>" +
+      // "</Filter>";
+    // var wfs = "https://db.legiongis.com/geoserver/wfs?request=getfeature&version=1.0.0&service=wfs&typename=csp:cspkarst_sink&propertyname=geom&outputformat=json&filter="+encodeURIComponent(wfsreq);
+    // console.log(wfs);
+    // $.ajax({
+        // url:wfs,
+        // success: function (data){
+            // console.log(data)
+        // },
+        // error:function (xhr, ajaxOptions, thrownError){
+            // if(xhr.status==404) {
+                // console.log(thrownError);
+            // }
+        // }
+    // });
+// });
+
+//// function used at one point to generate a rectangle from a point's bbox
+//// not in use
+// var make_square_from_pt_bbox = function (bbox) {
+    // var southwest = [bbox[1]-.0003,bbox[0]-.0004];
+    // var northeast = [bbox[3]+.0003,bbox[2]+.0004];
+    // return [southwest,northeast]
+// }

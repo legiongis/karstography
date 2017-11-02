@@ -157,3 +157,13 @@ button[disabled], html input[disabled] {
 .blueimp-gallery {
     z-index: 2147483647 !important;
 }
+
+.map-icon {
+    height: unset !important;
+    width: unset !important;
+    color: red;
+    font-weight: 900;
+    margin-top: -15px !important;
+    margin-left: 5px !important;
+
+}
