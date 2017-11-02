@@ -272,16 +272,11 @@ map.on('click', function (e) {
     }
 });
 
-// force the redraw of a layer so that if its data has been changed, the symbology
+// force the redraw of the sinks layer so that if its data has been changed, the symbology
 // will be updated right away. this layer should have tile-caching set to false so
-// that it won't be using geowebcache. ultimately, this should only be enabled during
-// editing mode
-forceLayerRedraw = function (layer,map) {
-    console.log()
-    
-}
+// that it won't be using geowebcache. only enabled if a user in logged in (editing).
 map.on('mousedown', function (){
-    if (map.hasLayer(sinks)) {
+    if (map.hasLayer(sinks) && user_name != '') {
         sinks.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
         sinks.redraw();
     }
