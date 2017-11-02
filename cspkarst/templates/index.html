@@ -19,7 +19,7 @@
                     {{user.username}}&nbsp;&nbsp;>>&nbsp;&nbsp;</strong>
                     <a href="{% url 'logout' %}?next={{ request.get_full_path }}&logout=true">logout</a>
                 {% else %}
-                    <strong>Karst Geology Viewer&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;</strong>
+                    <span style="font-weight:900">KARST GEOLOGY VIEWER</span><strong>&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;</strong>
                     <a href="{% url 'login' %}?next={{ request.get_full_path }}">login</a>
                 {% endif %}
                 <p>
