@@ -202,13 +202,12 @@ sinks.setZIndex(15);
 
 var c_layers = new L.control.layers(baseLayers, overlayLayers,{position:'topright',collapsed:false,autoZIndex:false});
 var c_zoom = new L.control.zoom({position:'topright'});
-var c_fullscreen = new L.Control.Fullscreen({position:'topright'});
-var c_gps = new L.Control.Gps();
+var c_fullscreen = new L.Control.Fullscreen({position:'bottomright'});
+var c_gps = new L.Control.Gps({position:'topright'});
 
 // add all non-minimap controls here
 map.addControl(c_layers);
 map.addControl(c_zoom);
-
 map.addControl(c_fullscreen);
 // map.addControl(c_gps);
 
