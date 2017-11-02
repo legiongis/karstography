@@ -9,7 +9,7 @@ wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR
 var esri_aerial = L.tileLayer(
     'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     attribution: '&copy; '+mapLink+', '+wholink,
-    maxZoom: 18,
+    maxZoom: 19,
 });
 
 var hillshade = L.tileLayer.wms(legionows, {
@@ -29,12 +29,14 @@ var usgs = L.tileLayer.wms(legionows, {
     tiled: true,
     maxZoom:19,
 });
+
 var watersheds = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:wi_watersheds',
     format: 'image/png',
     transparent: true,
     attribution: "HUC boundaries from WIDNR",
     tiled: true,
+    maxZoom:19,
 });
 
 var bedrock = L.tileLayer.wms(legionows, {
@@ -43,6 +45,7 @@ var bedrock = L.tileLayer.wms(legionows, {
     transparent: true,
     attribution: "HUC boundaries from WIDNR",
     tiled: true,
+    maxZoom:19,
 });
 var frac = L.tileLayer.wms(legionows, {
     layers: 'csp:fracture_lines',
@@ -50,14 +53,15 @@ var frac = L.tileLayer.wms(legionows, {
     transparent: true,
     attribution: "HUC boundaries from WIDNR",
     tiled: true,
+    maxZoom:19,
 });
+
 var sinks = L.tileLayer.wms(legionows, {
     layers: 'csp:cspkarst_sink',
     format: 'image/png',
     transparent: true,
     attribution: "LiDAR-Derived Sink Locations",
     styles: 'sink_evaluation_2.0',
-    maxNativeZoom:18,
     maxZoom:19,
     CQL_FILTER: "in_nfhl <> true OR in_row <> true",
     tiled: 'false',
@@ -75,6 +79,7 @@ var crawhillshade = L.tileLayer.wms('http://52.43.72.30:8080/geoserver/wms?'+Mat
     transparent: true,
     attribution: "Hillshade derived from WisconsinView LiDAR",
     tiled: true,
+    maxZoom:19,
 });
 
 // experimenting with new PLSS layers
