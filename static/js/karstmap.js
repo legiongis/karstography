@@ -47,11 +47,23 @@ var bedrock = L.tileLayer.wms(legionows, {
     tiled: true,
     maxZoom:19,
 });
+
+var wi_geology = L.tileLayer.wms(legionows, {
+    layers: 'wi_ref:geology_a_wi_usgs_2005',
+    format: 'image/png',
+    transparent: true,
+    attribution: "Op and Osi geological units, USGS",
+    tiled: true,
+    opacity:0.4,
+    styles:'CarbonateBedrock',
+    maxZoom:19,
+});
+
 var frac = L.tileLayer.wms(legionows, {
     layers: 'csp:fracture_lines',
     format: 'image/png',
     transparent: true,
-    attribution: "HUC boundaries from WIDNR",
+    attribution: "Fracture Lines, drawn by CSP staff",
     tiled: true,
     maxZoom:19,
 });
