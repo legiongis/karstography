@@ -11,25 +11,6 @@ var esri_aerial = L.tileLayer(
     attribution: '&copy; '+mapLink+', '+wholink,
     maxZoom: 18,
 });
-        
-// use the overlay class from leaflet.wms.js to make a non-tiled layer.
-// necessary for better labeling apparently
-var counties = L.WMS.overlay(legionows, {
-    'layers': 'wi_ref:wi_counties_nrcs_4269',
-    'transparent': true,
-    'format':'image/png',
-    'CQL_FILTER': "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
-});
-
-var mcd = L.WMS.overlay(legionows, {
-    'layers': 'wi_ref:cities_towns_and_villages',
-    'format': 'image/png',
-    'transparent': true,
-    'attribution': "Minor Civil Divisions, Fall 2017",
-    'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
-});
-
-var boundaries = L.layerGroup([mcd,counties]);
 
 var hillshade = L.tileLayer.wms(legionows, {
     layers: 'elevation:driftless_hillshade',
@@ -96,6 +77,60 @@ var crawhillshade = L.tileLayer.wms('http://52.43.72.30:8080/geoserver/wms?'+Mat
     tiled: true,
 });
 
+// experimenting with new PLSS layers
+var qqsections = L.tileLayer.wms(legionows, {
+    layers: 'wi_ref:plss_qqsections_sw_wi',
+    format: 'image/png',
+    transparent: true,
+    // attribution: "Fracture Lines, drawn by CSP staff",
+    tiled: true,
+    maxZoom:19,
+});
+var qsections = L.tileLayer.wms(legionows, {
+    layers: 'wi_ref:plss_qsections',
+    format: 'image/png',
+    transparent: true,
+    // attribution: "Fracture Lines, drawn by CSP staff",
+    tiled: true,
+    maxZoom:19,
+});
+var sections = L.tileLayer.wms(legionows, {
+    layers: 'wi_ref:plss_sections',
+    format: 'image/png',
+    transparent: true,
+    // attribution: "Fracture Lines, drawn by CSP staff",
+    tiled: true,
+    maxZoom:19,
+});
+var townships = L.tileLayer.wms(legionows, {
+    layers: 'wi_ref:plss_townships',
+    format: 'image/png',
+    transparent: true,
+    // attribution: "Fracture Lines, drawn by CSP staff",
+    tiled: true,
+    maxZoom:19,
+});
+
+// use the overlay class from leaflet.wms.js to make a non-tiled layer.
+// necessary for better labeling apparently
+var mcd = L.WMS.overlay(legionows, {
+    'layers': 'wi_ref:cities_towns_and_villages',
+    'format': 'image/png',
+    'transparent': true,
+    // 'attribution': "Minor Civil Divisions, Fall 2017",
+    'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
+});
+mcd.options = {'attribution':"Minor Civil Divisions Fall 2017"};
+
+var counties = L.WMS.overlay(legionows, {
+    'layers': 'wi_ref:wi_counties_nrcs_4269',
+    'transparent': true,
+    'format':'image/png',
+    'CQL_FILTER': "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
+});
+counties.options = {'attribution':"NRCS Counties"};
+
+var boundaries = L.layerGroup([mcd,counties]);
 
 // ~~~~~~~~~~ intantiate map and stuff ~~~~~~~~~~~~~~~~~~~~ //
 
