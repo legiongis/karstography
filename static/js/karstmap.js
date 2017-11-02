@@ -144,6 +144,7 @@ var counties = L.WMS.overlay(legionows, {
     'transparent': true,
     'format':'image/png',
     'CQL_FILTER': "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
+    'styles':"counties_karstography"
 });
 counties.options = {'attribution':"NRCS Counties"};
 
@@ -273,6 +274,7 @@ var getSinkForm = function (e) {
             $.ajax({
                 url : root_url+"/sink-update/"+sink_id+"/",
                 success : function (response) {
+                    $("#info-panel").fadeIn();
                     $("#panel-content").html(response);
                     $("#sink-form").submit(function(event) {
                         // Stop form from submitting normally to avoid a redirect
@@ -312,7 +314,6 @@ map.on('click', function (e) {
 // will be updated right away. this layer should have tile-caching set to false so
 // that it won't be using geowebcache. only enabled if a user in logged in (editing).
 map.on('mousedown', function (){
-    redrawSinkLayer();
 });
 
 // make popup that shows lat/long and zoom level on right-click event
