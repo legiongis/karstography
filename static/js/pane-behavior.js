@@ -37,8 +37,9 @@ $(document).ready(
                         if (data.hasOwnProperty(key)) {
                             var name = data[key]['name'];
                             var latlong = data[key]['latlong'];
-                            var desc = data[key]['desc'];
-                            html += '<button onclick="zoomToExample(['+latlong+'], 18)" title="'+desc+'" class="example-zoom-button">'+name+'</a>';
+                            var desc = data[key]['description'];
+                            var basemap = data[key]['basemap'];
+                            html += '<button onclick="zoomToExample(['+latlong+'],18,\''+basemap+'\')" title="'+desc+'" class="example-zoom-button">'+name+'</a>';
                         }
                     }
                     console.log(html);

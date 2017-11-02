@@ -238,8 +238,21 @@ function saveView() {
 function returnView() {
     map.flyTo(previous_latlng,previous_zoom);
 }
-function zoomToExample(latlng,zoom) {
-    map.addLayer(hillshade);
+
+function switchBaseLayer (layername) {
+    for (var key in baseLayers) {
+        if (baseLayers.hasOwnProperty(key)) {
+            blayer = baseLayers[key];
+            map.removeLayer(blayer);
+            if (key == layername) {
+                map.addLayer(blayer);
+            }
+        }
+    }
+}
+
+function zoomToExample(latlng,zoom,baselayername) {
+    switchBaseLayer(baselayername);
     map.flyTo(latlng,zoom);
 }
 

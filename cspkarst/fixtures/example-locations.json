@@ -2,11 +2,13 @@
     "location1": {
         "latlong":[43.3134, -90.9445],
         "name":"Potential Sinkhole Cluster",
-        "desc":"View a series of potential sinkholes."
+        "description":"View a series of potential sinkholes.",
+        "basemap":"SW WI Hillshade"
     },
     "location2": {
         "latlong":[43.3185, -90.9605],
         "name":"Catchment",
-        "desc":"View a clear example a catchment basin."
+        "description":"View a clear example a catchment basin.",
+        "basemap":"Aerial Imagery"
     }
 }
