@@ -11,6 +11,22 @@ $(document).ready(
         $("#close-panel").click(function() {
             $("#info-panel").fadeOut();
         });
+        
+        $("#open-layers-panel").click(function() {
+            $("#layer-panel").fadeIn();
+        });
+        $("#close-layers-panel").click(function() {
+            $("#layer-panel").fadeOut();
+        });
+        
+        $("#open-legend-panel").click(function() {
+            $("#legend-side-panel").fadeIn();
+        });
+        $("#close-legend-panel").click(function() {
+            $("#legend-side-panel").fadeOut();
+        });
+        
+        $(".leaflet-control-layers-separator").html("<h5>Overlays</h5>");
         $("#get-form").click(function() {
             var ajax = $.ajax({
                 url : "/sink-form/5",

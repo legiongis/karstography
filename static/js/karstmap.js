@@ -136,7 +136,19 @@ map.addControl(c_zoom);
 map.addControl(c_fullscreen);
 // map.addControl(c_gps);
 
-getSinkId = function (e) {
+// Call the getContainer routine.
+var htmlObject = c_layers.getContainer();
+// Get the desired parent node.
+var a = document.getElementById('put-layers-here');
+
+// Finally append that node to the new parent, recursively searching out and re-parenting nodes.
+function setParent(el, newParent) {
+    newParent.appendChild(el);
+ }
+ setParent(htmlObject, a);
+
+var marker;
+var getSinkForm = function (e) {
     var getFeatureUrl = sinkIdentifyLayer.getFeatureInfoUrl(e.latlng,'application/json');
     $.ajax({
         url:getFeatureUrl,

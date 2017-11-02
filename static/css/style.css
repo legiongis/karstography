@@ -55,11 +55,41 @@ html body {
 }
 
 .input-form-panel a {
+    color:#5d522b;
+    font-weight:900;
+}
+
+.layer-control-panel {
+    z-index: 2147483647 !important;
+    height: 100vh;
+    top:0;
+    right:0;
+    background-color:#96BEF1;
+    position:absolute;
+    box-shadow: 0px 0px 10px 2px #182F4C;
+    width: 250px;
+    display:none;
+    overflow-y:auto;
+}
+
+.layer-control-panel a {
     color:#182F4C;
     font-weight:900;
 }
 
-.input-form-panel a {
+.legend-panel {
+    z-index: 2147483647 !important;
+    top:0;
+    right:0;
+    background-color:#96BEF1;
+    position:absolute;
+    box-shadow: 0px 0px 10px 2px #182F4C;
+    width: 250px;
+    display:none;
+    overflow-y:auto;
+}
+
+.legend-panel a {
     color:#182F4C;
     font-weight:900;
 }
@@ -90,9 +120,24 @@ button[disabled], html input[disabled] {
 .leaflet-popup-content-wrapper {
 }
 
+.leaflet-control-layers {
+    width:100%;
+    background: unset;
+    box-shadow: unset;
+}
+
+.leaflet-control-layers-separator {
+    border-top: none;
+    height: unset;
+    font-weight:bold;
+    margin:unset;
+}
+
+.leaflet-control-minimap {
+    position: relative;
+}
+
 .leaflet-control-layers-overlays {
-    overflow-y: auto;
-    height: 250px;
 }
 
 .latlong-popup .leaflet-popup-content-wrapper {
