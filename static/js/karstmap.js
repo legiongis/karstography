@@ -37,6 +37,16 @@ var hillshade = L.tileLayer.wms(legionows, {
     transparent: true,
     attribution: "Hillshade derived from WisconsinView LiDAR",
     tiled: true,
+    maxZoom:19,
+});
+
+var usgs = L.tileLayer.wms(legionows, {
+    layers: 'csp:drg_s_wi023_opt',
+    format: 'image/png',
+    transparent: true,
+    attribution: "USGS Topo",
+    tiled: true,
+    maxZoom:19,
 });
 var watersheds = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:wi_watersheds',
