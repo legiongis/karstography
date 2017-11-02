@@ -8,6 +8,7 @@ router = routers.DefaultRouter()
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^sink-update/(?P<sink_id>[\w-]+)/', views.sink_update, name='sink-update'),
+    url(r'^example-locations/', views.get_example_locations, name='example-locations'),
     url(r'^', include(router.urls)),
     # url(r'^json/(?P<stairid>[\w-]+)/$', views.get_stairs, name='stair_json'),
 ]

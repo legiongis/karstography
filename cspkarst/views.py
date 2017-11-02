@@ -2,17 +2,17 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 from django.core import serializers
+from django.conf import settings
 from .models import Sink
 from .forms import SinkForm
+import os
+import json
 
 def index(request):
     return render(request, 'index.html')
     
-
-
 def sink_update(request,sink_id):
     try:
         instance = Sink.objects.get(sink_id=sink_id)
@@ -37,3 +37,9 @@ def sink_update(request,sink_id):
         form = SinkForm(instance=instance)
 
     return render(request, 'sink.html', {'form': form})
+    
+def get_example_locations(request):
+    examples_file = os.path.join(settings.BASE_DIR,'cspkarst','fixtures','example-locations.json')
+    json_data = open(examples_file).read()
+    data = json.loads(json_data)
+    return JsonResponse(data)
