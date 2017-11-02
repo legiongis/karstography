@@ -263,8 +263,14 @@ var getSinkForm = function (e) {
     });
 }
 
-map.on('click', getSinkId);
-
+map.on('click', function (e) {
+    if (marker) {
+        map.removeLayer(marker);
+    }
+    if (map.hasLayer(sinks)) {
+        getSinkForm(e);
+    }
+});
 
 // force the redraw of a layer so that if its data has been changed, the symbology
 // will be updated right away. this layer should have tile-caching set to false so
