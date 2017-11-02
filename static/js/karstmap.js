@@ -219,8 +219,9 @@ var a = document.getElementById('put-layers-here');
 // Finally append that node to the new parent, recursively searching out and re-parenting nodes.
 function setParent(el, newParent) {
     newParent.appendChild(el);
- }
- setParent(htmlObject, a);
+}
+setParent(htmlObject, a);
+
 
 var marker;
 var getSinkForm = function (e) {
