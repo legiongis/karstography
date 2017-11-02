@@ -282,15 +282,15 @@ map.on('mousedown', function (){
     }
 });
 
-// make popup that shows lat/long on right-click event
+// make popup that shows lat/long and zoom level on right-click event
 var latlongpopup = L.popup({'className' : 'latlong-popup'});
 map.on("contextmenu", function (event) {
     var latitude = event.latlng.lat.toFixed(4);
     var longitude = event.latlng.lng.toFixed(4);
     var gm = 'http://maps.google.com/maps?z=7&t=k&q=loc:'+latitude+'+'+longitude;
-    var gmlink = '<br><a href="'+gm+'" target="_blank">view in google maps</a>'
+    var gmlink = '<br><a href="'+gm+'" target="_blank">google maps</a>'
     latlongpopup
         .setLatLng(event.latlng)
-        .setContent(latitude+', '+longitude)
+        .setContent(latitude+', '+longitude+'<br>zoom level: '+map.getZoom()+gmlink)
         .openOn(map);
 });
