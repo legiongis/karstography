@@ -1,6 +1,13 @@
 <form action="/" method="post" id="sink-form">
     {% csrf_token %}
-    {{ form }}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.sink_type.errors }}
+        <label for="{{ form.sink_type.id_for_label }}">Category</label>
+        {{ form.sink_type.value }}
+        {{ form.sink_type }}
+    </div>
+    {{ form.as_p }}
     <input type="submit" value="Submit" style="margin-top: 10px;float:right"/>
 </form>
 <button id="form-cancel" onclick="removeSinkForm()" type="cancel" style="margin-top: 10px;">Cancel</button>
