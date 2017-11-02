@@ -13,7 +13,16 @@
         </div>
         <div class="col-xs-4">
             <div style="display:inline;text-align:center;">
-                <h5>CSP karst viewer, in progress...</h5>
+                <p style="margin:10px 0px;">
+                {% if user.is_authenticated %}
+                    <strong><span style="font-size:larger;">Karst Geology Viewer</span>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    {{user.username}}&nbsp;&nbsp;>>&nbsp;&nbsp;</strong>
+                    <a href="{% url 'logout' %}?next={{ request.get_full_path }}&logout=true">logout</a></p>
+                {% else %}
+                    <strong><span style="font-size:larger;">Karst Geology Viewer</span>&nbsp;&nbsp;>>&nbsp;&nbsp;</strong>
+                    <a href="{% url 'login' %}?next={{ request.get_full_path }}">login</a>
+                {% endif %}
+                <p>
             </div>
         </div>
         <div class="col-xs-4">
