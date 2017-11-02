@@ -229,6 +229,20 @@ function redrawSinkLayer(){
     sinks.redraw();
 }
 
+var previous_latlng = [43.22219, -90.9201]
+var previous_zoom = 10;
+function saveView() {
+    previous_latlng = map.getCenter();
+    previous_zoom = map.getZoom();
+}
+function returnView() {
+    map.flyTo(previous_latlng,previous_zoom);
+}
+function zoomToExample(latlng,zoom) {
+    map.addLayer(hillshade);
+    map.flyTo(latlng,zoom);
+}
+
 var marker;
 var getSinkForm = function (e) {
     var getFeatureUrl = sinkIdentifyLayer.getFeatureInfoUrl(e.latlng,'application/json');
