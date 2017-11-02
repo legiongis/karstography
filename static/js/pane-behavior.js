@@ -1,3 +1,8 @@
+function removeSinkForm() {
+    console.log("adine");
+    $("#panel-content").html("");
+};
+
 $(document).ready(
     function() {
         $("#open-panel").click(function() {
