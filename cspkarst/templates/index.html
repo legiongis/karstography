@@ -8,18 +8,18 @@
     <div class="row header-row" style="">
         <div class="col-xs-4">
             {% if user.is_authenticated %}
-            <h5><a id="open-panel" href="javascript:void(0)">open sink editor</a></h5>
+            <p style="margin:10px 0px;"><a id="open-panel" href="javascript:void(0)">open sink editor</a></p>
             {% endif %}
         </div>
         <div class="col-xs-4">
             <div style="display:inline;text-align:center;">
                 <p style="margin:10px 0px;">
                 {% if user.is_authenticated %}
-                    <strong><span style="font-size:larger;">Karst Geology Viewer</span>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <span style="font-weight:900">KARST GEOLOGY VIEWER</span><strong>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
                     {{user.username}}&nbsp;&nbsp;>>&nbsp;&nbsp;</strong>
-                    <a href="{% url 'logout' %}?next={{ request.get_full_path }}&logout=true">logout</a></p>
+                    <a href="{% url 'logout' %}?next={{ request.get_full_path }}&logout=true">logout</a>
                 {% else %}
-                    <strong><span style="font-size:larger;">Karst Geology Viewer</span>&nbsp;&nbsp;>>&nbsp;&nbsp;</strong>
+                    <strong>Karst Geology Viewer&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;</strong>
                     <a href="{% url 'login' %}?next={{ request.get_full_path }}">login</a>
                 {% endif %}
                 <p>
@@ -27,10 +27,11 @@
         </div>
         <div class="col-xs-4">
             <div style="display:inline; float:right">
-                <h5>
+                <p style="margin:10px 0px;">
+                    {% if user.is_staff %}<a href="{{root_url}}/admin">admin panel</a>&nbsp;&nbsp;|&nbsp;&nbsp;{% endif %}
                     <a id="open-legend-panel" href="javascript:void(0)">legend</a>&nbsp;&nbsp;|&nbsp;&nbsp;
                     <a id="open-layers-panel" href="javascript:void(0)">layers</a>
-                </h5>
+                </p>
             </div>
         </div>
     </div>
