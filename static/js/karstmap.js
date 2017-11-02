@@ -155,6 +155,7 @@ var getSinkForm = function (e) {
         success: function (data){
             if (data.features.length == 0) {
                 console.log("no sink here!");
+                $("#panel-content").html('<div class="form-msg" style="text-align:center;margin-top:20px;"><p style="font-weight:900;font-size:20px;">no sink here...</p></div>')
                 return
             }
             console.log(data.features);
@@ -171,7 +172,7 @@ var getSinkForm = function (e) {
                             type:'post',
                             data:$('#sink-form').serialize(),
                             success:function(){
-                                $("#panel-content").html('<div style="text-align:center;color:#182F4C;    margin-top:20px;"><i class="fa fa-check" style="font-size:40px;"></i><p style="font-weight:900;font-size:20px;">saved</p></div>');
+                                $("#panel-content").html('<div class="form-msg" style="text-align:center;margin-top:20px;"><i class="fa fa-check" style="font-size:40px;"></i><p style="font-weight:900;font-size:20px;">saved</p></div>');
                                 
                             }
                         });
