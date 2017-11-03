@@ -176,7 +176,7 @@ var baseLayers = {
     "Aerial Imagery":esri_aerial,
     "SW WI Hillshade":hillshade,
     "USGS Topo *":usgs,
-    "TPI (Topographic Position Index) *":tpi,
+    "Topographic Position Index *":tpi,
 };
 
 var overlayLayers = {
