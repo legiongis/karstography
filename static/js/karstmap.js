@@ -266,14 +266,14 @@ var getSinkForm = function (e) {
             console.log(data.features);
             var sink_id = data.features[0].properties['sink_id'];
             $.ajax({
-                url : root_url+"sink-update/"+sink_id+"/",
+                url : root_url+"/sink-update/"+sink_id+"/",
                 success : function (response) {
                     $("#panel-content").html(response);
                     $("#sink-form").submit(function(event) {
                         // Stop form from submitting normally to avoid a redirect
                         event.preventDefault();
                         $.ajax({
-                            url:root_url+'sink-update/'+sink_id+'/',
+                            url:root_url+'/sink-update/'+sink_id+'/',
                             type:'post',
                             data:$('#sink-form').serialize(),
                             success:function(){
