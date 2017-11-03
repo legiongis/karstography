@@ -4,7 +4,8 @@ from cspkarst.models import Sink
 class SinkForm(ModelForm):
     class Meta:
         model = Sink
-        fields = ['sink_type','dem_check','img_check','evidence','comment']
+        # fields = ['sink_type','dem_check','img_check','evidence','comment']
+        exclude = ['geom']
         help_texts = {
             'sink_type': 'Do your best!',
         }

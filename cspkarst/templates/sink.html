@@ -1,6 +1,59 @@
+<h5>Sink ID: {{ form.sink_id.value }} | Elev: {{ form.elevation.value }} | Depth: {{ form.depth.value }}</h5>
 <form action="/" method="post" id="sink-form">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" style="margin-top: 10px;float:right"/>
+    {{ form.non_field_errors }}
+    <div class="col-xs-12">
+        <div class="fieldWrapper">
+            {{ form.sink_type.errors }}
+            <label for="{{ form.sink_type.id_for_label }}">Category</label>
+            {{ form.sink_type }}
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <h5>Basemaps Checked</h5>
+    </div>
+    <div class="col-xs-6">
+        <div class="fieldWrapper">
+            {{ form.bm_hs.errors }}
+            <label for="{{ form.bm_hs.id_for_label }}">Hillshade</label>
+            {{ form.bm_hs }}
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="fieldWrapper">
+            {{ form.bm_aerial.errors }}
+            <label for="{{ form.bm_aerial.id_for_label }}">Aerial Imagery</label>
+            {{ form.bm_aerial }}
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="fieldWrapper">
+            {{ form.bm_usgs.errors }}
+            <label for="{{ form.bm_usgs.id_for_label }}">USGS</label>
+            {{ form.bm_usgs }}
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="fieldWrapper">
+            {{ form.bm_tpi.errors }}
+            <label for="{{ form.bm_tpi.id_for_label }}">TPI</label>
+            {{ form.bm_tpi }}
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="fieldWrapper">
+            {{ form.confidence.errors }}
+            <label for="{{ form.confidence.id_for_label }}">Confidence Level</label>
+            {{ form.confidence }}
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="fieldWrapper">
+            {{ form.comment.errors }}
+            <label for="{{ form.comment.id_for_label }}">Comment</label>
+            {{ form.comment }}
+        </div>
+    </div>
+    <input type="submit" value="Submit" style="margin-top:10px;float:right;margin-right:15px;"/>
 </form>
-<button id="form-cancel" onclick="removeSinkForm()" type="cancel" style="margin-top: 10px;">Cancel</button>
+<button id="form-cancel" onclick="removeSinkForm()" type="cancel" style="margin-top:10px;margin-left:15px">Cancel</button>

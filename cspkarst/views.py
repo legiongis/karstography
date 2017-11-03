@@ -29,12 +29,16 @@ def sink_update(request,sink_id):
                 if k in fields:
                     if v == '':
                         v = None
+                    if v == 'on':
+                        v = True
                     setattr(instance, k, v)
             instance.save()
 
     # if a GET prepopulate form with the data from the input sink_id
     else:
         form = SinkForm(instance=instance)
+        
+    # form.fields['comment'].widget.attrs['readonly'] = True
 
     return render(request, 'sink.html', {'form': form})
     
