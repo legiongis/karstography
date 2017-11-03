@@ -95,14 +95,13 @@ var crawhillshade = L.tileLayer.wms('http://52.43.72.30:8080/geoserver/wms?'+Mat
 });
 
 // experimenting with new PLSS layers
-var qqsections = L.tileLayer.wms(legionows, {
-    layers: 'wi_ref:plss_qqsections_sw_wi',
-    format: 'image/png',
-    transparent: true,
-    // attribution: "Fracture Lines, drawn by CSP staff",
-    tiled: true,
-    maxZoom:19,
-});
+// var qqsections = L.tileLayer.wms(legionows, {
+    // layers: 'wi_ref:plss_qqsections_sw_wi',
+    // format: 'image/png',
+    // transparent: true,
+    // tiled: true,
+    // maxZoom:19,
+// });
 var qsections = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:plss_qsections',
     format: 'image/png',
@@ -176,7 +175,7 @@ var overlayLayers = {
     "Civil Boundaries":boundaries,
     "Watershed Boundaries":watersheds,
     "Fracture Lines *":frac,
-    "PLSS &frac14; &frac14; Sections":qqsections,
+    // "PLSS &frac14; &frac14; Sections":qqsections,
     "PLSS &frac14; Sections":qsections,
     "PLSS Sections":sections,
     "PLSS Townships":townships,
@@ -195,11 +194,11 @@ mcd.options['zIndex'] = 7;
 counties.options['zIndex'] = 8;
 watersheds.setZIndex(9);
 frac.setZIndex(10);
-qqsections.setZIndex(11);
-qsections.setZIndex(12);
-sections.setZIndex(13);
-townships.setZIndex(14);
-sinks.setZIndex(15);
+// qqsections.setZIndex(11);
+qsections.setZIndex(11);
+sections.setZIndex(12);
+townships.setZIndex(13);
+sinks.setZIndex(14);
 
 var c_layers = new L.control.layers(baseLayers, overlayLayers,{position:'topright',collapsed:false,autoZIndex:false});
 var c_zoom = new L.control.zoom({position:'topright'});
