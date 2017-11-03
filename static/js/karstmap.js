@@ -21,6 +21,15 @@ var hillshade = L.tileLayer.wms(legionows, {
     maxZoom:19,
 });
 
+var tpi = L.tileLayer.wms(legionows, {
+    layers: 'csp:Crawford_TPI_int16-3857_complete',
+    format: 'image/png',
+    transparent: true,
+    attribution: "Hillshade derived from WisconsinView LiDAR",
+    tiled: true,
+    maxZoom:19,
+});
+
 var usgs = L.tileLayer.wms(legionows, {
     layers: 'csp:drg_s_wi023_opt',
     format: 'image/png',
@@ -166,7 +175,8 @@ var baseLayers = {
     "Open Street Map":outdoors,
     "Aerial Imagery":esri_aerial,
     "SW WI Hillshade":hillshade,
-    "USGS Topo *":usgs
+    "USGS Topo *":usgs,
+    "TPI (Topographic Position Index) *":tpi,
 };
 
 var overlayLayers = {
