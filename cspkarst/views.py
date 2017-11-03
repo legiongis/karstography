@@ -43,7 +43,6 @@ def sink_update(request,sink_id):
     return render(request, 'sink.html', {'form': form})
     
 def get_example_locations(request):
-    examples_file = os.path.join(settings.BASE_DIR,'cspkarst','fixtures','example-locations.json')
-    json_data = open(examples_file).read()
+    json_data = open(settings.EXAMPLE_LOCATIONS_JSON).read()
     data = json.loads(json_data)
     return JsonResponse(data)
