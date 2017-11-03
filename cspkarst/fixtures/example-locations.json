@@ -9,6 +9,18 @@
         "latlong":[43.3185, -90.9605],
         "name":"Catchment",
         "description":"View a clear example a catchment basin.",
-        "basemap":"Aerial Imagery"
+        "basemap":"SW WI Hillshade"
+    }
+    "location3": {
+        "latlong":[43.3193, -90.7381],
+        "name":"Blind Valley",
+        "description":"View an example of a blind valley.",
+        "basemap":"SW WI Hillshade"
+    }
+    "location4": {
+        "latlong":[43.3258, -90.7238],
+        "name":"Sinkhole Line",
+        "description":"A line of sinkholes.",
+        "basemap":"SW WI Hillshade"
     }
 }
