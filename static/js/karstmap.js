@@ -223,6 +223,11 @@ function setParent(el, newParent) {
 setParent(htmlObject, a);
 
 
+function redrawSinkLayer(){
+    sinks.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
+    sinks.redraw();
+}
+
 var marker;
 var getSinkForm = function (e) {
     var getFeatureUrl = sinkIdentifyLayer.getFeatureInfoUrl(e.latlng,'application/json');
@@ -277,6 +282,7 @@ var getSinkForm = function (e) {
                             type:'post',
                             data:$('#sink-form').serialize(),
                             success:function(){
+                                redrawSinkLayer();
                                 $("#panel-content").html('<div class="form-msg" style="text-align:center;margin-top:20px;"><i class="fa fa-check" style="font-size:40px;"></i><p style="font-weight:900;font-size:20px;">saved</p></div>');
                                 
                             }
@@ -306,10 +312,7 @@ map.on('click', function (e) {
 // will be updated right away. this layer should have tile-caching set to false so
 // that it won't be using geowebcache. only enabled if a user in logged in (editing).
 map.on('mousedown', function (){
-    if (map.hasLayer(sinks) && user_name != '') {
-        sinks.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
-        sinks.redraw();
-    }
+    redrawSinkLayer();
 });
 
 // make popup that shows lat/long and zoom level on right-click event
