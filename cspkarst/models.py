@@ -11,7 +11,7 @@ class Sink(models.Model):
 
     TYPE_CHOICES = (
        ("CATCHMENT","Catchment Basin"),
-       ("SINKHOLE","Sinkhole"),
+       ("SINKHOLE","Sinkhole/Karst Feature"),
        ("QUARRY","Quarry"),
        ("DC","Ditch/Culvert"),
        ("FOUNDATION","Building Foundation"),
