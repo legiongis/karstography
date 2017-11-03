@@ -51,6 +51,11 @@ $(document).ready(
             $("#example-panel").fadeOut();
         });
         
+        $("#toggle-instructions").click( function() {
+            console.log("toggling");
+            $("#instructions").toggle();
+        });
+        
         
         $("#save-location").click(function() {
             if ($(this).text() == "bookmark current view") {
