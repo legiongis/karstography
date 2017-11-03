@@ -52,8 +52,12 @@ $(document).ready(
         });
         
         $("#toggle-instructions").click( function() {
-            console.log("toggling");
             $("#instructions").toggle();
+            if ($(this).text() == "hide instructions") {
+                $(this).html("show instructions");
+            } else {
+                $(this).html("hide instructions");
+            }
         });
         
         
