@@ -43,6 +43,8 @@ html body {
     top: 50px;
 }
 
+select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
+
 .input-form-panel {
     z-index: 2147483646 !important;
     height: 100vh;
