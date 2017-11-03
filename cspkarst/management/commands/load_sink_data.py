@@ -26,45 +26,46 @@ class Command(BaseCommand):
 
     def load_sinks(self):
     
-        shp = os.path.join(settings.BASE_DIR,'cspkarst','fixtures','sinks_initial.shp')
+        shp = os.path.join(settings.BASE_DIR,'cspkarst','fixtures','sinks_2.0.shp')
         
         print "loading stairs into database from file:"
         print shp
 
         sf = shapefile.Reader(shp)
         recs = sf.shapeRecords()
+        
+        field_map = {
+            'sink_id':5,
+            'dem_check':1,
+            'img_check':2,
+            'evidence':3,
+            'comment':4,
+            'elevation':9,
+            'depth':10,
+            'in_row':11,
+            'in_nfhl':12
+        }
     
         ct,bad_ct = 0,0
         for rec in recs:
             r = rec.record
             s = rec.shape
 
-            sink_id = r[5]
-            dem_check = r[1]
-            img_check = r[2]
-            evidence = r[3].strip()
-            comment = r[4].strip()
-            elevation = r[9]
-            depth = r[10]
-            in_row = r[11]
-            in_nfhl = r[12]
-            
             x = s.points[0][0]
             y = s.points[0][1]
             
             wkt = "POINT ({} {})".format(x,y)
 
-            
             obj = Sink(
-                sink_id = sink_id,
-                dem_check = dem_check,
-                img_check = img_check,
-                evidence = evidence,
-                comment = comment,
-                elevation = elevation,
-                depth = depth,
-                in_row = in_row,
-                in_nfhl = in_nfhl,
+                sink_id = r[field_map['sink_id']],
+                dem_check = r[field_map['dem_check']],
+                img_check = r[field_map['img_check']],
+                evidence = r[field_map['evidence']],
+                comment = r[field_map['comment']],
+                elevation = r[field_map['elevation']],
+                depth = r[field_map['depth']],
+                in_row = r[field_map['in_row']],
+                in_nfhl = r[field_map['in_nfhl']],
                 geom=wkt)
 
             obj.save()
