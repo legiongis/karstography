@@ -71,7 +71,9 @@ $(document).ready(
             }
         });
         
-        
+        $("#refresh-sink-layer").click(function() {
+            redrawSinkLayer();
+        });
         
         $(".leaflet-control-layers-separator").html("<h5>Overlays</h5>");
         $("#get-form").click(function() {
