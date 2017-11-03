@@ -118,13 +118,21 @@ var qsections = L.tileLayer.wms(legionows, {
     tiled: true,
     maxZoom:19,
 });
-var sections = L.tileLayer.wms(legionows, {
-    layers: 'wi_ref:plss_sections',
-    format: 'image/png',
-    transparent: true,
-    tiled: true,
-    maxZoom:19,
+
+var sections = L.WMS.overlay(legionows, {
+    'layers': 'wi_ref:plss_sections',
+    'format': 'image/png',
+    'transparent': true,
+    // 'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
 });
+var sectionsappend = L.WMS.overlay(legionows, {
+    'layers': 'wi_ref:plss_sections_toappend',
+    'format': 'image/png',
+    'transparent': true,
+    // 'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
+});
+
+var sec_composite = L.layerGroup([sections,sectionsappend]);
 var townships = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:plss_townships',
     format: 'image/png',
@@ -183,7 +191,7 @@ var overlayLayers = {
     "Fracture Lines *":frac,
     // "PLSS &frac14; &frac14; Sections":qqsections,
     "PLSS &frac14; Sections":qsections,
-    "PLSS Sections":sections,
+    "PLSS Sections":sec_composite,
     "PLSS Townships":townships,
     "Sink Locations *":sinks
 };
@@ -196,15 +204,15 @@ hillshade.setZIndex(3);
 usgs.setZIndex(4);
 wi_geology.setZIndex(5);
 bedrock.setZIndex(6);
-mcd.options['zIndex'] = 7;
-counties.options['zIndex'] = 8;
-watersheds.setZIndex(9);
-frac.setZIndex(10);
-// qqsections.setZIndex(11);
-qsections.setZIndex(11);
-sections.setZIndex(12);
-townships.setZIndex(13);
-sinks.setZIndex(14);
+qsections.setZIndex(7);
+sections.options['zIndex'] = 8;
+sectionsappend.options['zIndex'] = 9;
+mcd.options['zIndex'] = 10;
+counties.options['zIndex'] = 11;
+watersheds.setZIndex(12);
+frac.setZIndex(13);
+townships.setZIndex(14);
+sinks.setZIndex(15);
 
 var c_layers = new L.control.layers(baseLayers, overlayLayers,{position:'topright',collapsed:false,autoZIndex:false});
 var c_zoom = new L.control.zoom({position:'topright'});
