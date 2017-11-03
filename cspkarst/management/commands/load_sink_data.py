@@ -43,7 +43,13 @@ class Command(BaseCommand):
             'elevation':9,
             'depth':10,
             'in_row':11,
-            'in_nfhl':12
+            'in_nfhl':12,
+            'hs':13,
+            'aerial':14,
+            'usgs':16,
+            'tpi':17,
+            'con':18,
+            'type':15
         }
     
         ct,bad_ct = 0,0
@@ -55,6 +61,8 @@ class Command(BaseCommand):
             y = s.points[0][1]
             
             wkt = "POINT ({} {})".format(x,y)
+            
+            
 
             obj = Sink(
                 sink_id = r[field_map['sink_id']],
@@ -66,6 +74,12 @@ class Command(BaseCommand):
                 depth = r[field_map['depth']],
                 in_row = r[field_map['in_row']],
                 in_nfhl = r[field_map['in_nfhl']],
+                bm_hs = r[field_map['hs']],
+                bm_aerial = r[field_map['aerial']],
+                bm_usgs = r[field_map['usgs']],
+                bm_tpi = r[field_map['tpi']],
+                confidence = r[field_map['con']],
+                sink_type = r[field_map['type']],
                 geom=wkt)
 
             obj.save()
