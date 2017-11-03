@@ -16,7 +16,7 @@ var hillshade = L.tileLayer.wms(legionows, {
     layers: 'elevation:driftless_hillshade',
     format: 'image/png',
     transparent: true,
-    attribution: "Hillshade derived from WisconsinView LiDAR",
+    attribution: "Hillshade derived from <a href='http://www.wisconsinview.org/' target='_blank'>WisconsinView</a> LiDAR",
     tiled: true,
     maxZoom:19,
 });
@@ -25,7 +25,7 @@ var tpi = L.tileLayer.wms(legionows, {
     layers: 'csp:Crawford_TPI_int16-3857_complete',
     format: 'image/png',
     transparent: true,
-    attribution: "Hillshade derived from WisconsinView LiDAR",
+    attribution: "<a href='http://www.gdal.org/gdaldem.html#gdaldem_TPI' target='_blank'>TPI</a> derived from <a href='http://www.wisconsinview.org/'>WisconsinView</a> LiDAR",
     tiled: true,
     maxZoom:19,
 });
@@ -43,7 +43,7 @@ var watersheds = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:wi_watersheds',
     format: 'image/png',
     transparent: true,
-    attribution: "HUC boundaries from WIDNR",
+    attribution: "<a href='http://dnr.wi.gov/topic/watersheds/' target='_blank'>Watershed Boundaries (WIDNR)</a>",
     tiled: true,
     maxZoom:19,
 });
@@ -52,7 +52,7 @@ var bedrock = L.tileLayer.wms(legionows, {
     layers: 'csp:Crawford_Depth_to_Bedrock',
     format: 'image/png',
     transparent: true,
-    attribution: "HUC boundaries from WIDNR",
+    attribution: "<a href='https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm' target='_blank'>USGS Soil Survey</a>",
     tiled: true,
     maxZoom:19,
 });
@@ -72,7 +72,7 @@ var frac = L.tileLayer.wms(legionows, {
     layers: 'csp:fracture_lines',
     format: 'image/png',
     transparent: true,
-    attribution: "Fracture Lines, drawn by CSP staff",
+    attribution: "Fracture Lines (CSP staff)",
     tiled: true,
     maxZoom:19,
 });
@@ -115,7 +115,6 @@ var qsections = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:plss_qsections',
     format: 'image/png',
     transparent: true,
-    // attribution: "Fracture Lines, drawn by CSP staff",
     tiled: true,
     maxZoom:19,
 });
@@ -123,7 +122,6 @@ var sections = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:plss_sections',
     format: 'image/png',
     transparent: true,
-    // attribution: "Fracture Lines, drawn by CSP staff",
     tiled: true,
     maxZoom:19,
 });
@@ -131,7 +129,6 @@ var townships = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:plss_townships',
     format: 'image/png',
     transparent: true,
-    // attribution: "Fracture Lines, drawn by CSP staff",
     tiled: true,
     maxZoom:19,
 });
@@ -142,7 +139,6 @@ var mcd = L.WMS.overlay(legionows, {
     'layers': 'wi_ref:cities_towns_and_villages',
     'format': 'image/png',
     'transparent': true,
-    // 'attribution': "Minor Civil Divisions, Fall 2017",
     'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
 });
 mcd.options = {'attribution':"Minor Civil Divisions Fall 2017"};
@@ -154,7 +150,7 @@ var counties = L.WMS.overlay(legionows, {
     'CQL_FILTER': "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
     'styles':"counties_karstography"
 });
-counties.options = {'attribution':"NRCS Counties"};
+counties.options = {'attribution':"Counties <a href='https://gdg.sc.egov.usda.gov/' target='_blank'>NRCS</a>"};
 
 var boundaries = L.layerGroup([mcd,counties]);
 
