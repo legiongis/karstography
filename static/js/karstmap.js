@@ -84,7 +84,7 @@ var sinks = L.tileLayer.wms(legionows, {
     attribution: "LiDAR-Derived Sink Locations",
     styles: 'sink_evaluation_2.0',
     maxZoom:19,
-    CQL_FILTER: "in_nfhl <> true OR in_row <> true",
+    CQL_FILTER: "in_nfhl = false AND in_row = false",
     tiled: 'false',
 });
 
