@@ -23,6 +23,13 @@ class Sink(models.Model):
        ("PROBABLE","Probable"),
        ("POSSIBLE","Possible"),
     )
+    
+    DEPTH_CAT_CHOICES = (
+       ("0-1","0-1 ft"),
+       ("1-2","1-2 ft"),
+       ("2-5","2-5 ft"),
+       ("5+","5+ ft"),
+    )
 
     sink_id = models.IntegerField(null=True,blank=True)
     sink_type = models.CharField(max_length=20,choices=TYPE_CHOICES,blank=True)
@@ -30,6 +37,7 @@ class Sink(models.Model):
     img_check = models.IntegerField(null=True,blank=True)
     evidence = models.CharField(max_length=1,blank=True,null=True)
     depth = models.FloatField(null=True,blank=True)
+    depth_cat = models.CharField(max_length=20,choices=DEPTH_CAT_CHOICES,null=True,blank=True)
     elevation = models.FloatField(null=True,blank=True)
     in_nfhl = models.NullBooleanField()
     in_row = models.NullBooleanField()
@@ -41,4 +49,16 @@ class Sink(models.Model):
     comment = models.TextField(max_length=254,blank=True,null=True)
     geom = models.PointField(null=True)
     
-    
+    def save(self, *args, **kwargs):
+        real_depth = self.depth
+        if not real_depth:
+            super(Sink, self).save(*args, **kwargs)
+        if real_depth < 1:
+            self.depth_cat = "0-1"
+        elif real_depth < 2:
+            self.depth_cat = "1-2"
+        elif real_depth < 5:
+            self.depth_cat = "2-5"
+        else:
+            self.depth_cat = "5+"
+        super(Sink, self).save(*args, **kwargs)
