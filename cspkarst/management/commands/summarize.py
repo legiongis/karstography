@@ -37,26 +37,28 @@ class Command(BaseCommand):
                 if d == "0-1":
                     continue
                 out.write(depth_cats[d]+"\n")
-                total = len(Sink.objects.filter(depth_cat=d))
-                undone = len(Sink.objects.filter(sink_type="",depth_cat=d))
-                out.write("  Classification Progress: {} of {} ({})\n".format(total-undone,total,undone))
+                total = Sink.objects.filter(depth_cat=d,in_nfhl="f",in_row="f")
+                total_l = len(total)
+                undone = total.filter(sink_type="",depth_cat=d)
+                undone_l = len(undone)
+                out.write("  Classification Progress: {} of {} ({})\n".format(total_l-undone_l,total_l,undone_l))
                 for s in ordered_st:
                     
                     if s == "SINKHOLE":
                         title = "Sinkhole - Probable"
-                        probable = len(Sink.objects.filter(depth_cat=d,sink_type=s,confidence="PROBABLE"))
+                        probable = len(total.filter(sink_type=s,confidence="PROBABLE"))
                         filler_len = 50-(len(title)+len(str(probable)))
                         out.write("  {}{}{}\n".format(title,"."*filler_len,probable))
                         
                         title = "Sinkhole - Probable"
-                        possible = len(Sink.objects.filter(depth_cat=d,sink_type=s,confidence="POSSIBLE"))
+                        possible = len(total.filter(sink_type=s,confidence="POSSIBLE"))
                         filler_len = 50-(len(title)+len(str(possible)))
                         out.write("  {}{}{}\n".format(title,"."*filler_len,possible))
                         
                     else:
-                        total = len(Sink.objects.filter(depth_cat=d,sink_type=s))
-                        filler_len = 50-(len(sink_types[s])+len(str(total)))
-                        out.write("  {}{}{}\n".format(sink_types[s],"."*filler_len,total))
+                        ct = len(total.filter(sink_type=s))
+                        filler_len = 50-(len(sink_types[s])+len(str(ct)))
+                        out.write("  {}{}{}\n".format(sink_types[s],"."*filler_len,ct))
                         
                         # summary_dict[d][s] = len(total)
         
