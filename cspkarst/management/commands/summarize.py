@@ -1,5 +1,7 @@
 from django.core import management
 from django.core.management.base import BaseCommand, CommandError
+from django.db.models import Q
+from datetime import datetime
 from cspkarst.models import Sink
 import csv
 
@@ -17,41 +19,64 @@ class Command(BaseCommand):
         
         print "creating summary of sinks here:"
         print "  --",outfile
+        
+        with open(outfile,"w") as out:
+            out.write("Summary of Karst Sink\n")
+            out.write(" -- {}\n\n".format(datetime.today().strftime("%m-%d-%y")))
 
         depth_cats = dict(Sink._meta.get_field('depth_cat').choices)
-        sink_types = dict(Sink._meta.get_field('sink_type').choices)
-        summary_dict = {}
-        for d in depth_cats.keys():
-            summary_dict[d] = {}
-            for s in sink_types.keys():
-                if s == "SINKHOLE":
-                    probable = Sink.objects.filter(depth_cat=d,sink_type=s,confidence="PROBABLE")
-                    summary_dict[d]["Sinkhole - PROBABLE"] = len(probable)
-                    possible = Sink.objects.filter(depth_cat=d,sink_type=s,confidence="POSSIBLE")
-                    summary_dict[d]["Sinkhole - POSSIBLE"] = len(possible)
-                else:
-                    total = Sink.objects.filter(depth_cat=d,sink_type=s)
-                    summary_dict[d][s] = len(total)
-        
         ordered_dep = depth_cats.keys()
         ordered_dep.sort()
-        ordered_st = summary_dict[depth_cats.keys()[0]].keys()
+        sink_types = dict(Sink._meta.get_field('sink_type').choices)
+        ordered_st = sink_types.keys()
         ordered_st.sort()
-
-        with open(outfile,'wb') as out:
-            csvout = csv.writer(out)
-            csvout.writerow(['depth category','sink type','count'])
+        
+        # summary_dict = {}
+        with open(outfile,'a') as out:
             for d in ordered_dep:
+                if d == "0-1":
+                    continue
+                out.write(depth_cats[d]+"\n")
+                total = len(Sink.objects.filter(depth_cat=d))
+                undone = len(Sink.objects.filter(sink_type="",depth_cat=d))
+                out.write("  Classification Progress: {} of {} ({})\n".format(total-undone,total,undone))
                 for s in ordered_st:
-                    d_label = depth_cats[d]
-                    try:
-                        st_label = sink_types[s]
-                    except:
-                        st_label = s
-                    count = summary_dict[d][s]
-                    row = [d_label,st_label,count]
-                    csvout.writerow(row)
+                    
+                    if s == "SINKHOLE":
+                        title = "Sinkhole - Probable"
+                        probable = len(Sink.objects.filter(depth_cat=d,sink_type=s,confidence="PROBABLE"))
+                        filler_len = 50-(len(title)+len(str(probable)))
+                        out.write("  {}{}{}\n".format(title,"."*filler_len,probable))
+                        
+                        title = "Sinkhole - Probable"
+                        possible = len(Sink.objects.filter(depth_cat=d,sink_type=s,confidence="POSSIBLE"))
+                        filler_len = 50-(len(title)+len(str(possible)))
+                        out.write("  {}{}{}\n".format(title,"."*filler_len,possible))
+                        
+                    else:
+                        total = len(Sink.objects.filter(depth_cat=d,sink_type=s))
+                        filler_len = 50-(len(sink_types[s])+len(str(total)))
+                        out.write("  {}{}{}\n".format(sink_types[s],"."*filler_len,total))
+                        
+                        # summary_dict[d][s] = len(total)
+        
+        # 
+        # 
+
+        # with open(outfile,'a') as out:
+            
+            # csvout.writerow(['depth category','sink type','count'])
+            # for d in ordered_dep:
+                # for s in ordered_st:
+                    # d_label = depth_cats[d]
+                    # try:
+                        # st_label = sink_types[s]
+                    # except:
+                        # st_label = s
+                    # count = summary_dict[d][s]
+                    # row = [d_label,st_label,count]
+                    # csvout.writerow(row)
                     
                     
 
-        print("done")
+        # print("done")
