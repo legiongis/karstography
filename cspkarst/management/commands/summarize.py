@@ -3,26 +3,39 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db.models import Q
 from datetime import datetime
 from cspkarst.models import Sink
+import os
 import csv
 
 class Command(BaseCommand):
     help = 'summarizes the sink categories'
 
     def add_arguments(self, parser):
-        parser.add_argument('outfile',help='specify the output location for the summary')
+        parser.add_argument('out_location',help='specify the output location for the summary')
+        parser.add_argument('-f','--use_filters',action="store_true",help='specify the output location for the summary')
 
     def handle(self, *args, **options):
-        self.summarize(options['outfile'])
+        self.summarize(options['out_location'],use_filters=options['use_filters'])
 
         
-    def summarize(self,outfile):
+    def summarize(self,out_location,use_filters=False):
+    
+        if not os.path.isdir(out_location):
+            print out_location, "is not a directory -- operation cancelled"
+            return
         
-        print "creating summary of sinks here:"
-        print "  --",outfile
+        print "creating summary of sinks"
+        print "  --using ROW and NFHL filters: ",use_filters
+        
+        date_time = datetime.today().strftime("%m-%d-%y-%H%M")
+        outfile_name = "summary_{}{}.txt".format(date_time,"_filtered" if use_filters else "")
+        outfile = os.path.join(out_location,outfile_name)
+        
+        print "  --output: ",outfile
         
         with open(outfile,"w") as out:
             out.write("Summary of Karst Sink\n")
-            out.write(" -- {}\n\n".format(datetime.today().strftime("%m-%d-%y")))
+            out.write("  --summary date: {}\n".format(datetime.today().strftime("%m-%d-%y")))
+            out.write("  --using Right of Way 30ft filter and National Flood Hazard Layer filters: {}\n".format(str(use_filters)))
 
         depth_cats = dict(Sink._meta.get_field('depth_cat').choices)
         ordered_dep = depth_cats.keys()
@@ -37,7 +50,10 @@ class Command(BaseCommand):
                 if d == "0-1":
                     continue
                 out.write(depth_cats[d]+"\n")
-                total = Sink.objects.filter(depth_cat=d,in_nfhl="f",in_row="f")
+                if use_filters:
+                    total = Sink.objects.filter(depth_cat=d,in_nfhl="f",in_row="f")
+                else:
+                    total = Sink.objects.filter(depth_cat=d)
                 total_l = len(total)
                 undone = total.filter(sink_type="",depth_cat=d)
                 undone_l = len(undone)
@@ -59,26 +75,4 @@ class Command(BaseCommand):
                         ct = len(total.filter(sink_type=s))
                         filler_len = 50-(len(sink_types[s])+len(str(ct)))
                         out.write("  {}{}{}\n".format(sink_types[s],"."*filler_len,ct))
-                        
-                        # summary_dict[d][s] = len(total)
-        
-        # 
-        # 
-
-        # with open(outfile,'a') as out:
-            
-            # csvout.writerow(['depth category','sink type','count'])
-            # for d in ordered_dep:
-                # for s in ordered_st:
-                    # d_label = depth_cats[d]
-                    # try:
-                        # st_label = sink_types[s]
-                    # except:
-                        # st_label = s
-                    # count = summary_dict[d][s]
-                    # row = [d_label,st_label,count]
-                    # csvout.writerow(row)
-                    
-                    
-
-        # print("done")
+        return
