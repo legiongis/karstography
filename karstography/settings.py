@@ -26,10 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# add local timezone to make good time stamps
-TIME_ZONE = "America/Chicago"
-USE_TZ = True
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -116,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Chicago'
 
 USE_I18N = True
 
