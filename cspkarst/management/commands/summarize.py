@@ -66,7 +66,7 @@ class Command(BaseCommand):
                         filler_len = 50-(len(title)+len(str(probable)))
                         out.write("  {}{}{}\n".format(title,"."*filler_len,probable))
                         
-                        title = "Sinkhole - Probable"
+                        title = "Sinkhole - Possible"
                         possible = len(total.filter(sink_type=s,confidence="POSSIBLE"))
                         filler_len = 50-(len(title)+len(str(possible)))
                         out.write("  {}{}{}\n".format(title,"."*filler_len,possible))
