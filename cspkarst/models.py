@@ -47,6 +47,7 @@ class Sink(models.Model):
     bm_usgs = models.BooleanField(default=False)
     confidence = models.CharField(max_length=20,choices=CON_CHOICES,blank=True,null=True)
     comment = models.TextField(max_length=254,blank=True,null=True)
+    last_update = models.DateTimeField(auto_now=True)
     geom = models.PointField(null=True)
     
     def save(self, *args, **kwargs):
