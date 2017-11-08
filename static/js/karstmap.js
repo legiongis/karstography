@@ -88,10 +88,46 @@ var sinks = L.tileLayer.wms(legionows, {
     tiled: 'false',
 });
 
-var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
-    layers: 'csp:cspkarst_sink',
-    transparent: true,
+var sinks12 = L.tileLayer.wms(legionows, {
+    layers: 'csp:cspkarst_sink_12',
     format: 'image/png',
+    transparent: true,
+    attribution: "LiDAR-Derived Sink Locations",
+    maxZoom:19,
+    CQL_FILTER: "in_nfhl = false AND in_row = false",
+    tiled: 'false',
+    env: 'size:6',
+});
+
+var sinks25 = L.tileLayer.wms(legionows, {
+    layers: 'csp:cspkarst_sink_25',
+    format: 'image/png',
+    transparent: true,
+    attribution: "LiDAR-Derived Sink Locations",
+    maxZoom:19,
+    CQL_FILTER: "in_nfhl = false AND in_row = false",
+    tiled: 'false',
+    env: 'size:7',
+});
+
+var sinks5 = L.tileLayer.wms(legionows, {
+    layers: 'csp:cspkarst_sink_5',
+    format: 'image/png',
+    transparent: true,
+    attribution: "LiDAR-Derived Sink Locations",
+    maxZoom:19,
+    CQL_FILTER: "in_nfhl = false AND in_row = false",
+    tiled: 'false',
+    env: 'size:8',
+});
+
+var sinkholes = L.tileLayer.wms(legionows, {
+    layers: 'csp:sinkholes',
+    format: 'image/png',
+    transparent: true,
+    attribution: "LiDAR-Derived Sink Locations",
+    maxZoom:19,
+    tiled: 'false',
 });
 
 var crawhillshade = L.tileLayer.wms('http://52.43.72.30:8080/geoserver/wms?'+Math.random(), {
@@ -173,7 +209,7 @@ var c_minimap = new L.Control.MiniMap(osm_minimap,{toggleDisplay:true,minimized:
 // add initial layers to map
 map.addLayer(outdoors);
 map.addLayer(boundaries);
-map.addLayer(sinks);
+map.addLayer(sinkholes);
 
 var baseLayers = {
     "Open Street Map":outdoors,
@@ -193,7 +229,11 @@ var overlayLayers = {
     "PLSS &frac14; Sections":qsections,
     "PLSS Sections":sec_composite,
     "PLSS Townships":townships,
-    "Sink Locations *":sinks
+    // "Sink Locations *":sinks,
+    "Sinks 1-2 ft *":sinks12,
+    "Sinks 2-5 ft *":sinks25,
+    "Sinks 5+ ft *":sinks5,
+    "Sinkholes *":sinkholes,
 };
 
 // explicitly set all of the layer zindex values. this is necessary because
@@ -213,6 +253,10 @@ watersheds.setZIndex(12);
 frac.setZIndex(13);
 townships.setZIndex(14);
 sinks.setZIndex(15);
+sinks12.setZIndex(16);
+sinks25.setZIndex(17);
+sinks5.setZIndex(18);
+sinkholes.setZIndex(19);
 
 var c_layers = new L.control.layers(baseLayers, overlayLayers,{position:'topright',collapsed:false,autoZIndex:false});
 var c_zoom = new L.control.zoom({position:'topright'});
@@ -269,9 +313,37 @@ function zoomToExample(latlng,zoom,baselayername) {
     map.flyTo(latlng,zoom);
 }
 
-var marker;
+
+// function used at one point to generate a rectangle from a point's bbox
+// not in use
+// var make_square_from_pt_bbox = function (bbox) {
+    // var southwest = [bbox[1]-.0000,bbox[0]-.0000];
+    // var northeast = [bbox[3]+.0000,bbox[2]+.0000];
+    // return [southwest,northeast]
+// }
+
+var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
+    layers: 'csp:cspkarst_sink',
+    transparent: true,
+    format: 'image/png',
+});
+// var marker;
 var getSinkForm = function (e) {
     var getFeatureUrl = sinkIdentifyLayer.getFeatureInfoUrl(e.latlng,'application/json');
+    // console.log(getFeatureUrl);
+    // var url = new URL(getFeatureUrl);
+    // console.log(url);
+    // var c = url.searchParams.get("BBOX");
+    // var bounds = make_square_from_pt_bbox(c.split(","));
+    // console.log(bounds);
+    
+    // marker = new L.rectangle(bounds, {
+        // color: 'red',
+        // fillColor: '#f03',
+        // fillOpacity: 0,
+        // weight:0.5,
+        // zindex:100,
+    // }).addTo(map);
     $.ajax({
         url:getFeatureUrl,
         success: function (data){
@@ -303,12 +375,7 @@ var getSinkForm = function (e) {
             // console.log(data.features[0].geometry['coordinates']);
             // var bounds = make_square_from_pt_bbox(data.features[0].properties['bbox']);
             // console.log(bounds);
-            // marker = new L.rectangle(bounds, {
-                // color: 'red',
-                // fillColor: '#f03',
-                // fillOpacity: 0,
-                // weight:0.5,
-            // }).addTo(map);
+            
             console.log(data.features);
             var sink_id = data.features[0].properties['sink_id'];
             $.ajax({
@@ -342,10 +409,16 @@ var getSinkForm = function (e) {
 }
 
 map.on('click', function (e) {
-    if (marker) {
-        map.removeLayer(marker);
-    }
-    if (map.hasLayer(sinks)) {
+    // if (marker) {
+        // map.removeLayer(marker);
+    // }
+    console.log(map.hasLayer(sinks));
+    console.log(map.hasLayer(sinkholes));
+    console.log(map.hasLayer(sinks12));
+    console.log(map.hasLayer(sinks25));
+    console.log(map.hasLayer(sinks5));
+    if (map.hasLayer(sinks) || map.hasLayer(sinkholes) || map.hasLayer(sinks12) || map.hasLayer(sinks25) || map.hasLayer(sinks5)) {
+        console.log("should be getting sink")
         getSinkForm(e);
     }
 });
@@ -399,10 +472,3 @@ map.on("contextmenu", function (event) {
     // });
 // });
 
-//// function used at one point to generate a rectangle from a point's bbox
-//// not in use
-// var make_square_from_pt_bbox = function (bbox) {
-    // var southwest = [bbox[1]-.0003,bbox[0]-.0004];
-    // var northeast = [bbox[3]+.0003,bbox[2]+.0004];
-    // return [southwest,northeast]
-// }
