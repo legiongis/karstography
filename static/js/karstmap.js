@@ -282,8 +282,16 @@ setParent(htmlObject, a);
 
 
 function redrawSinkLayer(){
-    sinks.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
-    sinks.redraw();
+    // sinks.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
+    // sinks.redraw();
+    sinks12.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
+    sinks12.redraw();
+    sinks25.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
+    sinks25.redraw();
+    sinks5.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
+    sinks5.redraw();
+    sinkholes.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
+    sinkholes.redraw();
 }
 
 var previous_latlng = [43.22219, -90.9201]
