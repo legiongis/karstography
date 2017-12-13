@@ -1,0 +1,283 @@
+<div style="height:500px;width:500px">
+    <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css" type='text/css' media='all' />
+    
+    
+    
+    <div id="karstmap" style="height:100%;width:100%"></div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js" type="text/javascript"></script>
+    <script src="http://apps.legiongis.com/karstography/static/js/L.TileLayer.BetterWMS.js" type="text/javascript"></script>
+    <script src="http://apps.legiongis.com/karstography/static/js/leaflet.wms.js" type="text/javascript"></script>
+    
+    <script>
+    var mapbox_api_key = 'pk.eyJ1IjoibGVnaW9uZ2lzIiwiYSI6ImNpdzg1ZXVvbjAxa2IydG1zcm5kcnZ5NXIifQ.dTfsQ7s5nQv59mHKcNPi_w'
+    
+    // ~~~~~~~~~~ intantiate mapbox base layers ~~~~~~~~~~~~~~~~~~~~ //
+    var outdoors = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19})
+    var mapbox_osm = L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
+
+    mapLink = '<a href="http://www.esri.com/">Esri</a>';
+    wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+    var esri_aerial = L.tileLayer(
+        'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '&copy; '+mapLink+', '+wholink,
+        maxZoom: 19,
+    });
+
+    // ~~~~~~~~~~ intantiate the layers coming from legion's geoserver ~~~~~~~~~~~~~~~~~~~~ //
+    var legionows = "https://db.legiongis.com/geoserver/ows?";
+    
+    var hillshade = L.tileLayer.wms(legionows, {
+        layers: 'elevation:driftless_hillshade',
+        format: 'image/png',
+        transparent: true,
+        attribution: "Hillshade derived from <a href='http://www.wisconsinview.org/' target='_blank'>WisconsinView</a> LiDAR",
+        tiled: true,
+        maxZoom:19,
+    });
+
+    var tpi = L.tileLayer.wms(legionows, {
+        layers: 'csp:Crawford_TPI_int16-3857_complete',
+        format: 'image/png',
+        transparent: true,
+        attribution: "<a href='http://www.gdal.org/gdaldem.html#gdaldem_TPI' target='_blank'>TPI</a> derived from <a href='http://www.wisconsinview.org/'>WisconsinView</a> LiDAR",
+        tiled: true,
+        maxZoom:19,
+    });
+
+    var usgs = L.tileLayer.wms(legionows, {
+        layers: 'csp:drg_s_wi023_opt',
+        format: 'image/png',
+        transparent: true,
+        attribution: "USGS Topo",
+        tiled: true,
+        maxZoom:19,
+    });
+
+    var watersheds = L.tileLayer.wms(legionows, {
+        layers: 'wi_ref:wi_watersheds',
+        format: 'image/png',
+        transparent: true,
+        attribution: "<a href='http://dnr.wi.gov/topic/watersheds/' target='_blank'>Watershed Boundaries (WIDNR)</a>",
+        tiled: true,
+        maxZoom:19,
+    });
+
+    var bedrock = L.tileLayer.wms(legionows, {
+        layers: 'csp:Crawford_Depth_to_Bedrock',
+        format: 'image/png',
+        transparent: true,
+        attribution: "<a href='https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm' target='_blank'>USGS Soil Survey</a>",
+        tiled: true,
+        maxZoom:19,
+    });
+
+    var wi_geology = L.tileLayer.wms(legionows, {
+        layers: 'wi_ref:geology_a_wi_usgs_2005',
+        format: 'image/png',
+        transparent: true,
+        attribution: "Op and Osi geological units, USGS",
+        tiled: true,
+        opacity:0.4,
+        styles:'CarbonateBedrock',
+        maxZoom:19,
+    });
+
+    var frac = L.tileLayer.wms(legionows, {
+        layers: 'csp:fracture_lines',
+        format: 'image/png',
+        transparent: true,
+        attribution: "Fracture Lines (CSP staff)",
+        tiled: true,
+        maxZoom:19,
+    });
+
+    var sinks = L.tileLayer.wms(legionows, {
+        layers: 'csp:cspkarst_sink',
+        format: 'image/png',
+        transparent: true,
+        attribution: "LiDAR-Derived Sink Locations",
+        styles: 'sink_evaluation_2.0',
+        maxZoom:19,
+        CQL_FILTER: "in_nfhl = false AND in_row = false",
+        tiled: 'false',
+    });
+
+    var sinks12 = L.tileLayer.wms(legionows, {
+        layers: 'csp:cspkarst_sink_12',
+        format: 'image/png',
+        transparent: true,
+        attribution: "LiDAR-Derived Sink Locations",
+        maxZoom:19,
+        CQL_FILTER: "in_nfhl = false AND in_row = false",
+        tiled: 'false',
+        env: 'size:6',
+    });
+
+    var sinks25 = L.tileLayer.wms(legionows, {
+        layers: 'csp:cspkarst_sink_25',
+        format: 'image/png',
+        transparent: true,
+        attribution: "LiDAR-Derived Sink Locations",
+        maxZoom:19,
+        CQL_FILTER: "in_nfhl = false AND in_row = false",
+        tiled: 'false',
+        env: 'size:7',
+    });
+
+    var sinks5 = L.tileLayer.wms(legionows, {
+        layers: 'csp:cspkarst_sink_5',
+        format: 'image/png',
+        transparent: true,
+        attribution: "LiDAR-Derived Sink Locations",
+        maxZoom:19,
+        CQL_FILTER: "in_nfhl = false AND in_row = false",
+        tiled: 'false',
+        env: 'size:8',
+    });
+
+    var sinkholes = L.tileLayer.wms(legionows, {
+        layers: 'csp:sinkholes',
+        format: 'image/png',
+        transparent: true,
+        attribution: "LiDAR-Derived Sink Locations",
+        maxZoom:19,
+        tiled: 'false',
+    });
+
+    var crawhillshade = L.tileLayer.wms('http://52.43.72.30:8080/geoserver/wms?'+Math.random(), {
+        layers: 'work:Lafayette_Hillshade-3857',
+        format: 'image/png',
+        transparent: true,
+        attribution: "Hillshade derived from WisconsinView LiDAR",
+        tiled: true,
+        maxZoom:19,
+    });
+
+    var qsections = L.tileLayer.wms(legionows, {
+        layers: 'wi_ref:plss_qsections',
+        format: 'image/png',
+        transparent: true,
+        tiled: true,
+        maxZoom:19,
+    });
+
+    var sections = L.WMS.overlay(legionows, {
+        'layers': 'wi_ref:plss_sections',
+        'format': 'image/png',
+        'transparent': true,
+    });
+    var sectionsappend = L.WMS.overlay(legionows, {
+        'layers': 'wi_ref:plss_sections_toappend',
+        'format': 'image/png',
+        'transparent': true,
+    });
+
+    var sec_composite = L.layerGroup([sections,sectionsappend]);
+    var townships = L.tileLayer.wms(legionows, {
+        layers: 'wi_ref:plss_townships',
+        format: 'image/png',
+        transparent: true,
+        tiled: true,
+        maxZoom:19,
+    });
+
+    // use the overlay class from leaflet.wms.js to make a non-tiled layer.
+    // necessary for better labeling apparently
+    var mcd = L.WMS.overlay(legionows, {
+        'layers': 'wi_ref:cities_towns_and_villages',
+        'format': 'image/png',
+        'transparent': true,
+        'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
+    });
+    mcd.options = {'attribution':"Minor Civil Divisions Fall 2017"};
+
+    var counties = L.WMS.overlay(legionows, {
+        'layers': 'wi_ref:wi_counties_nrcs_4269',
+        'transparent': true,
+        'format':'image/png',
+        'CQL_FILTER': "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
+        'styles':"counties_karstography"
+    });
+    counties.options = {'attribution':"Counties <a href='https://gdg.sc.egov.usda.gov/' target='_blank'>NRCS</a>"};
+
+    var boundaries = L.layerGroup([mcd,counties]);
+
+    // ~~~~~~~~~~ intantiate map ~~~~~~~~~~~~~~~~~~~~ //
+
+    var map = L.map('karstmap',{zoomControl:false}).setView([43.22219, -90.9201], 10);
+
+    // add initial layers to map
+    map.addLayer(outdoors);
+    map.addLayer(boundaries);
+    map.addLayer(sinkholes);
+
+    var baseLayers = {
+        "Open Street Map":outdoors,
+        "Aerial Imagery":esri_aerial,
+        "SW WI Hillshade":hillshade,
+        "USGS Topo *":usgs,
+        "Topographic Position Index *":tpi,
+    };
+
+    var overlayLayers = {
+        "Carbonate Bedrock":wi_geology,
+        "Depth to Bedrock *":bedrock,
+        "Civil Boundaries":boundaries,
+        "Watershed Boundaries":watersheds,
+        "Fracture Lines *":frac,
+        // "PLSS &frac14; &frac14; Sections":qqsections,
+        "PLSS &frac14; Sections":qsections,
+        "PLSS Sections":sec_composite,
+        "PLSS Townships":townships,
+        // "Sink Locations *":sinks,
+        "Sinks 1-2 ft *":sinks12,
+        "Sinks 2-5 ft *":sinks25,
+        "Sinks 5+ ft *":sinks5,
+        "Sinkholes *":sinkholes,
+    };
+
+    // explicitly set all of the layer zindex values. this is necessary because
+    // the auto z-indexing doesn't seem to work on the L.WMS.overlay layers
+    outdoors.setZIndex(1);
+    esri_aerial.setZIndex(2);
+    hillshade.setZIndex(3);
+    usgs.setZIndex(4);
+    wi_geology.setZIndex(5);
+    bedrock.setZIndex(6);
+    qsections.setZIndex(7);
+    sections.options['zIndex'] = 8;
+    sectionsappend.options['zIndex'] = 9;
+    mcd.options['zIndex'] = 10;
+    counties.options['zIndex'] = 11;
+    watersheds.setZIndex(12);
+    frac.setZIndex(13);
+    townships.setZIndex(14);
+    sinks.setZIndex(15);
+    sinks12.setZIndex(16);
+    sinks25.setZIndex(17);
+    sinks5.setZIndex(18);
+    sinkholes.setZIndex(19);
+
+    var c_layers = new L.control.layers(baseLayers, overlayLayers,{position:'topright',autoZIndex:false});
+    var c_zoom = new L.control.zoom({position:'topright'});
+
+    // add all non-minimap controls here
+    map.addControl(c_layers);
+    map.addControl(c_zoom);
+    <!-- map.addControl(c_fullscreen); -->
+
+    // make popup that shows lat/long and zoom level on right-click event
+    var latlongpopup = L.popup({'className' : 'latlong-popup'});
+    map.on("contextmenu", function (event) {
+        var latitude = event.latlng.lat.toFixed(4);
+        var longitude = event.latlng.lng.toFixed(4);
+        var gm = 'http://maps.google.com/maps?z=7&t=k&q=loc:'+latitude+'+'+longitude;
+        var gmlink = '<br><a href="'+gm+'" target="_blank">google maps</a>'
+        latlongpopup
+            .setLatLng(event.latlng)
+            .setContent(latitude+', '+longitude+'<br>zoom level: '+map.getZoom()+gmlink)
+            .openOn(map);
+    });
+    </script>
+</div>
