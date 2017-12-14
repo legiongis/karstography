@@ -1,13 +1,13 @@
-<div style="height:500px;width:500px">
-    <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css" type='text/css' media='all' />
+<div style='height:500px;width:500px'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css' type='text/css' media='all' />
     
     
     
-    <div id="karstmap" style="height:100%;width:100%"></div>
+    <div id='karstmap' style='height:100%;width:100%'></div>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js" type="text/javascript"></script>
-    <script src="http://apps.legiongis.com/karstography/static/js/L.TileLayer.BetterWMS.js" type="text/javascript"></script>
-    <script src="http://apps.legiongis.com/karstography/static/js/leaflet.wms.js" type="text/javascript"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js' type='text/javascript'></script>
+    <script src='http://apps.legiongis.com/karstography/static/js/L.TileLayer.BetterWMS.js' type='text/javascript'></script>
+    <script src='http://apps.legiongis.com/karstography/static/js/leaflet.wms.js' type='text/javascript'></script>
     
     <script>
     var mapbox_api_key = 'pk.eyJ1IjoibGVnaW9uZ2lzIiwiYSI6ImNpdzg1ZXVvbjAxa2IydG1zcm5kcnZ5NXIifQ.dTfsQ7s5nQv59mHKcNPi_w'
@@ -25,13 +25,13 @@
     });
 
     // ~~~~~~~~~~ intantiate the layers coming from legion's geoserver ~~~~~~~~~~~~~~~~~~~~ //
-    var legionows = "https://db.legiongis.com/geoserver/ows?";
+    var legionows = 'https://db.legiongis.com/geoserver/ows?';
     
     var hillshade = L.tileLayer.wms(legionows, {
         layers: 'elevation:driftless_hillshade',
         format: 'image/png',
         transparent: true,
-        attribution: "Hillshade derived from <a href='http://www.wisconsinview.org/' target='_blank'>WisconsinView</a> LiDAR",
+        attribution: 'Hillshade derived from <a href="http://www.wisconsinview.org/" target="_blank">WisconsinView</a> LiDAR',
         tiled: true,
         maxZoom:19,
     });
@@ -40,7 +40,7 @@
         layers: 'csp:Crawford_TPI_int16-3857_complete',
         format: 'image/png',
         transparent: true,
-        attribution: "<a href='http://www.gdal.org/gdaldem.html#gdaldem_TPI' target='_blank'>TPI</a> derived from <a href='http://www.wisconsinview.org/'>WisconsinView</a> LiDAR",
+        attribution: '<a href="http://www.gdal.org/gdaldem.html#gdaldem_TPI" target="_blank">TPI</a> derived from <a href="http://www.wisconsinview.org/">WisconsinView</a> LiDAR',
         tiled: true,
         maxZoom:19,
     });
@@ -49,7 +49,7 @@
         layers: 'csp:drg_s_wi023_opt',
         format: 'image/png',
         transparent: true,
-        attribution: "USGS Topo",
+        attribution: 'USGS Topo',
         tiled: true,
         maxZoom:19,
     });
@@ -58,7 +58,7 @@
         layers: 'wi_ref:wi_watersheds',
         format: 'image/png',
         transparent: true,
-        attribution: "<a href='http://dnr.wi.gov/topic/watersheds/' target='_blank'>Watershed Boundaries (WIDNR)</a>",
+        attribution: '<a href="http://dnr.wi.gov/topic/watersheds/" target="_blank">Watershed Boundaries (WIDNR)</a>',
         tiled: true,
         maxZoom:19,
     });
@@ -67,7 +67,7 @@
         layers: 'csp:Crawford_Depth_to_Bedrock',
         format: 'image/png',
         transparent: true,
-        attribution: "<a href='https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm' target='_blank'>USGS Soil Survey</a>",
+        attribution: '<a href="https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm" target="_blank">USGS Soil Survey</a>',
         tiled: true,
         maxZoom:19,
     });
@@ -76,7 +76,7 @@
         layers: 'wi_ref:geology_a_wi_usgs_2005',
         format: 'image/png',
         transparent: true,
-        attribution: "Op and Osi geological units, USGS",
+        attribution: 'Op and Osi geological units, USGS',
         tiled: true,
         opacity:0.4,
         styles:'CarbonateBedrock',
@@ -87,7 +87,7 @@
         layers: 'csp:fracture_lines',
         format: 'image/png',
         transparent: true,
-        attribution: "Fracture Lines (CSP staff)",
+        attribution: 'Fracture Lines (CSP staff)',
         tiled: true,
         maxZoom:19,
     });
@@ -96,10 +96,10 @@
         layers: 'csp:cspkarst_sink',
         format: 'image/png',
         transparent: true,
-        attribution: "LiDAR-Derived Sink Locations",
+        attribution: 'LiDAR-Derived Sink Locations',
         styles: 'sink_evaluation_2.0',
         maxZoom:19,
-        CQL_FILTER: "in_nfhl = false AND in_row = false",
+        CQL_FILTER: 'in_nfhl = false AND in_row = false',
         tiled: 'false',
     });
 
@@ -107,9 +107,9 @@
         layers: 'csp:cspkarst_sink_12',
         format: 'image/png',
         transparent: true,
-        attribution: "LiDAR-Derived Sink Locations",
+        attribution: 'LiDAR-Derived Sink Locations',
         maxZoom:19,
-        CQL_FILTER: "in_nfhl = false AND in_row = false",
+        CQL_FILTER: 'in_nfhl = false AND in_row = false',
         tiled: 'false',
         env: 'size:6',
     });
@@ -118,9 +118,9 @@
         layers: 'csp:cspkarst_sink_25',
         format: 'image/png',
         transparent: true,
-        attribution: "LiDAR-Derived Sink Locations",
+        attribution: 'LiDAR-Derived Sink Locations',
         maxZoom:19,
-        CQL_FILTER: "in_nfhl = false AND in_row = false",
+        CQL_FILTER: 'in_nfhl = false AND in_row = false',
         tiled: 'false',
         env: 'size:7',
     });
@@ -129,9 +129,9 @@
         layers: 'csp:cspkarst_sink_5',
         format: 'image/png',
         transparent: true,
-        attribution: "LiDAR-Derived Sink Locations",
+        attribution: 'LiDAR-Derived Sink Locations',
         maxZoom:19,
-        CQL_FILTER: "in_nfhl = false AND in_row = false",
+        CQL_FILTER: 'in_nfhl = false AND in_row = false',
         tiled: 'false',
         env: 'size:8',
     });
@@ -140,7 +140,7 @@
         layers: 'csp:sinkholes',
         format: 'image/png',
         transparent: true,
-        attribution: "LiDAR-Derived Sink Locations",
+        attribution: 'LiDAR-Derived Sink Locations',
         maxZoom:19,
         tiled: 'false',
     });
@@ -149,7 +149,7 @@
         layers: 'work:Lafayette_Hillshade-3857',
         format: 'image/png',
         transparent: true,
-        attribution: "Hillshade derived from WisconsinView LiDAR",
+        attribution: 'Hillshade derived from WisconsinView LiDAR',
         tiled: true,
         maxZoom:19,
     });
@@ -190,16 +190,16 @@
         'transparent': true,
         'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
     });
-    mcd.options = {'attribution':"Minor Civil Divisions Fall 2017"};
+    mcd.options = {'attribution':'Minor Civil Divisions Fall 2017'};
 
     var counties = L.WMS.overlay(legionows, {
         'layers': 'wi_ref:wi_counties_nrcs_4269',
         'transparent': true,
         'format':'image/png',
         'CQL_FILTER': "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
-        'styles':"counties_karstography"
+        'styles':'counties_karstography'
     });
-    counties.options = {'attribution':"Counties <a href='https://gdg.sc.egov.usda.gov/' target='_blank'>NRCS</a>"};
+    counties.options = {'attribution':'Counties <a href="https://gdg.sc.egov.usda.gov/" target="_blank">NRCS</a>'};
 
     var boundaries = L.layerGroup([mcd,counties]);
 
@@ -213,28 +213,28 @@
     map.addLayer(sinkholes);
 
     var baseLayers = {
-        "Open Street Map":outdoors,
-        "Aerial Imagery":esri_aerial,
-        "SW WI Hillshade":hillshade,
-        "USGS Topo *":usgs,
-        "Topographic Position Index *":tpi,
+        'Open Street Map':outdoors,
+        'Aerial Imagery':esri_aerial,
+        'SW WI Hillshade':hillshade,
+        'USGS Topo *':usgs,
+        'Topographic Position Index *':tpi,
     };
 
     var overlayLayers = {
-        "Carbonate Bedrock":wi_geology,
-        "Depth to Bedrock *":bedrock,
-        "Civil Boundaries":boundaries,
-        "Watershed Boundaries":watersheds,
-        "Fracture Lines *":frac,
-        // "PLSS &frac14; &frac14; Sections":qqsections,
-        "PLSS &frac14; Sections":qsections,
-        "PLSS Sections":sec_composite,
-        "PLSS Townships":townships,
-        // "Sink Locations *":sinks,
-        "Sinks 1-2 ft *":sinks12,
-        "Sinks 2-5 ft *":sinks25,
-        "Sinks 5+ ft *":sinks5,
-        "Sinkholes *":sinkholes,
+        'Carbonate Bedrock':wi_geology,
+        'Depth to Bedrock *':bedrock,
+        'Civil Boundaries':boundaries,
+        'Watershed Boundaries':watersheds,
+        'Fracture Lines *':frac,
+        // 'PLSS &frac14; &frac14; Sections':qqsections,
+        'PLSS &frac14; Sections':qsections,
+        'PLSS Sections':sec_composite,
+        'PLSS Townships':townships,
+        // 'Sink Locations *':sinks,
+        'Sinks 1-2 ft *':sinks12,
+        'Sinks 2-5 ft *':sinks25,
+        'Sinks 5+ ft *':sinks5,
+        'Sinkholes *':sinkholes,
     };
 
     // explicitly set all of the layer zindex values. this is necessary because
@@ -269,11 +269,11 @@
 
     // make popup that shows lat/long and zoom level on right-click event
     var latlongpopup = L.popup({'className' : 'latlong-popup'});
-    map.on("contextmenu", function (event) {
+    map.on('contextmenu', function (event) {
         var latitude = event.latlng.lat.toFixed(4);
         var longitude = event.latlng.lng.toFixed(4);
         var gm = 'http://maps.google.com/maps?z=7&t=k&q=loc:'+latitude+'+'+longitude;
-        var gmlink = '<br><a href="'+gm+'" target="_blank">google maps</a>'
+        var gmlink = '<br><a href=""+gm+"" target="_blank">google maps</a>'
         latlongpopup
             .setLatLng(event.latlng)
             .setContent(latitude+', '+longitude+'<br>zoom level: '+map.getZoom()+gmlink)
