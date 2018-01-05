@@ -64,11 +64,18 @@
             </div>
         </div>
         <div class="row" style="">
-            <div id="" class="col-xs-12">
-                <p>Sink Location</p>
-                <img src="https://db.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=csp:cspkarst_sink_12&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:1" style="width:200px"></img>
-                <p>Sinkholes (confidence level)</p>
-                <img src="https://db.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=csp:sinkholes&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300" style="width:200px"></img>
+            <div class="col-xs-12">
+                <h4>Sinkholes</h4>
+                <img src="https://db.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=csp:sinkholes&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300" style="width:140px"></img>
+                <ul class="dashed">
+                    <li>probable: {{sinkhole_probable}}</li>
+                    <li>possible: {{sinkhole_possible}}</li>
+                    <li>total: {{sinkhole_total}}</li>
+                </ul>
+            </div>
+            <div id="" class="col-xs-12" style="margin-bottom:10px;">
+                <h4>All Sinks</h4>
+                <img src="https://db.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=csp:cspkarst_sink_12&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:1" style="width:140px"></img>
             </div>
         </div>
     </div>

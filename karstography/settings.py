@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'cspkarst.context_processors.context',
+                'cspkarst.context_processors.sink_counts',
             ],
         },
     },

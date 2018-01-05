@@ -187,3 +187,19 @@ button[disabled], html input[disabled] {
     margin-left: 5px !important;
 
 }
+
+ul.dashed {
+    list-style: none;
+    padding-left: 25;
+    color: black;
+}
+
+ul.dashed > li {
+    margin-left: 15px;  
+}
+
+/* Prevent nested li's from getting messed up */
+ul.dashed > li::before {
+    content: "-- ";
+    margin-left: -15px;
+}
