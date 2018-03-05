@@ -61,10 +61,10 @@ var wi_geology = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:geology_a_wi_usgs_2005',
     format: 'image/png',
     transparent: true,
-    attribution: "Op and Osi geological units, USGS",
+    attribution: "<a href='https://mrdata.usgs.gov/geology/state/state.php?state=WI' target='_blank'>USGS Geologic Map, WI</a>",
     tiled: true,
-    opacity:0.4,
-    styles:'CarbonateBedrock',
+    opacity:0.75,
+    styles:'CarbonateBedrock-statewide',
     maxZoom:19,
 });
 
