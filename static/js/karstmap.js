@@ -337,6 +337,7 @@ var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
 });
 // var marker;
 var getSinkForm = function (e) {
+    $('.map-icon').remove();
     var getFeatureUrl = sinkIdentifyLayer.getFeatureInfoUrl(e.latlng,'application/json');
     // console.log(getFeatureUrl);
     // var url = new URL(getFeatureUrl);
@@ -355,6 +356,7 @@ var getSinkForm = function (e) {
     $.ajax({
         url:getFeatureUrl,
         success: function (data){
+            console.log(data)
             if (data.features.length == 0) {
                 console.log("no sink here!");
                 $("#panel-content").html('<div class="form-msg" style="text-align:center;margin-top:20px;"><p style="font-weight:900;font-size:20px;">no sink here...</p></div>')
@@ -386,6 +388,32 @@ var getSinkForm = function (e) {
             
             console.log(data.features);
             var sink_id = data.features[0].properties['sink_id'];
+            $.ajax({
+                url : root_url+"/json/"+sink_id+"/",
+                success : function (data) {
+                    $('.map-icon').remove();
+                    var marker_coords = [data.lat,data.lng]
+                    // var icon = L.divIcon({className: 'map-icon',html:'<i class="fa fa-edit" style="font-size:20px;"></i>'});
+                    var icon = L.divIcon({className: 'map-icon',html:'<i class="fa fa-arrow-left" style="font-size:20px;"></i>'});
+                    // var icon = L.divIcon({className: '',html:'<div style="height:1px;width:1px;background-color:black;"></div>'});
+                    // L.MakiMarkers.accessToken = mapbox_api_key;
+                    // var icon = L.MakiMarkers.icon({icon:'hospital', color: "#e3e311", size: "s"});
+                    $(".map-icon").html('');
+                    marker = new L.marker(marker_coords, {icon: icon}).addTo(map);
+                    // marker = new L.circle(marker_coords, {
+                        // color: 'red',
+                        // fillOpacity: 0,
+                        // weight:0.5,
+                        // radius: 12
+                    // }).addTo(map);
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                    console.log("error ianefin");
+                    if(xhr.status==404) {
+                        console.log(thrownError);
+                    }
+                }
+            });
             $.ajax({
                 url : root_url+"/sink-update/"+sink_id+"/",
                 success : function (response) {

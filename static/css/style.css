@@ -183,8 +183,8 @@ button[disabled], html input[disabled] {
     width: unset !important;
     color: red;
     font-weight: 900;
-    margin-top: -15px !important;
-    margin-left: 5px !important;
+    margin-top: -10px !important;
+    margin-left: 8px !important;
 
 }
 

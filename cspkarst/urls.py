@@ -7,6 +7,7 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^json/(?P<sink_id>[\w-]+)/', views.sink_info, name='sink-info'),
     url(r'^sink-update/(?P<sink_id>[\w-]+)/', views.sink_update, name='sink-update'),
     url(r'^example-locations/', views.get_example_locations, name='example-locations'),
     url(r'^', include(router.urls)),

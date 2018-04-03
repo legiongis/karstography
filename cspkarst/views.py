@@ -42,6 +42,14 @@ def sink_update(request,sink_id):
 
     return render(request, 'sink.html', {'form': form})
     
+def sink_info(request,sink_id):
+    try:
+        instance = Sink.objects.get(sink_id=sink_id)
+    except:
+        return JsonResponse({'error':'no sink with this sink_id.'},status=404)
+
+    return JsonResponse({"lat":instance.geom[1],"lng":instance.geom.coords[0]})
+    
 def get_example_locations(request):
     json_data = open(settings.EXAMPLE_LOCATIONS_JSON).read()
     data = json.loads(json_data)
