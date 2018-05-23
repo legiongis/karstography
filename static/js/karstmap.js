@@ -3,6 +3,7 @@ var legionows = "https://db.legiongis.com/geoserver/ows?";
 
 var outdoors = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19})
 var mapbox_osm = L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
+var outdoors_labels = L.tileLayer('https://api.mapbox.com/styles/v1/legiongis/cjhjd3d030ofi2rmszflafhuu/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
 
 mapLink = '<a href="http://www.esri.com/">Esri</a>';
 wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
@@ -208,6 +209,7 @@ var c_minimap = new L.Control.MiniMap(osm_minimap,{toggleDisplay:true,minimized:
 
 // add initial layers to map
 map.addLayer(outdoors);
+map.addLayer(outdoors_labels);
 map.addLayer(boundaries);
 map.addLayer(sinkholes);
 
@@ -220,6 +222,7 @@ var baseLayers = {
 };
 
 var overlayLayers = {
+    "ROAD LABELS":outdoors_labels,
     "Carbonate Bedrock":wi_geology,
     "Depth to Bedrock *":bedrock,
     "Civil Boundaries":boundaries,
@@ -242,21 +245,24 @@ outdoors.setZIndex(1);
 esri_aerial.setZIndex(2);
 hillshade.setZIndex(3);
 usgs.setZIndex(4);
-wi_geology.setZIndex(5);
-bedrock.setZIndex(6);
-qsections.setZIndex(7);
-sections.options['zIndex'] = 8;
-sectionsappend.options['zIndex'] = 9;
-mcd.options['zIndex'] = 10;
-counties.options['zIndex'] = 11;
-watersheds.setZIndex(12);
-frac.setZIndex(13);
-townships.setZIndex(14);
-sinks.setZIndex(15);
-sinks12.setZIndex(16);
-sinks25.setZIndex(17);
-sinks5.setZIndex(18);
-sinkholes.setZIndex(19);
+tpi.setZIndex(5);
+
+outdoors_labels.setZIndex(20)
+wi_geology.setZIndex(21);
+bedrock.setZIndex(22);
+qsections.setZIndex(23);
+sections.options['zIndex'] = 24;
+sectionsappend.options['zIndex'] = 25;
+mcd.options['zIndex'] = 26;
+counties.options['zIndex'] = 27;
+watersheds.setZIndex(28);
+frac.setZIndex(29);
+townships.setZIndex(30);
+sinks.setZIndex(31);
+sinks12.setZIndex(32);
+sinks25.setZIndex(33);
+sinks5.setZIndex(34);
+sinkholes.setZIndex(35);
 
 var c_layers = new L.control.layers(baseLayers, overlayLayers,{position:'topright',collapsed:false,autoZIndex:false});
 var c_zoom = new L.control.zoom({position:'topright'});
