@@ -124,6 +124,13 @@ var sinkholes = L.tileLayer.wms(legionows, {
     tiled: 'false',
 });
 
+var sinkholes_heatmap = L.WMS.overlay(legionows, {
+    'layers': 'csp:sinkholes',
+    'styles': 'sink_heatmap',
+    'format': 'image/png',
+    'transparent': true,
+});
+
 var crawhillshade = L.tileLayer.wms('http://52.43.72.30:8080/geoserver/wms?'+Math.random(), {
     layers: 'work:Lafayette_Hillshade-3857',
     format: 'image/png',
@@ -205,6 +212,7 @@ map.addLayer(outdoors);
 map.addLayer(outdoors_labels);
 map.addLayer(boundaries);
 map.addLayer(sinkholes);
+map.addLayer(sinkholes_heatmap);
 
 var baseLayers = {
     "Open Street Map":outdoors,
@@ -229,6 +237,7 @@ var overlayLayers = {
     "Sinks 1-2 ft *":sinks12,
     "Sinks 2-5 ft *":sinks25,
     "Sinks 5+ ft *":sinks5,
+    "Sinkholes Heatmap*":sinkholes_heatmap,
     "Sinkholes *":sinkholes,
 };
 
@@ -255,7 +264,9 @@ sinks.setZIndex(31);
 sinks12.setZIndex(32);
 sinks25.setZIndex(33);
 sinks5.setZIndex(34);
-sinkholes.setZIndex(35);
+
+sinkholes_heatmap.options['zIndex'] = 38;
+sinkholes.setZIndex(39);
 
 var c_layers = new L.control.layers(baseLayers, overlayLayers,{position:'topright',collapsed:false,autoZIndex:false});
 var c_zoom = new L.control.zoom({position:'topright'});
