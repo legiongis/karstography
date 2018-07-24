@@ -3,15 +3,8 @@ var legionows = "https://db.legiongis.com/geoserver/ows?";
 
 var outdoors = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19})
 var mapbox_osm = L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
+var mapbox_aerial = L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
 var outdoors_labels = L.tileLayer('https://api.mapbox.com/styles/v1/legiongis/cjhjd3d030ofi2rmszflafhuu/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
-
-mapLink = '<a href="http://www.esri.com/">Esri</a>';
-wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
-var esri_aerial = L.tileLayer(
-    'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: '&copy; '+mapLink+', '+wholink,
-    maxZoom: 19,
-});
 
 var hillshade = L.tileLayer.wms(legionows, {
     layers: 'elevation:driftless_hillshade',
@@ -215,7 +208,7 @@ map.addLayer(sinkholes);
 
 var baseLayers = {
     "Open Street Map":outdoors,
-    "Aerial Imagery":esri_aerial,
+    "Aerial Imagery":mapbox_aerial,
     "SW WI Hillshade":hillshade,
     "USGS Topo *":usgs,
     "Topographic Position Index *":tpi,
@@ -242,7 +235,7 @@ var overlayLayers = {
 // explicitly set all of the layer zindex values. this is necessary because
 // the auto z-indexing doesn't seem to work on the L.WMS.overlay layers
 outdoors.setZIndex(1);
-esri_aerial.setZIndex(2);
+mapbox_aerial.setZIndex(2);
 hillshade.setZIndex(3);
 usgs.setZIndex(4);
 tpi.setZIndex(5);
