@@ -53,10 +53,10 @@ $(document).ready(
         
         $("#toggle-instructions").click( function() {
             $("#instructions").toggle();
-            if ($(this).text() == "hide instructions") {
-                $(this).html("show instructions");
+            if ($(this).text() == "click to hide desktop assessment instructions") {
+                $(this).html("click to show desktop assessment instructions");
             } else {
-                $(this).html("hide instructions");
+                $(this).html("click to hide desktop assessment instructions");
             }
         });
         

@@ -118,20 +118,68 @@ select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
     color: #5d522b;
 }
 
+.sink-update-header {
+    background-color:#ccc7b5;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    text-align: center;
+    padding:1px;
+}
+
+.sink-update-header h5 {
+    font-weight:bold;
+}
+
+.sink-update-content {
+    padding-top:10px;
+    padding-bottom: 10px;
+}
+
+.numbers {
+    font-family: courier;
+}
+
+.sink-update-section {
+    background-color: #f3edd6;
+    border-radius: 5px;
+    box-shadow: 0 0 1px 1px grey;
+}
+
+#panel-content {
+    margin-left: -6px;
+    margin-right: -6px;
+
+}
+
 #panel-content input {
-    display: block;
+    display: inline;
 }
 
 #panel-content label {
-    display: block;
+    display: inline;
 }
 
 #panel-content select {
-    display: block;
+    display: inline;
+    width: 100%;
 }
 #panel-content textarea {
-    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
     height: 50px;
+    min-height: 50px;
+}
+
+.horizontal-rule {
+    border-bottom: 1px solid #ccc7b5;
+    height: 1px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.form-sub-label {
+    font-weight: 400;
+    font-size: .9em;
 }
 
 button[disabled], html input[disabled] {
@@ -203,3 +251,4 @@ ul.dashed > li::before {
     content: "-- ";
     margin-left: -15px;
 }
+
