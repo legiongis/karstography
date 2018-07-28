@@ -150,11 +150,11 @@ LEAFLET_CONFIG = {
             'js': 'https://unpkg.com/leaflet.markercluster@1.0.3/dist/leaflet.markercluster.js',
             'auto-include': True,
         },
-        'minimap': {
-            'css': [STATIC_URL + 'plugins/minimap/Control.MiniMap.min.css'],
-            'js': STATIC_URL + 'plugins/minimap/Control.MiniMap.min.js',
-            'auto-include': True,
-        },
+        # 'minimap': {
+            # 'css': [STATIC_URL + 'plugins/minimap/Control.MiniMap.min.css'],
+            # 'js': STATIC_URL + 'plugins/minimap/Control.MiniMap.min.js',
+            # 'auto-include': True,
+        # },
         'leaflet-gps': {
             'css': [STATIC_URL + 'plugins/leaflet-gps/leaflet-gps.min.css'],
             'js': STATIC_URL + 'plugins/leaflet-gps/leaflet-gps.min.js',

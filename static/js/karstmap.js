@@ -204,42 +204,9 @@ var boundaries = L.layerGroup([mcd,counties]);
 var map = L.map('karstmap',{zoomControl:false}).setView([43.22219, -90.9201], 10);
 
 // add the minimap right away
-var osm_minimap = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
-var c_minimap = new L.Control.MiniMap(osm_minimap,{toggleDisplay:true,minimized:true});map.addControl(c_minimap);
-
-// add initial layers to map
-map.addLayer(outdoors);
-map.addLayer(outdoors_labels);
-map.addLayer(boundaries);
-map.addLayer(sinkholes);
-map.addLayer(sinkholes_heatmap);
-
-var baseLayers = {
-    "Open Street Map":outdoors,
-    "Aerial Imagery":mapbox_aerial,
-    "SW WI Hillshade":hillshade,
-    "USGS Topo *":usgs,
-    "Topographic Position Index *":tpi,
-};
-
-var overlayLayers = {
-    "ROAD LABELS":outdoors_labels,
-    "Carbonate Bedrock":wi_geology,
-    "Depth to Bedrock *":bedrock,
-    "Civil Boundaries":boundaries,
-    "Watershed Boundaries":watersheds,
-    "Fracture Lines *":frac,
-    // "PLSS &frac14; &frac14; Sections":qqsections,
-    "PLSS &frac14; Sections":qsections,
-    "PLSS Sections":sec_composite,
-    "PLSS Townships":townships,
-    // "Sink Locations *":sinks,
-    "Sinks 1-2 ft *":sinks12,
-    "Sinks 2-5 ft *":sinks25,
-    "Sinks 5+ ft *":sinks5,
-    "Sinkholes Heatmap*":sinkholes_heatmap,
-    "Sinkholes *":sinkholes,
-};
+// 7-27-18: removing minimap as per CSP request
+// var osm_minimap = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
+// var c_minimap = new L.Control.MiniMap(osm_minimap,{toggleDisplay:true,minimized:true});map.addControl(c_minimap);
 
 // explicitly set all of the layer zindex values. this is necessary because
 // the auto z-indexing doesn't seem to work on the L.WMS.overlay layers
