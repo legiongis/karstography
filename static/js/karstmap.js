@@ -2,9 +2,16 @@
 var legionows = "https://db.legiongis.com/geoserver/ows?";
 
 var outdoors = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19})
+outdoors.id = "outdoors";
+
 var mapbox_osm = L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
+mapbox_osm.id = 'mapbox_osm'
+
 var mapbox_aerial = L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
+mapbox_aerial.id = "mapbox_aerial";
+
 var outdoors_labels = L.tileLayer('https://api.mapbox.com/styles/v1/legiongis/cjhjd3d030ofi2rmszflafhuu/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
+outdoors_labels.id = 'outdoors_labels'
 
 var hillshade = L.tileLayer.wms(legionows, {
     layers: 'elevation:driftless_hillshade',
@@ -14,6 +21,7 @@ var hillshade = L.tileLayer.wms(legionows, {
     tiled: true,
     maxZoom:19,
 });
+hillshade.id = 'hillshade'
 
 var tpi = L.tileLayer.wms(legionows, {
     layers: 'csp:Crawford_TPI_int16-3857_complete',
@@ -23,6 +31,7 @@ var tpi = L.tileLayer.wms(legionows, {
     tiled: true,
     maxZoom:19,
 });
+tpi.id = 'tpi'
 
 var usgs = L.tileLayer.wms(legionows, {
     layers: 'csp:drg_s_wi023_opt',
@@ -32,6 +41,7 @@ var usgs = L.tileLayer.wms(legionows, {
     tiled: true,
     maxZoom:19,
 });
+usgs.id = 'usgs'
 
 var watersheds = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:wi_watersheds',
@@ -41,6 +51,7 @@ var watersheds = L.tileLayer.wms(legionows, {
     tiled: true,
     maxZoom:19,
 });
+watersheds.id = 'watersheds'
 
 var bedrock = L.tileLayer.wms(legionows, {
     layers: 'csp:Crawford_Depth_to_Bedrock',
@@ -50,6 +61,7 @@ var bedrock = L.tileLayer.wms(legionows, {
     tiled: true,
     maxZoom:19,
 });
+bedrock.id = 'bedrock'
 
 var wi_geology = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:geology_a_wi_usgs_2005',
@@ -61,6 +73,8 @@ var wi_geology = L.tileLayer.wms(legionows, {
     styles:'CarbonateBedrock-statewide',
     maxZoom:19,
 });
+wi_geology.id = 'wi_geology'
+wi_geology.legendInfo = true;
 
 var frac = L.tileLayer.wms(legionows, {
     layers: 'csp:fracture_lines',
@@ -70,6 +84,7 @@ var frac = L.tileLayer.wms(legionows, {
     tiled: true,
     maxZoom:19,
 });
+frac.id = 'frac'
 
 var sinks = L.tileLayer.wms(legionows, {
     layers: 'csp:cspkarst_sink',
@@ -81,6 +96,7 @@ var sinks = L.tileLayer.wms(legionows, {
     CQL_FILTER: "in_nfhl = false AND in_row = false",
     tiled: 'false',
 });
+sinks.id = 'sinks';
 
 var sinks12 = L.tileLayer.wms(legionows, {
     layers: 'csp:cspkarst_sink_12',
@@ -92,6 +108,8 @@ var sinks12 = L.tileLayer.wms(legionows, {
     tiled: 'false',
     env: 'size:6',
 });
+sinks12.id = 'sinks12';
+sinks12.legendInfo = true;
 
 var sinks25 = L.tileLayer.wms(legionows, {
     layers: 'csp:cspkarst_sink_25',
@@ -103,6 +121,8 @@ var sinks25 = L.tileLayer.wms(legionows, {
     tiled: 'false',
     env: 'size:7',
 });
+sinks25.id = 'sinks25';
+sinks25.legendInfo = true;
 
 var sinks5 = L.tileLayer.wms(legionows, {
     layers: 'csp:cspkarst_sink_5',
@@ -114,6 +134,8 @@ var sinks5 = L.tileLayer.wms(legionows, {
     tiled: 'false',
     env: 'size:8',
 });
+sinks5.id = 'sinks5';
+sinks5.legendInfo = true;
 
 var sinkholes = L.tileLayer.wms(legionows, {
     layers: 'csp:sinkholes',
@@ -123,6 +145,8 @@ var sinkholes = L.tileLayer.wms(legionows, {
     maxZoom:19,
     tiled: 'false',
 });
+sinkholes.id = 'sinkholes';
+sinkholes.legendInfo = true;
 
 var sinkholes_heatmap = L.WMS.overlay(legionows, {
     'layers': 'csp:sinkholes',
@@ -130,24 +154,8 @@ var sinkholes_heatmap = L.WMS.overlay(legionows, {
     'format': 'image/png',
     'transparent': true,
 });
+sinkholes_heatmap.id = 'sinkholes_heatmap';
 
-var crawhillshade = L.tileLayer.wms('http://52.43.72.30:8080/geoserver/wms?'+Math.random(), {
-    layers: 'work:Lafayette_Hillshade-3857',
-    format: 'image/png',
-    transparent: true,
-    attribution: "Hillshade derived from WisconsinView LiDAR",
-    tiled: true,
-    maxZoom:19,
-});
-
-// experimenting with new PLSS layers
-// var qqsections = L.tileLayer.wms(legionows, {
-    // layers: 'wi_ref:plss_qqsections_sw_wi',
-    // format: 'image/png',
-    // transparent: true,
-    // tiled: true,
-    // maxZoom:19,
-// });
 var qsections = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:plss_qsections',
     format: 'image/png',
@@ -155,6 +163,7 @@ var qsections = L.tileLayer.wms(legionows, {
     tiled: true,
     maxZoom:19,
 });
+qsections.id = 'qsections';
 
 var sections = L.WMS.overlay(legionows, {
     'layers': 'wi_ref:plss_sections',
@@ -168,8 +177,9 @@ var sectionsappend = L.WMS.overlay(legionows, {
     'transparent': true,
     // 'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
 });
-
 var sec_composite = L.layerGroup([sections,sectionsappend]);
+sec_composite.id = 'sec_composite';
+
 var townships = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:plss_townships',
     format: 'image/png',
@@ -177,6 +187,7 @@ var townships = L.tileLayer.wms(legionows, {
     tiled: true,
     maxZoom:19,
 });
+townships.id = 'townships';
 
 // use the overlay class from leaflet.wms.js to make a non-tiled layer.
 // necessary for better labeling apparently
@@ -187,6 +198,7 @@ var mcd = L.WMS.overlay(legionows, {
     'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
 });
 mcd.options = {'attribution':"Minor Civil Divisions Fall 2017"};
+mcd.id = 'mcd';
 
 var counties = L.WMS.overlay(legionows, {
     'layers': 'wi_ref:wi_counties_nrcs_4269',
@@ -196,50 +208,19 @@ var counties = L.WMS.overlay(legionows, {
     'styles':"counties_karstography"
 });
 counties.options = {'attribution':"Counties <a href='https://gdg.sc.egov.usda.gov/' target='_blank'>NRCS</a>"};
+counties.id = 'counties';
 
 var boundaries = L.layerGroup([mcd,counties]);
+boundaries.id = 'boundaries';
 
 // ~~~~~~~~~~ intantiate map and stuff ~~~~~~~~~~~~~~~~~~~~ //
 
 var map = L.map('karstmap',{zoomControl:false}).setView([43.22219, -90.9201], 10);
 
 // add the minimap right away
-var osm_minimap = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
-var c_minimap = new L.Control.MiniMap(osm_minimap,{toggleDisplay:true,minimized:true});map.addControl(c_minimap);
-
-// add initial layers to map
-map.addLayer(outdoors);
-map.addLayer(outdoors_labels);
-map.addLayer(boundaries);
-map.addLayer(sinkholes);
-map.addLayer(sinkholes_heatmap);
-
-var baseLayers = {
-    "Open Street Map":outdoors,
-    "Aerial Imagery":mapbox_aerial,
-    "SW WI Hillshade":hillshade,
-    "USGS Topo *":usgs,
-    "Topographic Position Index *":tpi,
-};
-
-var overlayLayers = {
-    "ROAD LABELS":outdoors_labels,
-    "Carbonate Bedrock":wi_geology,
-    "Depth to Bedrock *":bedrock,
-    "Civil Boundaries":boundaries,
-    "Watershed Boundaries":watersheds,
-    "Fracture Lines *":frac,
-    // "PLSS &frac14; &frac14; Sections":qqsections,
-    "PLSS &frac14; Sections":qsections,
-    "PLSS Sections":sec_composite,
-    "PLSS Townships":townships,
-    // "Sink Locations *":sinks,
-    "Sinks 1-2 ft *":sinks12,
-    "Sinks 2-5 ft *":sinks25,
-    "Sinks 5+ ft *":sinks5,
-    "Sinkholes Heatmap*":sinkholes_heatmap,
-    "Sinkholes *":sinkholes,
-};
+// 7-27-18: removing minimap as per CSP request
+// var osm_minimap = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
+// var c_minimap = new L.Control.MiniMap(osm_minimap,{toggleDisplay:true,minimized:true});map.addControl(c_minimap);
 
 // explicitly set all of the layer zindex values. this is necessary because
 // the auto z-indexing doesn't seem to work on the L.WMS.overlay layers
@@ -265,31 +246,19 @@ sinks12.setZIndex(32);
 sinks25.setZIndex(33);
 sinks5.setZIndex(34);
 
-sinkholes_heatmap.options['zIndex'] = 38;
+sinkholes_heatmap.options.zIndex = 38;
 sinkholes.setZIndex(39);
 
-var c_layers = new L.control.layers(baseLayers, overlayLayers,{position:'topright',collapsed:false,autoZIndex:false});
+// var c_layers = new L.control.layers(baseLayers, overlayLayers,{position:'topright',collapsed:false,autoZIndex:false});
 var c_zoom = new L.control.zoom({position:'topright'});
 var c_fullscreen = new L.Control.Fullscreen({position:'bottomright'});
 var c_gps = new L.Control.Gps({position:'topright'});
 
 // add all non-minimap controls here
-map.addControl(c_layers);
+// map.addControl(c_layers);
 map.addControl(c_zoom);
 map.addControl(c_fullscreen);
 // map.addControl(c_gps);
-
-// Call the getContainer routine.
-var htmlObject = c_layers.getContainer();
-// Get the desired parent node.
-var a = document.getElementById('put-layers-here');
-
-// Finally append that node to the new parent, recursively searching out and re-parenting nodes.
-function setParent(el, newParent) {
-    newParent.appendChild(el);
-}
-setParent(htmlObject, a);
-
 
 function redrawSinkLayer(){
     // sinks.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
@@ -455,16 +424,7 @@ var getSinkForm = function (e) {
 }
 
 map.on('click', function (e) {
-    // if (marker) {
-        // map.removeLayer(marker);
-    // }
-    console.log(map.hasLayer(sinks));
-    console.log(map.hasLayer(sinkholes));
-    console.log(map.hasLayer(sinks12));
-    console.log(map.hasLayer(sinks25));
-    console.log(map.hasLayer(sinks5));
     if (map.hasLayer(sinks) || map.hasLayer(sinkholes) || map.hasLayer(sinks12) || map.hasLayer(sinks25) || map.hasLayer(sinks5)) {
-        console.log("should be getting sink")
         getSinkForm(e);
     }
 });
@@ -518,3 +478,184 @@ map.on("contextmenu", function (event) {
     // });
 // });
 
+// add initial layers to map
+map.addLayer(outdoors);
+map.addLayer(outdoors_labels);
+map.addLayer(boundaries);
+map.addLayer(sinkholes);
+map.addLayer(sinkholes_heatmap);
+
+var allLayersGrp = L.layerGroup();
+
+var seeLegend = '&nbsp;&nbsp;<i class="fa fa-info-circle" title="see legend for more info"></i>';
+
+// special case to push the labels layer to allLayersGrp
+allLayersGrp.addLayer(outdoors_labels);
+
+// create layer group of basemap layers, and push all to html controls
+var baseLayers = {
+    "Open Street Map":outdoors,
+    "Aerial Imagery":mapbox_aerial,
+    "SW WI Hillshade":hillshade,
+    "USGS Topo":usgs,
+    "Topographic Position Index":tpi,
+};
+
+var baseLayersGrp = L.layerGroup();
+for (var key in baseLayers) {
+    if (baseLayers.hasOwnProperty(key)) {
+        layer = baseLayers[key]
+        
+        allLayersGrp.addLayer(layer)
+        baseLayersGrp.addLayer(layer);
+        
+        var elHtml = `
+                <div class="col-xs-12 layer-column">
+                    <label>
+                        <div>
+                            <input id="`+layer.id+`" type="radio" class="basemap-layer leaflet-control-layers-selector" name="leaflet-base-layers" checked="">
+                            <span> `+key+`</span>
+                        </div>
+                    </label>
+                </div>
+                `
+        div = document.getElementById( 'basemap-collection' );
+        div.insertAdjacentHTML( 'beforeend', elHtml );
+    }
+}
+
+// create layer group of civil layers, and push all to html controls
+var civilLayers = {
+    "Civil Boundaries":boundaries,
+    "PLSS &frac14; Sections":qsections,
+    "PLSS Sections":sec_composite,
+    "PLSS Townships":townships,
+};
+var civilLayersGrp = L.layerGroup();
+for (var key in civilLayers) {
+    if (civilLayers.hasOwnProperty(key)) {
+        layer = civilLayers[key]
+        
+        allLayersGrp.addLayer(layer)
+        civilLayersGrp.addLayer(layer);
+        
+        var elHtml = `
+                <div class="col-xs-12 layer-column">
+                    <label>
+                        <div>
+                            <input id="`+layer.id+`" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked="">
+                            <span> `+key+`</span>
+                        </div>
+                    </label>
+                </div>
+                `
+        div = document.getElementById( 'civil-collection' );
+        div.insertAdjacentHTML( 'beforeend', elHtml );
+    }
+}
+
+// create layer group of natural layers, and push all to html controls
+var naturalLayers = {
+    "Carbonate Bedrock":wi_geology,
+    "Depth to Bedrock":bedrock,
+    "Watershed Boundaries":watersheds,
+};
+var naturalLayersGrp = L.layerGroup();
+for (var key in naturalLayers) {
+    if (naturalLayers.hasOwnProperty(key)) {
+        layer = naturalLayers[key]
+        
+        allLayersGrp.addLayer(layer)
+        naturalLayersGrp.addLayer(layer);
+        if (!layer.legendInfo) { moreInfo = '' } else { moreInfo = seeLegend }
+        var elHtml = `
+                <div class="col-xs-12 layer-column">
+                    <label>
+                        <div>
+                            <input id="`+layer.id+`" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked="">
+                            <span> `+key+`</span>`+moreInfo+`
+                        </div>
+                    </label>
+                </div>
+                `
+        div = document.getElementById( 'natural-collection' );
+        div.insertAdjacentHTML( 'beforeend', elHtml );
+    }
+}
+
+// create karst group of natural layers, and push all to html controls
+var karstLayers = {
+    "Sinks 1-2 ft":sinks12,
+    "Sinks 2-5 ft":sinks25,
+    "Sinks 5+ ft":sinks5,
+    "Sinkholes Heatmap":sinkholes_heatmap,
+    "Sinkholes":sinkholes,
+    "Fracture Lines":frac,
+};
+var karstLayersGrp = L.layerGroup();
+for (var key in karstLayers) {
+    if (karstLayers.hasOwnProperty(key)) {
+        layer = karstLayers[key]
+        
+        allLayersGrp.addLayer(layer)
+        karstLayersGrp.addLayer(layer);
+        if (!layer.legendInfo) { moreInfo = '' } else { moreInfo = seeLegend }
+        var elHtml = `
+                <div class="col-xs-12 layer-column">
+                    <label>
+                        <div>
+                            <input id="`+layer.id+`" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked="">
+                            <span> `+key+`</span>`+moreInfo+`
+                        </div>
+                    </label>
+                </div>
+                `
+        div = document.getElementById( 'karst-collection' );
+        div.insertAdjacentHTML( 'beforeend', elHtml );
+    }
+}
+
+karstLayersGrp.eachLayer( function(layer) {
+    console.log(layer);
+});
+
+// initial display of all enabled layers (radio buttons or checkboxes)
+allLayersGrp.eachLayer(function(layer) {
+    var lyrEl = $("#"+layer.id)
+    if (map.hasLayer(layer)) {
+        lyrEl.prop('checked', true);
+    } else {
+        lyrEl.prop('checked', false);
+    }
+});
+
+// radio button layer visibility support for basemaps
+$(".basemap-layer").click( function() {
+    self = this;
+    baseLayersGrp.eachLayer(function(layer) {
+        if (layer.id === self.id) {
+            map.addLayer(layer);
+        } else {
+            map.removeLayer(layer);
+        }
+    });
+})
+
+// basic on/off switch for overlays
+$(".overlay-layer").click( function() {
+    console.log("click");
+    self = this;
+    console.log(self.id);
+    allLayersGrp.eachLayer(function(layer) {
+        if (layer.id === self.id) {
+            console.log(self.id);
+            if (map.hasLayer(layer)) {
+                console.log("removing");
+                map.removeLayer(layer);
+            } else {
+                console.log("adding");
+                map.addLayer(layer);
+            }
+        }
+    });
+})

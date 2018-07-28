@@ -1,5 +1,4 @@
 function removeSinkForm() {
-    console.log("adine");
     $("#panel-content").html("");
 };
 
@@ -13,17 +12,32 @@ $(document).ready(
         });
         
         $("#open-layers-panel").click(function() {
+            $(".leaflet-right").hide();
+            $(".leaflet-right").fadeIn();
+            $(".leaflet-right").addClass('leaflet-far-right');
             $("#layer-panel").fadeIn();
         });
         $("#close-layers-panel").click(function() {
+            $(".leaflet-right").removeClass('leaflet-far-right');
             $("#layer-panel").fadeOut();
+            $("#legend-side-panel").fadeOut(400, function() {
+                $("#open-legend-panel").html("show legend");
+            });
+            
         });
         
         $("#open-legend-panel").click(function() {
-            $("#legend-side-panel").fadeIn();
+            if ($(this).text() == "show legend") {
+                $(this).html("hide legend");
+                $("#legend-side-panel").fadeIn();
+            } else {
+                $(this).html("show legend");
+                $("#legend-side-panel").fadeOut();
+            }
         });
         $("#close-legend-panel").click(function() {
             $("#legend-side-panel").fadeOut();
+            $("#open-legend-panel").html("show legend");
         });
         
         $("#open-example-panel").click(function() {
@@ -42,7 +56,6 @@ $(document).ready(
                             html += '<button onclick="zoomToExample(['+latlong+'],18,\''+basemap+'\')" title="'+desc+'" class="example-zoom-button">'+name+'</a>';
                         }
                     }
-                    console.log(html);
                     $("#put-examples-here").html(html);
                 }
             });
@@ -53,10 +66,10 @@ $(document).ready(
         
         $("#toggle-instructions").click( function() {
             $("#instructions").toggle();
-            if ($(this).text() == "hide instructions") {
-                $(this).html("show instructions");
+            if ($(this).text() == "click to hide desktop assessment instructions") {
+                $(this).html("click to show desktop assessment instructions");
             } else {
-                $(this).html("hide instructions");
+                $(this).html("click to hide desktop assessment instructions");
             }
         });
         

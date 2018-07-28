@@ -45,11 +45,15 @@ class Sink(models.Model):
     bm_aerial = models.BooleanField(default=False)
     bm_tpi = models.BooleanField(default=False)
     bm_usgs = models.BooleanField(default=False)
+    field_chk = models.BooleanField(default=False)
+    field_eval = models.CharField(max_length=20,choices=CON_CHOICES,blank=True,null=True)
     confidence = models.CharField(max_length=20,choices=CON_CHOICES,blank=True,null=True)
     comment = models.TextField(max_length=254,blank=True,null=True)
     last_update = models.DateTimeField(auto_now=True)
     event_no = models.IntegerField(null=True,blank=True)
     geom = models.PointField(null=True)
+    
+    
     
     def save(self, *args, **kwargs):
         real_depth = self.depth

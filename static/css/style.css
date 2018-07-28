@@ -40,10 +40,13 @@ html body {
 }
 
 .leaflet-top {
-    top: 50px;
+    top: 40px;
 }
 
-select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
+select.POSSIBLE, option[value="POSSIBLE"] {
+    color: white;
+    background:black
+}
 
 .input-form-panel {
     z-index: 2147483646 !important;
@@ -62,6 +65,10 @@ select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
     font-weight:900;
 }
 
+.leaflet-far-right {
+    right: 270px;
+}
+
 .layer-control-panel {
     z-index: 2147483646 !important;
     height: 100vh;
@@ -70,9 +77,14 @@ select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
     background-color:#96BEF1;
     position:absolute;
     box-shadow: 0px 0px 10px 2px #182F4C;
-    width: 250px;
+    width: 270px;
     display:none;
     overflow-y:auto;
+}
+
+.layer-control-panel h5 {
+    padding-left:6px;
+    margin-bottom:4px;
 }
 
 .layer-control-panel a {
@@ -80,14 +92,18 @@ select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
     font-weight:900;
 }
 
+.layer-column {
+    padding-left: 6px;
+}
+
 .legend-panel {
     z-index: 2147483646 !important;
-    top:0;
-    right:0;
+    bottom:0;
+    right:260px;
     background-color:#96BEF1;
     position:absolute;
     box-shadow: 0px 0px 10px 2px #182F4C;
-    width: 250px;
+    width: 220px;
     display:none;
     overflow-y:auto;
 }
@@ -100,7 +116,6 @@ select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
 .example-bottom-panel {
     z-index: 2147483647 !important;
     bottom:0;
-    /* height:75px; */
     background-color:#ff9f8f;
     position:absolute;
     box-shadow: 0px 0px 10px 2px #182F4C;
@@ -118,20 +133,68 @@ select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
     color: #5d522b;
 }
 
+.sink-update-header {
+    background-color:#ccc7b5;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    text-align: center;
+    padding:1px;
+}
+
+.sink-update-header h5 {
+    font-weight:bold;
+}
+
+.sink-update-content {
+    padding-top:10px;
+    padding-bottom: 10px;
+}
+
+.numbers {
+    font-family: courier;
+}
+
+.sink-update-section {
+    background-color: #f3edd6;
+    border-radius: 5px;
+    box-shadow: 0 0 1px 1px grey;
+}
+
+#panel-content {
+    margin-left: -6px;
+    margin-right: -6px;
+
+}
+
 #panel-content input {
-    display: block;
+    display: inline;
 }
 
 #panel-content label {
-    display: block;
+    display: inline;
 }
 
 #panel-content select {
-    display: block;
+    display: inline;
+    width: 100%;
 }
 #panel-content textarea {
-    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
     height: 50px;
+    min-height: 50px;
+}
+
+.horizontal-rule {
+    border-bottom: 1px solid #ccc7b5;
+    height: 1px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.form-sub-label {
+    font-weight: 400;
+    font-size: .9em;
 }
 
 button[disabled], html input[disabled] {
@@ -203,3 +266,4 @@ ul.dashed > li::before {
     content: "-- ";
     margin-left: -15px;
 }
+

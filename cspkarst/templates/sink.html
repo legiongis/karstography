@@ -1,59 +1,84 @@
-<h5>Sink ID: {{ form.sink_id.value }} | Elev: {{ form.elevation.value }} | Depth: {{ form.depth.value }}</h5>
-<form action="/" method="post" id="sink-form">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    <div class="col-xs-12">
-        <div class="fieldWrapper">
-            {{ form.sink_type.errors }}
-            <label for="{{ form.sink_type.id_for_label }}">Category</label>
-            {{ form.sink_type }}
+<div class="sink-update-section">
+    <div class="sink-update-header">
+        <h5>Sink ID: {{ form.sink_id.value }} | Elev: {{ form.elevation.value }} | Depth: {{ form.depth.value }}</h5>
+    </div>
+    <div class="sink-update-content">
+    <form action="/" method="post" id="sink-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="col-xs-12">
+            <div class="fieldWrapper" title="Category for this sink, based on the assessments described below.">
+                {{ form.sink_type.errors }}
+                <label for="{{ form.sink_type.id_for_label }}">Category</label>
+                {{ form.sink_type }}
+            </div>
         </div>
-    </div>
-    <div class="col-xs-12">
-        <h5>Basemaps Checked</h5>
-    </div>
-    <div class="col-xs-6">
-        <div class="fieldWrapper">
-            {{ form.bm_hs.errors }}
-            <label for="{{ form.bm_hs.id_for_label }}">Hillshade</label>
-            {{ form.bm_hs }}
+        <div class="col-xs-12 horizontal-rule"></div>
+        <div class="col-xs-12">
+            <label>Basemaps used during desktop assessment:</label><br>
         </div>
-    </div>
-    <div class="col-xs-6">
-        <div class="fieldWrapper">
-            {{ form.bm_aerial.errors }}
-            <label for="{{ form.bm_aerial.id_for_label }}">Aerial Imagery</label>
-            {{ form.bm_aerial }}
+        <div class="col-xs-5">
+            <div class="fieldWrapper" title="Check this box if you consulted the Hillshade basemap for your assessment.">
+                {{ form.bm_hs }}
+                <label for="{{ form.bm_hs.id_for_label }}">Hillshade</label>
+                {{ form.bm_hs.errors }}
+            </div>
         </div>
-    </div>
-    <div class="col-xs-6">
-        <div class="fieldWrapper">
-            {{ form.bm_usgs.errors }}
-            <label for="{{ form.bm_usgs.id_for_label }}">USGS</label>
-            {{ form.bm_usgs }}
+        <div class="col-xs-7">
+            <div class="fieldWrapper" title="Check this box if you consulted the Aerial Imagery basemap for your assessment.">
+                {{ form.bm_aerial }}
+                <label for="{{ form.bm_aerial.id_for_label }}">Aerial Imagery</label>
+                {{ form.bm_aerial.errors }}
+            </div>
         </div>
-    </div>
-    <div class="col-xs-6">
-        <div class="fieldWrapper">
-            {{ form.bm_tpi.errors }}
-            <label for="{{ form.bm_tpi.id_for_label }}">TPI</label>
-            {{ form.bm_tpi }}
+        <div class="col-xs-5">
+            <div class="fieldWrapper" title="Check this box if you consulted the USGS Topo basemap for your assessment.">
+                {{ form.bm_usgs }}
+                <label for="{{ form.bm_usgs.id_for_label }}">USGS</label>
+                {{ form.bm_usgs.errors }}
+            </div>
         </div>
-    </div>
-    <div class="col-xs-12">
-        <div class="fieldWrapper">
-            {{ form.confidence.errors }}
-            <label for="{{ form.confidence.id_for_label }}">Confidence Level</label>
-            {{ form.confidence }}
+        <div class="col-xs-7">
+            <div class="fieldWrapper" title="Check this box if you consulted the Topographic Position Index basemap for your assessment.">
+                {{ form.bm_tpi }}
+                <label for="{{ form.bm_tpi.id_for_label }}">TPI</label>
+                {{ form.bm_tpi.errors }}
+            </div>
         </div>
-    </div>
-    <div class="col-xs-12">
-        <div class="fieldWrapper">
-            {{ form.comment.errors }}
-            <label for="{{ form.comment.id_for_label }}">Comment</label>
-            {{ form.comment }}
+        <div class="col-xs-12" style="margin-top: 5px;">
+            <div class="fieldWrapper" title="If you think this is a sinkhole, assign a confidence level based on your desktop assessment.">
+                <label for="{{ form.confidence.id_for_label }}">Sinkhole Confidence Level</label><br>
+                <label class="form-sub-label">based on desktop assessment</label>
+                {{ form.confidence }}
+                {{ form.confidence.errors }}
+            </div>
         </div>
+        <div class="col-xs-12 horizontal-rule"></div>
+        <div class="col-xs-12">
+            <div class="fieldWrapper" title="Check this box only if a field assessment has taken place.">
+                {{ form.field_chk }}
+                <label for="{{ form.field_chk.id_for_label }}">Field Checked?</label>
+                {{ form.field_chk.errors }}
+            </div>
+        </div>
+        <div class="col-xs-12" style="margin-top: 5px;">
+            <div class="fieldWrapper" title='Assign a confidence level based on your field assessment. If this is not a sinkhole, please leave this field blank and update the "Category" field above.'>
+                <label for="{{ form.field_eval.id_for_label }}">Sinkhole Confidence Level</label><br>
+                <label class="form-sub-label">based on field assessment</label>
+                {{ form.field_eval }}
+                {{ form.field_eval.errors }}
+            </div>
+        </div>
+        <div class="col-xs-12 horizontal-rule"></div>
+        <div class="col-xs-12">
+            <div class="fieldWrapper">
+                {{ form.comment.errors }}
+                <label for="{{ form.comment.id_for_label }}">Comment</label>
+                {{ form.comment }}
+            </div>
+        </div>
+        <input type="submit" value="Submit" style="margin-top:10px;float:right;margin-right:15px;"/>
+    </form>
+    <button id="form-cancel" onclick="removeSinkForm()" type="cancel" style="margin-top:10px;margin-left:15px">Cancel</button>
     </div>
-    <input type="submit" value="Submit" style="margin-top:10px;float:right;margin-right:15px;"/>
-</form>
-<button id="form-cancel" onclick="removeSinkForm()" type="cancel" style="margin-top:10px;margin-left:15px">Cancel</button>
+</div>
