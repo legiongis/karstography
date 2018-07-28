@@ -12,14 +12,13 @@ $(document).ready(
         });
         
         $("#open-layers-panel").click(function() {
+            $(".leaflet-right").hide();
             $(".leaflet-right").fadeIn();
-            $("#layer-panel").fadeIn(400, function () {
-                $(".leaflet-right").hide();
-                $(".leaflet-right").addClass('leaflet-right-right');
-            });
+            $(".leaflet-right").addClass('leaflet-far-right');
+            $("#layer-panel").fadeIn();
         });
         $("#close-layers-panel").click(function() {
-            $(".leaflet-right").removeClass('leaflet-right-right');
+            $(".leaflet-right").removeClass('leaflet-far-right');
             $("#layer-panel").fadeOut();
             $("#legend-side-panel").fadeOut(400, function() {
                 $("#open-legend-panel").html("show legend");
