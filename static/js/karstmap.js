@@ -74,6 +74,7 @@ var wi_geology = L.tileLayer.wms(legionows, {
     maxZoom:19,
 });
 wi_geology.id = 'wi_geology'
+wi_geology.legendInfo = true;
 
 var frac = L.tileLayer.wms(legionows, {
     layers: 'csp:fracture_lines',
@@ -108,6 +109,7 @@ var sinks12 = L.tileLayer.wms(legionows, {
     env: 'size:6',
 });
 sinks12.id = 'sinks12';
+sinks12.legendInfo = true;
 
 var sinks25 = L.tileLayer.wms(legionows, {
     layers: 'csp:cspkarst_sink_25',
@@ -120,6 +122,7 @@ var sinks25 = L.tileLayer.wms(legionows, {
     env: 'size:7',
 });
 sinks25.id = 'sinks25';
+sinks25.legendInfo = true;
 
 var sinks5 = L.tileLayer.wms(legionows, {
     layers: 'csp:cspkarst_sink_5',
@@ -132,6 +135,7 @@ var sinks5 = L.tileLayer.wms(legionows, {
     env: 'size:8',
 });
 sinks5.id = 'sinks5';
+sinks5.legendInfo = true;
 
 var sinkholes = L.tileLayer.wms(legionows, {
     layers: 'csp:sinkholes',
@@ -142,6 +146,7 @@ var sinkholes = L.tileLayer.wms(legionows, {
     tiled: 'false',
 });
 sinkholes.id = 'sinkholes';
+sinkholes.legendInfo = true;
 
 var sinkholes_heatmap = L.WMS.overlay(legionows, {
     'layers': 'csp:sinkholes',
@@ -482,6 +487,8 @@ map.addLayer(sinkholes_heatmap);
 
 var allLayersGrp = L.layerGroup();
 
+var seeLegend = '&nbsp;&nbsp;<i class="fa fa-info-circle" title="see legend for more info"></i>';
+
 // special case to push the labels layer to allLayersGrp
 allLayersGrp.addLayer(outdoors_labels);
 
@@ -490,8 +497,8 @@ var baseLayers = {
     "Open Street Map":outdoors,
     "Aerial Imagery":mapbox_aerial,
     "SW WI Hillshade":hillshade,
-    "USGS Topo *":usgs,
-    "Topographic Position Index *":tpi,
+    "USGS Topo":usgs,
+    "Topographic Position Index":tpi,
 };
 
 var baseLayersGrp = L.layerGroup();
@@ -550,7 +557,7 @@ for (var key in civilLayers) {
 // create layer group of natural layers, and push all to html controls
 var naturalLayers = {
     "Carbonate Bedrock":wi_geology,
-    "Depth to Bedrock *":bedrock,
+    "Depth to Bedrock":bedrock,
     "Watershed Boundaries":watersheds,
 };
 var naturalLayersGrp = L.layerGroup();
@@ -560,13 +567,13 @@ for (var key in naturalLayers) {
         
         allLayersGrp.addLayer(layer)
         naturalLayersGrp.addLayer(layer);
-        
+        if (!layer.legendInfo) { moreInfo = '' } else { moreInfo = seeLegend }
         var elHtml = `
                 <div class="col-xs-12 layer-column">
                     <label>
                         <div>
                             <input id="`+layer.id+`" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked="">
-                            <span> `+key+`</span>
+                            <span> `+key+`</span>`+moreInfo+`
                         </div>
                     </label>
                 </div>
@@ -578,11 +585,12 @@ for (var key in naturalLayers) {
 
 // create karst group of natural layers, and push all to html controls
 var karstLayers = {
-    "Sinks 1-2 ft *":sinks12,
-    "Sinks 2-5 ft *":sinks25,
-    "Sinks 5+ ft *":sinks5,
-    "Sinkholes Heatmap*":sinkholes_heatmap,
-    "Sinkholes *":sinkholes,
+    "Sinks 1-2 ft":sinks12,
+    "Sinks 2-5 ft":sinks25,
+    "Sinks 5+ ft":sinks5,
+    "Sinkholes Heatmap":sinkholes_heatmap,
+    "Sinkholes":sinkholes,
+    "Fracture Lines":frac,
 };
 var karstLayersGrp = L.layerGroup();
 for (var key in karstLayers) {
@@ -591,13 +599,13 @@ for (var key in karstLayers) {
         
         allLayersGrp.addLayer(layer)
         karstLayersGrp.addLayer(layer);
-        
+        if (!layer.legendInfo) { moreInfo = '' } else { moreInfo = seeLegend }
         var elHtml = `
                 <div class="col-xs-12 layer-column">
                     <label>
                         <div>
                             <input id="`+layer.id+`" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked="">
-                            <span> `+key+`</span>
+                            <span> `+key+`</span>`+moreInfo+`
                         </div>
                     </label>
                 </div>

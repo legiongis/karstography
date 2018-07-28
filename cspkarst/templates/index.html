@@ -16,11 +16,10 @@
                 <p style="margin:10px 0px;">
                 {% if user.is_authenticated %}
                     <span style="font-weight:900">KARST GEOLOGY VIEWER</span><strong>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
-                    {{user.username}}&nbsp;&nbsp;>>&nbsp;&nbsp;</strong>
-                    <a href="{% url 'logout' %}?next={{ request.get_full_path }}&logout=true">logout</a>
+                    {{user.username}}
+                    
                 {% else %}
-                    <span style="font-weight:900">KARST GEOLOGY VIEWER</span><strong>&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;</strong>
-                    <a href="{% url 'login' %}?next={{ request.get_full_path }}">login</a>
+                    <span style="font-weight:900">KARST GEOLOGY VIEWER</span>
                 {% endif %}
                 <p>
             </div>
@@ -29,6 +28,12 @@
             <div style="display:inline; float:right">
                 <p style="margin:10px 0px;">
                     {% if user.is_staff %}<a href="{{root_url}}/admin">admin panel</a>&nbsp;&nbsp;|&nbsp;&nbsp;{% endif %}
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}?next={{ request.get_full_path }}&logout=true">logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}?next={{ request.get_full_path }}">login</a>
+                    {% endif %}
+                    &nbsp;&nbsp;|&nbsp;&nbsp;
                     <a id="open-layers-panel" href="javascript:void(0)">layers</a>
                 </p>
             </div>
@@ -60,6 +65,7 @@
             <div id="natural-collection" class="leaflet-control-layers-overlays"></div>
             <h5 style="padding-left:6px;margin-bottom:4px;">Karst</h5>
             <div id="karst-collection" class="leaflet-control-layers-overlays"></div>
+            <p><em>some layers only have full coverage in Crawford County</em></p>
         </form>
     </div>
 </div>
