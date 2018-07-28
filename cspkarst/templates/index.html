@@ -29,7 +29,6 @@
             <div style="display:inline; float:right">
                 <p style="margin:10px 0px;">
                     {% if user.is_staff %}<a href="{{root_url}}/admin">admin panel</a>&nbsp;&nbsp;|&nbsp;&nbsp;{% endif %}
-                    <a id="open-legend-panel" href="javascript:void(0)">legend</a>&nbsp;&nbsp;|&nbsp;&nbsp;
                     <a id="open-layers-panel" href="javascript:void(0)">layers</a>
                 </p>
             </div>
@@ -40,27 +39,37 @@
     <div class="container-fluid">
         <div class="row" style="">
             <div class="col-xs-12">
-                <h5><a style="float:right" id="close-layers-panel" href="javascript:void(0)"><i class="fa fa-times-circle-o" style="font-size:20px;"></i></a></h5>
+                <p style="margin:10px 0px;display:inline; float:right"><a id="open-legend-panel" href="javascript:void(0)">show legend</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a style="float:right" id="close-layers-panel" href="javascript:void(0)"><i class="fa fa-times-circle-o" style="font-size:20px;"></i></a></p>
             </div>
         </div>
-        <div class="row" style="">
-            <div class="col-xs-12">
-                <h5 style="padding-left:6px;paddig-bottom:0px;margin-bottom:4px;">Basemaps</h5>
+        <form class="leaflet-control-layers-list">
+            <h5 style="">Basemaps</h5>
+            <div class="col-xs-12 layer-column">
+                <label>
+                    <div>
+                        <input id="outdoors_labels" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked="">
+                        <span><em>show road labels</em></span>
+                    </div>
+                </label>
             </div>
-            <div id="put-layers-here"  class="col-xs-12"></div>
-        </div>
-        <div class="row" style="">
-            <div class="col-xs-12">
-                <p style="float:right"><strong><em>* Crawford County only</em></strong></p>
-            </div>
-        </div>
+            <div id="basemap-collection" class="leaflet-control-layers-base"></div>
+            <h5 style="padding-left:6px;margin-bottom:4px;">Civil</h5>
+            <div id="civil-collection" class="leaflet-control-layers-overlays"></div>
+            <h5 style="padding-left:6px;margin-bottom:4px;">Natural</h5>
+            <div id="natural-collection" class="leaflet-control-layers-overlays"></div>
+            <h5 style="padding-left:6px;margin-bottom:4px;">Karst</h5>
+            <div id="karst-collection" class="leaflet-control-layers-overlays"></div>
+        </form>
     </div>
 </div>
 <div id="legend-side-panel" class="legend-panel" style="background-color:#eeefdd;">
     <div class="container-fluid">
         <div class="row" style="">
             <div class="col-xs-12">
-                <h5><a style="float:right" id="close-legend-panel" href="javascript:void(0)"><i class="fa fa-times-circle-o" style="font-size:20px;"></i></a></h5>
+                <p style="margin:10px 0px;display:inline; float:right">
+                    <a style="float:right" id="close-legend-panel" href="javascript:void(0)"><i class="fa fa-times-circle-o" style="font-size:20px;"></i></a>
+                </p>
             </div>
         </div>
         <div class="row" style="">
@@ -100,8 +109,8 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <p><a id="toggle-instructions" href="javascript:void(0)">click to hide desktop assessment instructions</a></p>
-                <div id="instructions">
+                <p><a id="toggle-instructions" href="javascript:void(0)">click to show desktop assessment instructions</a></p>
+                <div id="instructions" style="display:none">
                     <ol style="padding-left:15px;">
                         <li>make sure the Sink Locations layer is activated (use layers panel, top right)</li>
                         <li>zoom in and click on a sink point</li>
@@ -123,7 +132,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-12" style="margnin-bottom:10px;">
                 <div id="panel-content"></div>
             </div>
         </div>

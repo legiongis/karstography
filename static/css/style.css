@@ -40,10 +40,13 @@ html body {
 }
 
 .leaflet-top {
-    top: 50px;
+    top: 40px;
 }
 
-select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
+select.POSSIBLE, option[value="POSSIBLE"] {
+    color: white;
+    background:black
+}
 
 .input-form-panel {
     z-index: 2147483646 !important;
@@ -62,6 +65,10 @@ select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
     font-weight:900;
 }
 
+.leaflet-right-right {
+    right: 270px;
+}
+
 .layer-control-panel {
     z-index: 2147483646 !important;
     height: 100vh;
@@ -70,9 +77,14 @@ select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
     background-color:#96BEF1;
     position:absolute;
     box-shadow: 0px 0px 10px 2px #182F4C;
-    width: 250px;
+    width: 270px;
     display:none;
     overflow-y:auto;
+}
+
+.layer-control-panel h5 {
+    padding-left:6px;
+    margin-bottom:4px;
 }
 
 .layer-control-panel a {
@@ -80,14 +92,18 @@ select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
     font-weight:900;
 }
 
+.layer-column {
+    padding-left: 6px;
+}
+
 .legend-panel {
     z-index: 2147483646 !important;
-    top:0;
-    right:0;
+    bottom:0;
+    right:260px;
     background-color:#96BEF1;
     position:absolute;
     box-shadow: 0px 0px 10px 2px #182F4C;
-    width: 250px;
+    width: 220px;
     display:none;
     overflow-y:auto;
 }
@@ -100,7 +116,6 @@ select.POSSIBLE, option[value="POSSIBLE"] { color: white; background:black }
 .example-bottom-panel {
     z-index: 2147483647 !important;
     bottom:0;
-    /* height:75px; */
     background-color:#ff9f8f;
     position:absolute;
     box-shadow: 0px 0px 10px 2px #182F4C;
