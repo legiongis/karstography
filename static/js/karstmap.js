@@ -312,6 +312,7 @@ function zoomToExample(latlng,zoom,baselayername) {
 var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
     layers: 'csp:cspkarst_sink',
     transparent: true,
+    styles: 'sink_invisible_10pt_pt',
     format: 'image/png',
 });
 // var marker;
@@ -425,6 +426,7 @@ var getSinkForm = function (e) {
 
 map.on('click', function (e) {
     if (map.hasLayer(sinks) || map.hasLayer(sinkholes) || map.hasLayer(sinks12) || map.hasLayer(sinks25) || map.hasLayer(sinks5)) {
+        console.log("getting sink");
         getSinkForm(e);
     }
 });
