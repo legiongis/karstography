@@ -41,7 +41,12 @@ $(document).ready(
         });
         
         $("#open-example-panel").click(function() {
-            $("#example-panel").fadeIn();
+            $("#example-panel").fadeIn( function () {
+                $("#info-panel").addClass('shorten-panel');
+                $("#legend-side-panel").addClass('shorten-panel');
+                $("#layer-panel").addClass('shorten-panel');
+            });
+            
             $.ajax ({
                 url:root_url+"/example-locations",
                 success: function (data) {
@@ -62,6 +67,9 @@ $(document).ready(
         });
         $("#close-example-panel").click(function() {
             $("#example-panel").fadeOut();
+            $("#info-panel").removeClass('shorten-panel');
+            $("#legend-side-panel").removeClass('shorten-panel');
+            $("#layer-panel").removeClass('shorten-panel');
         });
         
         $("#toggle-instructions").click( function() {

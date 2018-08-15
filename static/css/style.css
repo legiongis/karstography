@@ -113,6 +113,10 @@ select.POSSIBLE, option[value="POSSIBLE"] {
     font-weight:900;
 }
 
+.shorten-panel {
+    height: calc(100vh - 60px);
+}
+
 .example-bottom-panel {
     z-index: 2147483647 !important;
     bottom:0;
@@ -122,6 +126,7 @@ select.POSSIBLE, option[value="POSSIBLE"] {
     width: 100%;
     display:none;
     overflow-y:auto;
+    height: 60px;
 }
 
 .example-bottom-panel a {
