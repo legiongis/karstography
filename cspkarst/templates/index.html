@@ -14,13 +14,12 @@
         <div class="col-xs-4">
             <div style="display:inline;text-align:center;">
                 <p style="margin:10px 0px;">
-                {% if user.is_authenticated %}
-                    <span style="font-weight:900">KARST GEOLOGY VIEWER</span><strong>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
-                    {{user.username}}
-                    
-                {% else %}
-                    <span style="font-weight:900">KARST GEOLOGY VIEWER</span>
-                {% endif %}
+                    <span style="font-weight:900">
+                        KARST GEOLOGY VIEWER
+                        {% if user.is_authenticated %}
+                            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+                        {{user.username}}{% endif %}
+                    </span>
                 <p>
             </div>
         </div>
@@ -44,7 +43,7 @@
     <div class="container-fluid">
         <div class="row" style="">
             <div class="col-xs-12">
-                <p style="margin:10px 0px;display:inline; float:right"><a id="open-legend-panel" href="javascript:void(0)">show legend</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <p style="margin:10px 0px;display:inline; float:right"><a id="open-legend-panel" class="open-legend-btn" href="javascript:void(0)">show legend</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 <a style="float:right" id="close-layers-panel" href="javascript:void(0)"><i class="fa fa-times-circle-o" style="font-size:20px;"></i></a></p>
             </div>
         </div>
@@ -134,7 +133,6 @@
         <div class="row">
             <div class="col-xs-12">
                 <p><a id="open-example-panel" href="javascript:void(0)">click to view some examples</a></p>
-                <p><a id="refresh-sink-layer" href="javascript:void(0)">click to refresh sink layers</a> (update colors)</p>
             </div>
         </div>
         <div class="row">

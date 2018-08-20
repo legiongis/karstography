@@ -86,6 +86,7 @@ var frac = L.tileLayer.wms(legionows, {
 });
 frac.id = 'frac'
 
+//this is the sink layer used for identification. it's transparent.
 var sinks = L.tileLayer.wms(legionows, {
     layers: 'csp:cspkarst_sink',
     format: 'image/png',
@@ -110,6 +111,7 @@ var sinks12 = L.tileLayer.wms(legionows, {
 });
 sinks12.id = 'sinks12';
 sinks12.legendInfo = true;
+sinks12.refreshable = true;
 
 var sinks25 = L.tileLayer.wms(legionows, {
     layers: 'csp:cspkarst_sink_25',
@@ -123,6 +125,7 @@ var sinks25 = L.tileLayer.wms(legionows, {
 });
 sinks25.id = 'sinks25';
 sinks25.legendInfo = true;
+sinks25.refreshable = true;
 
 var sinks5 = L.tileLayer.wms(legionows, {
     layers: 'csp:cspkarst_sink_5',
@@ -136,6 +139,7 @@ var sinks5 = L.tileLayer.wms(legionows, {
 });
 sinks5.id = 'sinks5';
 sinks5.legendInfo = true;
+sinks5.refreshable = true;
 
 var sinkholes = L.tileLayer.wms(legionows, {
     layers: 'csp:sinkholes',
@@ -147,6 +151,7 @@ var sinkholes = L.tileLayer.wms(legionows, {
 });
 sinkholes.id = 'sinkholes';
 sinkholes.legendInfo = true;
+sinkholes.refreshable = true;
 
 var sinkholes_heatmap = L.WMS.overlay(legionows, {
     'layers': 'csp:sinkholes',
@@ -261,8 +266,6 @@ map.addControl(c_fullscreen);
 // map.addControl(c_gps);
 
 function redrawSinkLayer(){
-    // sinks.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
-    // sinks.redraw();
     sinks12.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
     sinks12.redraw();
     sinks25.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
@@ -379,6 +382,7 @@ var getSinkForm = function (e) {
                     // L.MakiMarkers.accessToken = mapbox_api_key;
                     // var icon = L.MakiMarkers.icon({icon:'hospital', color: "#e3e311", size: "s"});
                     $(".map-icon").html('');
+                    $(".map-icon").css('cursor', 'default');
                     marker = new L.marker(marker_coords, {icon: icon}).addTo(map);
                     // marker = new L.circle(marker_coords, {
                         // color: 'red',
@@ -489,7 +493,8 @@ map.addLayer(sinkholes_heatmap);
 
 var allLayersGrp = L.layerGroup();
 
-var seeLegend = '&nbsp;&nbsp;<i class="fa fa-info-circle" title="see legend for more info"></i>';
+var seeLegend = '&nbsp;&nbsp;<i class="fa fa-info-circle open-legend-btn" title="open legend for more info"></i>';
+var refreshLayer = '&nbsp;&nbsp;<i class="fa fa-refresh refresh-layer-icon" title="refresh layer"></i>';
 
 // special case to push the labels layer to allLayersGrp
 allLayersGrp.addLayer(outdoors_labels);
@@ -545,10 +550,11 @@ for (var key in civilLayers) {
                 <div class="col-xs-12 layer-column">
                     <label>
                         <div>
-                            <input id="`+layer.id+`" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked="">
+                            <input id="`+layer.id+`" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked=""></input>
                             <span> `+key+`</span>
                         </div>
                     </label>
+                    
                 </div>
                 `
         div = document.getElementById( 'civil-collection' );
@@ -566,22 +572,27 @@ var naturalLayersGrp = L.layerGroup();
 for (var key in naturalLayers) {
     if (naturalLayers.hasOwnProperty(key)) {
         layer = naturalLayers[key]
-        
         allLayersGrp.addLayer(layer)
         naturalLayersGrp.addLayer(layer);
         if (!layer.legendInfo) { moreInfo = '' } else { moreInfo = seeLegend }
+        if (!layer.refreshable) { refreshable = '' } else { refreshable = refreshLayer }
         var elHtml = `
                 <div class="col-xs-12 layer-column">
                     <label>
                         <div>
                             <input id="`+layer.id+`" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked="">
-                            <span> `+key+`</span>`+moreInfo+`
+                            <span> `+key+`</span>
                         </div>
+                        
                     </label>
+                    <div class="layer-extra-icons">
+                        `+moreInfo+refreshable+`
+                    </div>
                 </div>
                 `
         div = document.getElementById( 'natural-collection' );
         div.insertAdjacentHTML( 'beforeend', elHtml );
+        
     }
 }
 
@@ -602,14 +613,18 @@ for (var key in karstLayers) {
         allLayersGrp.addLayer(layer)
         karstLayersGrp.addLayer(layer);
         if (!layer.legendInfo) { moreInfo = '' } else { moreInfo = seeLegend }
+        if (!layer.refreshable) { refreshable = '' } else { refreshable = refreshLayer }
         var elHtml = `
                 <div class="col-xs-12 layer-column">
                     <label>
                         <div>
                             <input id="`+layer.id+`" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked="">
-                            <span> `+key+`</span>`+moreInfo+`
+                            <span> `+key+`</span>
                         </div>
                     </label>
+                    <div class="layer-extra-icons">
+                        `+moreInfo+refreshable+`
+                    </div>
                 </div>
                 `
         div = document.getElementById( 'karst-collection' );

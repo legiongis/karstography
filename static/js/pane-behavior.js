@@ -26,12 +26,12 @@ $(document).ready(
             
         });
         
-        $("#open-legend-panel").click(function() {
-            if ($(this).text() == "show legend") {
-                $(this).html("hide legend");
+        $(".open-legend-btn").click(function() {
+            if ($("#open-legend-panel").text() == "show legend") {
+                $("#open-legend-panel").html("hide legend");
                 $("#legend-side-panel").fadeIn();
             } else {
-                $(this).html("show legend");
+                $("#open-legend-panel").html("show legend");
                 $("#legend-side-panel").fadeOut();
             }
         });
@@ -91,8 +91,7 @@ $(document).ready(
                 $(this).html("bookmark current view");
             }
         });
-        
-        $("#refresh-sink-layer").click(function() {
+        $(".refresh-layer-icon").click(function() {
             redrawSinkLayer();
         });
         
