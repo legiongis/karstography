@@ -258,12 +258,14 @@ sinkholes.setZIndex(39);
 var c_zoom = new L.control.zoom({position:'topright'});
 var c_fullscreen = new L.Control.Fullscreen({position:'bottomright'});
 var c_gps = new L.Control.Gps({position:'topright'});
+var c_scalebar = new L.control.scale();
 
 // add all non-minimap controls here
 // map.addControl(c_layers);
 map.addControl(c_zoom);
 map.addControl(c_fullscreen);
 // map.addControl(c_gps);
+map.addControl(c_scalebar);
 
 function redrawSinkLayer(){
     sinks12.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
