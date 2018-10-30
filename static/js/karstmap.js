@@ -415,7 +415,7 @@ var getSinkForm = function (e) {
                             success:function(){
                                 redrawSinkLayer();
                                 $("#panel-content").html('<div class="form-msg" style="text-align:center;margin-top:20px;"><i class="fa fa-check" style="font-size:40px;"></i><p style="font-weight:900;font-size:20px;">saved</p></div>');
-                                
+                                $('.map-icon').remove();
                             }
                         });
                     });
