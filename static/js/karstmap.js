@@ -221,7 +221,7 @@ boundaries.id = 'boundaries';
 // ~~~~~~~~~~ intantiate map and stuff ~~~~~~~~~~~~~~~~~~~~ //
 
 var map = L.map('karstmap',{zoomControl:false}).setView([43.22219, -90.9201], 10);
-
+var hash = new L.Hash(map);
 // add the minimap right away
 // 7-27-18: removing minimap as per CSP request
 // var osm_minimap = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
