@@ -306,12 +306,26 @@ var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
     format: 'image/png',
 });
 
+var cleanGetFeatureUrl = function (url) {
+    
+    var xval = url.slice( url.indexOf('&X=') + 3, url.indexOf('&Y='));
+    var yval = url.substring( url.indexOf('&Y=') + 3 );
+    var xint = xval.split(".")[0]
+    var yint = yval.split(".")[0]
+    
+    return url.replace('&X='+xval,'&X='+xint).replace('&Y='+yval,'&Y='+yint)
+}
+
 var getSinkForm = function (e) {
     $('.map-icon').remove();
     var getFeatureUrl = sinkIdentifyLayer.getFeatureInfoUrl(e.latlng,'application/json');
+    var cleanedGetFeatureUrl = cleanGetFeatureUrl(getFeatureUrl)
+
+    console.log(getFeatureUrl.substring( getFeatureUrl.indexOf('&X=')));
+    console.log(cleanedGetFeatureUrl.substring( cleanedGetFeatureUrl.indexOf('&X=')));
 
     $.ajax({
-        url:getFeatureUrl,
+        url:cleanedGetFeatureUrl,
         success: function (data){
             console.log(data)
             if (data.features.length == 0) {
