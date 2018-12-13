@@ -222,10 +222,6 @@ boundaries.id = 'boundaries';
 
 var map = L.map('karstmap',{zoomControl:false}).setView([43.22219, -90.9201], 10);
 var hash = new L.Hash(map);
-// add the minimap right away
-// 7-27-18: removing minimap as per CSP request
-// var osm_minimap = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{maxNativeZoom:18,maxZoom:19});
-// var c_minimap = new L.Control.MiniMap(osm_minimap,{toggleDisplay:true,minimized:true});map.addControl(c_minimap);
 
 // explicitly set all of the layer zindex values. this is necessary because
 // the auto z-indexing doesn't seem to work on the L.WMS.overlay layers
@@ -254,14 +250,12 @@ sinks5.setZIndex(34);
 sinkholes_heatmap.options.zIndex = 38;
 sinkholes.setZIndex(39);
 
-// var c_layers = new L.control.layers(baseLayers, overlayLayers,{position:'topright',collapsed:false,autoZIndex:false});
 var c_zoom = new L.control.zoom({position:'topright'});
 var c_fullscreen = new L.Control.Fullscreen({position:'bottomright'});
 var c_gps = new L.Control.Gps({position:'topright'});
 var c_scalebar = new L.control.scale();
 
 // add all non-minimap controls here
-// map.addControl(c_layers);
 map.addControl(c_zoom);
 map.addControl(c_fullscreen);
 // map.addControl(c_gps);
@@ -305,39 +299,17 @@ function zoomToExample(latlng,zoom,baselayername) {
     map.flyTo(latlng,zoom);
 }
 
-
-// function used at one point to generate a rectangle from a point's bbox
-// not in use
-// var make_square_from_pt_bbox = function (bbox) {
-    // var southwest = [bbox[1]-.0000,bbox[0]-.0000];
-    // var northeast = [bbox[3]+.0000,bbox[2]+.0000];
-    // return [southwest,northeast]
-// }
-
 var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
     layers: 'csp:cspkarst_sink',
     transparent: true,
     styles: 'sink_invisible_10pt_pt',
     format: 'image/png',
 });
-// var marker;
+
 var getSinkForm = function (e) {
     $('.map-icon').remove();
     var getFeatureUrl = sinkIdentifyLayer.getFeatureInfoUrl(e.latlng,'application/json');
-    // console.log(getFeatureUrl);
-    // var url = new URL(getFeatureUrl);
-    // console.log(url);
-    // var c = url.searchParams.get("BBOX");
-    // var bounds = make_square_from_pt_bbox(c.split(","));
-    // console.log(bounds);
-    
-    // marker = new L.rectangle(bounds, {
-        // color: 'red',
-        // fillColor: '#f03',
-        // fillOpacity: 0,
-        // weight:0.5,
-        // zindex:100,
-    // }).addTo(map);
+
     $.ajax({
         url:getFeatureUrl,
         success: function (data){
@@ -347,30 +319,7 @@ var getSinkForm = function (e) {
                 $("#panel-content").html('<div class="form-msg" style="text-align:center;margin-top:20px;"><p style="font-weight:900;font-size:20px;">no sink here...</p></div>')
                 return
             }
-            
-            //// trying many different ways to add a marker of some sort to the selected sink
-            //// ultimately the problem is that coordinates returned by GetFeatureInfo do not
-            //// seem to be the same as the displayed coordinates of the feature itself. So
-            //// using those to create a new feature makes things look weird.
-            //// also tried using a WFS request to get the sink id and coords, but ran into
-            //// different problems with that... See the bottom of this script.
-            // coords = data.features[0].geometry['coordinates']
-            // marker = new L.circle([coords[1],coords[0]], {
-                // color: 'red',
-                // fillOpacity: 0,
-                // weight:0.5,
-                // radius: 12
-            // }).addTo(map);
-            // L.MakiMarkers.accessToken = mapbox_api_key;
-            // var icon = L.MakiMarkers.icon({icon:'hospital', color: "#e3e311", size: "s"});
-            // var icon = L.divIcon({className: 'map-icon',html:'<i class="fa fa-edit" style="font-size:20px;"></i>'});
-            // var icon = L.divIcon({className: 'map-icon',html:'<p><strong>*</strong></p>'});
-            // $(".map-icon").html('');
-            // marker = new L.marker([coords[1],coords[0]], {icon: icon}).addTo(map);
-            // console.log(data.features[0].geometry['coordinates']);
-            // var bounds = make_square_from_pt_bbox(data.features[0].properties['bbox']);
-            // console.log(bounds);
-            
+
             console.log(data.features);
             var sink_id = data.features[0].properties['sink_id'];
             $.ajax({
@@ -378,20 +327,13 @@ var getSinkForm = function (e) {
                 success : function (data) {
                     $('.map-icon').remove();
                     var marker_coords = [data.lat,data.lng]
-                    // var icon = L.divIcon({className: 'map-icon',html:'<i class="fa fa-edit" style="font-size:20px;"></i>'});
+
                     var icon = L.divIcon({className: 'map-icon',html:'<i class="fa fa-arrow-left" style="font-size:20px;"></i>'});
-                    // var icon = L.divIcon({className: '',html:'<div style="height:1px;width:1px;background-color:black;"></div>'});
-                    // L.MakiMarkers.accessToken = mapbox_api_key;
-                    // var icon = L.MakiMarkers.icon({icon:'hospital', color: "#e3e311", size: "s"});
+
                     $(".map-icon").html('');
                     $(".map-icon").css('cursor', 'default');
                     marker = new L.marker(marker_coords, {icon: icon}).addTo(map);
-                    // marker = new L.circle(marker_coords, {
-                        // color: 'red',
-                        // fillOpacity: 0,
-                        // weight:0.5,
-                        // radius: 12
-                    // }).addTo(map);
+
                 },
                 error:function (xhr, ajaxOptions, thrownError){
                     console.log("error ianefin");
@@ -406,6 +348,7 @@ var getSinkForm = function (e) {
                     $("#info-panel").fadeIn();
                     $("#panel-content").html(response);
                     $("#sink-form").submit(function(event) {
+                        
                         // Stop form from submitting normally to avoid a redirect
                         event.preventDefault();
                         $.ajax({
@@ -455,36 +398,6 @@ map.on("contextmenu", function (event) {
         .setContent(latitude+', '+longitude+'<br>zoom level: '+map.getZoom()+gmlink)
         .openOn(map);
 });
-
-//// This is working example of using a WFS request instead of WFS GetFeatureInfo request
-//// However, it seems that the Distance property units are based on the EPSG of the 
-//// data that is being queried, regardless of what unit is specified in the call.
-//// So, putting this on hold for a bit...
-// map.on("click", function(e){
-    // var point = L.Projection.Mercator.project(e.latlng)
-    // var wfsreq = "<Filter xmlns:gml='http://www.opengis.net/gml'>" +
-        // "<DWithin>" +
-          // "<PropertyName>geom</PropertyName>" +
-          // "<gml:Point srsName='http://www.opengis.net/gml/srs/epsg.xml#3857'>" +
-            // "<gml:coordinates>"+point['x']+","+point['y']+"</gml:coordinates>" +
-          // "</gml:Point>" +
-          // "<Distance units='meters'>1</Distance>" +
-        // "</DWithin>" +
-      // "</Filter>";
-    // var wfs = "https://db.legiongis.com/geoserver/wfs?request=getfeature&version=1.0.0&service=wfs&typename=csp:cspkarst_sink&propertyname=geom&outputformat=json&filter="+encodeURIComponent(wfsreq);
-    // console.log(wfs);
-    // $.ajax({
-        // url:wfs,
-        // success: function (data){
-            // console.log(data)
-        // },
-        // error:function (xhr, ajaxOptions, thrownError){
-            // if(xhr.status==404) {
-                // console.log(thrownError);
-            // }
-        // }
-    // });
-// });
 
 // add initial layers to map
 map.addLayer(outdoors);
