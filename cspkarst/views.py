@@ -24,7 +24,7 @@ def sink_update(request,sink_id):
     if request.method == 'POST':
         form = SinkForm(request.POST)
         if form.is_valid():
-            for k, v in request.POST.iteritems():
+            for k, v in request.POST.items():
                 if k in fields:
                     if v == '':
                         v = None
