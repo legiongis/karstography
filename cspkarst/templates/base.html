@@ -45,10 +45,11 @@
     <script src="{% static 'js/leaflet.wms.js' %}" type="text/javascript"></script>
     <script src="{% static 'plugins/Leaflet.MakiMarkers.js' %}" type="text/javascript"></script>
     <script>
-        var mapbox_api_key = "{{mapbox_api_key}}"
+        var mapbox_api_key = "{{mapbox_api_key}}";
         var static_url = "{{static_url}}";
         var root_url = "{{root_url}}";
         var user_name = "{{user.username}}";
+        var gs_workspace = "{{gs_workspace}}";
     </script>
 
     <!-- <script src="{% static 'plugins/Leaflet.MakiMarkers.js' %}" type="text/javascript"></script> -->

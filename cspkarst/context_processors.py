@@ -8,6 +8,7 @@ def context(request):
         gs_workspace = "karstography-prod"
     else:
         gs_workspace = ""
+    print("gs_workspace: "+gs_workspace)
 
     return {
         'mapbox_api_key': settings.MAPBOX_API_KEY,
