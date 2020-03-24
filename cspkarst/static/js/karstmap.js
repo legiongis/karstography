@@ -300,7 +300,7 @@ function zoomToExample(latlng,zoom,baselayername) {
 }
 
 var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
-    layers: 'csp:cspkarst_sink',
+    layers: gs_workspace + ':cspkarst_sink',
     transparent: true,
     styles: 'sink_invisible_10pt_pt',
     format: 'image/png',
@@ -388,6 +388,10 @@ var getSinkForm = function (e) {
 }
 
 map.on('click', function (e) {
+
+    // return early if there is no user_name, meaning the user isn't logged in
+    if (user_name == "") {return}
+
     if (map.hasLayer(sinks) || map.hasLayer(sinkholes) || map.hasLayer(sinks12) || map.hasLayer(sinks25) || map.hasLayer(sinks5)) {
         console.log("getting sink");
         getSinkForm(e);
