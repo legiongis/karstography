@@ -334,6 +334,16 @@ var getSinkForm = function (e) {
                 return
             }
 
+            // check to make sure the clicked sink belongs to a layer that is currently visible
+            var wrongLayer = false;
+            $(data.features).each( function () {
+                if (this.properties.sink_type == "SINKHOLE" && map.hasLayer(sinkholes)) {return}
+                else if (this.properties.depth_cat == "1-2" && !map.hasLayer(sinks12)) {wrongLayer = true}
+                else if (this.properties.depth_cat == "2-5" && !map.hasLayer(sinks25)) {wrongLayer = true}
+                else if (this.properties.depth_cat == "5+" && !map.hasLayer(sinks5)) {wrongLayer = true}
+            });
+            if (wrongLayer == true) {return}
+
             console.log(data.features);
             var sink_id = data.features[0].properties['sink_id'];
             $.ajax({
