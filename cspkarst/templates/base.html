@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 {% load leaflet_tags %}
 <!DOCTYPE html>
 <html>
@@ -8,6 +8,9 @@
 	<!--[if lt IE 9]>
 	<script src="http://stairculture.com/archive/wp-content/themes/Divi/js/html5.js" type="text/javascript"></script>
 	<![endif]-->
+    
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
 
 	<script type="text/javascript">
 		document.documentElement.className = 'js';
@@ -16,13 +19,13 @@
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     
     <!-- JQuery JS -->
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     
     <!-- Latest compiled JavaScript -->
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 	<title>CSP Karst Viewer</title>
 
@@ -42,10 +45,11 @@
     <script src="{% static 'js/leaflet.wms.js' %}" type="text/javascript"></script>
     <script src="{% static 'plugins/Leaflet.MakiMarkers.js' %}" type="text/javascript"></script>
     <script>
-        var mapbox_api_key = "{{mapbox_api_key}}"
+        var mapbox_api_key = "{{mapbox_api_key}}";
         var static_url = "{{static_url}}";
         var root_url = "{{root_url}}";
         var user_name = "{{user.username}}";
+        var gs_workspace = "{{gs_workspace}}";
     </script>
 
     <!-- <script src="{% static 'plugins/Leaflet.MakiMarkers.js' %}" type="text/javascript"></script> -->

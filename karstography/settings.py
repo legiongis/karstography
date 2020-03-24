@@ -175,7 +175,10 @@ ROOT_URL = ''
 
 EXAMPLE_LOCATIONS_JSON = os.path.join(BASE_DIR,'cspkarst','fixtures','example-locations.json')
 
+# must be either 'production' or 'staging'
+ENVIRONMENT = 'production'
+
 try:
-    from settings_local import *
+    from .settings_local import *
 except ImportError:
     pass

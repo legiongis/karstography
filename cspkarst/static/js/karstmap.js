@@ -88,7 +88,7 @@ frac.id = 'frac'
 
 //this is the sink layer used for identification. it's transparent.
 var sinks = L.tileLayer.wms(legionows, {
-    layers: 'csp:cspkarst_sink',
+    layers: gs_workspace + ':cspkarst_sink',
     format: 'image/png',
     transparent: true,
     attribution: "LiDAR-Derived Sink Locations",
@@ -100,7 +100,7 @@ var sinks = L.tileLayer.wms(legionows, {
 sinks.id = 'sinks';
 
 var sinks12 = L.tileLayer.wms(legionows, {
-    layers: 'csp:cspkarst_sink_12',
+    layers: gs_workspace + ':cspkarst_sink_12',
     format: 'image/png',
     transparent: true,
     attribution: "LiDAR-Derived Sink Locations",
@@ -114,7 +114,7 @@ sinks12.legendInfo = true;
 sinks12.refreshable = true;
 
 var sinks25 = L.tileLayer.wms(legionows, {
-    layers: 'csp:cspkarst_sink_25',
+    layers: gs_workspace + ':cspkarst_sink_25',
     format: 'image/png',
     transparent: true,
     attribution: "LiDAR-Derived Sink Locations",
@@ -128,7 +128,7 @@ sinks25.legendInfo = true;
 sinks25.refreshable = true;
 
 var sinks5 = L.tileLayer.wms(legionows, {
-    layers: 'csp:cspkarst_sink_5',
+    layers: gs_workspace + ':cspkarst_sink_5',
     format: 'image/png',
     transparent: true,
     attribution: "LiDAR-Derived Sink Locations",
@@ -142,7 +142,7 @@ sinks5.legendInfo = true;
 sinks5.refreshable = true;
 
 var sinkholes = L.tileLayer.wms(legionows, {
-    layers: 'csp:sinkholes',
+    layers: gs_workspace + ':cspkarst_sinkholes',
     format: 'image/png',
     transparent: true,
     attribution: "LiDAR-Derived Sink Locations",
@@ -154,7 +154,7 @@ sinkholes.legendInfo = true;
 sinkholes.refreshable = true;
 
 var sinkholes_heatmap = L.WMS.overlay(legionows, {
-    'layers': 'csp:sinkholes',
+    'layers': gs_workspace + ':cspkarst_sinkholes',
     'styles': 'sink_heatmap',
     'format': 'image/png',
     'transparent': true,
