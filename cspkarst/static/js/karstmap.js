@@ -86,19 +86,6 @@ var frac = L.tileLayer.wms(legionows, {
 });
 frac.id = 'frac'
 
-//this is the sink layer used for identification. it's transparent.
-var sinks = L.tileLayer.wms(legionows, {
-    layers: gs_workspace + ':cspkarst_sink',
-    format: 'image/png',
-    transparent: true,
-    attribution: "LiDAR-Derived Sink Locations",
-    styles: 'sink_evaluation_2.0',
-    maxZoom:19,
-    CQL_FILTER: "in_nfhl = false AND in_row = false",
-    tiled: 'false',
-});
-sinks.id = 'sinks';
-
 var sinks12 = L.tileLayer.wms(legionows, {
     layers: gs_workspace + ':cspkarst_sink_12',
     format: 'image/png',
@@ -242,7 +229,6 @@ counties.options['zIndex'] = 27;
 watersheds.setZIndex(28);
 frac.setZIndex(29);
 townships.setZIndex(30);
-sinks.setZIndex(31);
 sinks12.setZIndex(32);
 sinks25.setZIndex(33);
 sinks5.setZIndex(34);
@@ -300,7 +286,7 @@ function zoomToExample(latlng,zoom,baselayername) {
 }
 
 var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
-    layers: 'csp:cspkarst_sink',
+    layers: gs_workspace + ':cspkarst_sink',
     transparent: true,
     styles: 'sink_invisible_10pt_pt',
     format: 'image/png',
@@ -321,20 +307,24 @@ var getSinkForm = function (e) {
     var getFeatureUrl = sinkIdentifyLayer.getFeatureInfoUrl(e.latlng,'application/json');
     var cleanedGetFeatureUrl = cleanGetFeatureUrl(getFeatureUrl)
 
-    console.log(getFeatureUrl.substring( getFeatureUrl.indexOf('&X=')));
-    console.log(cleanedGetFeatureUrl.substring( cleanedGetFeatureUrl.indexOf('&X=')));
-
     $.ajax({
         url:cleanedGetFeatureUrl,
         success: function (data){
-            console.log(data)
             if (data.features.length == 0) {
-                console.log("no sink here!");
                 $("#panel-content").html('<div class="form-msg" style="text-align:center;margin-top:20px;"><p style="font-weight:900;font-size:20px;">no sink here...</p></div>')
                 return
             }
 
-            console.log(data.features);
+            // check to make sure the clicked sink belongs to a layer that is currently visible
+            var wrongLayer = false;
+            $(data.features).each( function () {
+                if (this.properties.sink_type == "SINKHOLE" && map.hasLayer(sinkholes)) {return}
+                else if (this.properties.depth_cat == "1-2" && !map.hasLayer(sinks12)) {wrongLayer = true}
+                else if (this.properties.depth_cat == "2-5" && !map.hasLayer(sinks25)) {wrongLayer = true}
+                else if (this.properties.depth_cat == "5+" && !map.hasLayer(sinks5)) {wrongLayer = true}
+            });
+            if (wrongLayer == true) {return}
+
             var sink_id = data.features[0].properties['sink_id'];
             $.ajax({
                 url : root_url+"/json/"+sink_id+"/",
@@ -350,7 +340,6 @@ var getSinkForm = function (e) {
 
                 },
                 error:function (xhr, ajaxOptions, thrownError){
-                    console.log("error ianefin");
                     if(xhr.status==404) {
                         console.log(thrownError);
                     }
@@ -388,16 +377,13 @@ var getSinkForm = function (e) {
 }
 
 map.on('click', function (e) {
-    if (map.hasLayer(sinks) || map.hasLayer(sinkholes) || map.hasLayer(sinks12) || map.hasLayer(sinks25) || map.hasLayer(sinks5)) {
-        console.log("getting sink");
+
+    // return early if there is no user_name, meaning the user isn't logged in
+    if (user_name == "") {return}
+
+    if (map.hasLayer(sinkholes) || map.hasLayer(sinks12) || map.hasLayer(sinks25) || map.hasLayer(sinks5)) {
         getSinkForm(e);
     }
-});
-
-// force the redraw of the sinks layer so that if its data has been changed, the symbology
-// will be updated right away. this layer should have tile-caching set to false so
-// that it won't be using geowebcache. only enabled if a user in logged in (editing).
-map.on('mousedown', function (){
 });
 
 // make popup that shows lat/long and zoom level on right-click event
@@ -561,10 +547,6 @@ for (var key in karstLayers) {
     }
 }
 
-karstLayersGrp.eachLayer( function(layer) {
-    console.log(layer);
-});
-
 // initial display of all enabled layers (radio buttons or checkboxes)
 allLayersGrp.eachLayer(function(layer) {
     var lyrEl = $("#"+layer.id)
@@ -589,17 +571,12 @@ $(".basemap-layer").click( function() {
 
 // basic on/off switch for overlays
 $(".overlay-layer").click( function() {
-    console.log("click");
     self = this;
-    console.log(self.id);
     allLayersGrp.eachLayer(function(layer) {
         if (layer.id === self.id) {
-            console.log(self.id);
             if (map.hasLayer(layer)) {
-                console.log("removing");
                 map.removeLayer(layer);
             } else {
-                console.log("adding");
                 map.addLayer(layer);
             }
         }
