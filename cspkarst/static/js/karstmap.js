@@ -400,7 +400,7 @@ map.on("contextmenu", function (event) {
 });
 
 // add initial layers to map
-map.addLayer(outdoors);
+map.addLayer(hillshade);
 map.addLayer(outdoors_labels);
 map.addLayer(boundaries);
 map.addLayer(sinkholes);
