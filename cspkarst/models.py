@@ -4,7 +4,6 @@ from django.contrib.gis.db import models
 from django.core.serializers import serialize
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from PIL import Image
 import os
 
 class Sink(models.Model):

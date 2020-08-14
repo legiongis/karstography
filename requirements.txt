@@ -1,8 +1,7 @@
 asgiref==3.2.5
-Django==3.0.4
+Django==3.0.7
 django-leaflet==0.26.0
 Markdown==3.2.1
-Pillow==7.0.0
 psycopg2-binary==2.8.4
 pyshp==2.1.0
 pytz==2019.3
