@@ -50,6 +50,8 @@ class Command(BaseCommand):
 
         management.call_command('makemigrations')
         management.call_command('migrate')
+        management.call_command('loaddata', 'TownUnit')
+        management.call_command('loaddata', 'Sinks_CrawfordCo')
 
         print("making admin...")
 
