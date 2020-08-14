@@ -2,7 +2,6 @@ from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 import os
 import shapefile
-# import pygeoif
 from cspkarst.models import Sink
 
 class Command(BaseCommand):
@@ -25,15 +24,15 @@ class Command(BaseCommand):
         self.load_sinks()
 
     def load_sinks(self):
-    
+
         shp = os.path.join(settings.BASE_DIR,'cspkarst','fixtures','sinks_2.0.shp')
-        
-        print "loading stairs into database from file:"
-        print shp
+
+        print("loading sinks into database from file:")
+        print(shp)
 
         sf = shapefile.Reader(shp)
         recs = sf.shapeRecords()
-        
+
         field_map = {
             'sink_id':5,
             'dem_check':1,
@@ -51,7 +50,7 @@ class Command(BaseCommand):
             'con':18,
             'type':15
         }
-    
+
         ct,bad_ct = 0,0
         for rec in recs:
             r = rec.record
@@ -59,10 +58,8 @@ class Command(BaseCommand):
 
             x = s.points[0][0]
             y = s.points[0][1]
-            
+
             wkt = "POINT ({} {})".format(x,y)
-            
-            
 
             obj = Sink(
                 sink_id = r[field_map['sink_id']],
@@ -85,10 +82,10 @@ class Command(BaseCommand):
             obj.save()
             ct += 1
 
-        print ct, "sinks loaded"
-        print bad_ct, "loading errors"
-        
+        print(f"{ct} sinks loaded")
+        print(f"{bad_ct} loading errors")
+
     def remove_sinks(self):
-        
-        print "removing all existing sinks in database"
+
+        print("removing all existing sinks in database")
         Sink.objects.all().delete()

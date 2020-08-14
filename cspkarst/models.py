@@ -18,12 +18,12 @@ class Sink(models.Model):
        ("OTHER","Other"),
        ("UNKNOWN","Unknown"),
     )
-    
+
     CON_CHOICES = (
        ("PROBABLE","Probable"),
        ("POSSIBLE","Possible"),
     )
-    
+
     DEPTH_CAT_CHOICES = (
        ("0-1","0-1 ft"),
        ("1-2","1-2 ft"),
@@ -52,19 +52,18 @@ class Sink(models.Model):
     last_update = models.DateTimeField(auto_now=True)
     event_no = models.IntegerField(null=True,blank=True)
     geom = models.PointField(null=True)
-    
-    
-    
+
+
+
     def save(self, *args, **kwargs):
-        real_depth = self.depth
-        if not real_depth:
-            super(Sink, self).save(*args, **kwargs)
-        if real_depth < 1:
-            self.depth_cat = "0-1"
-        elif real_depth < 2:
-            self.depth_cat = "1-2"
-        elif real_depth < 5:
-            self.depth_cat = "2-5"
-        else:
-            self.depth_cat = "5+"
+        if self.depth is not None:
+            if self.depth < 1:
+                self.depth_cat = "0-1"
+            elif self.depth < 2:
+                self.depth_cat = "1-2"
+            elif self.depth < 5:
+                self.depth_cat = "2-5"
+            else:
+                self.depth_cat = "5+"
         super(Sink, self).save(*args, **kwargs)
+        return

@@ -25,14 +25,14 @@ class Command(BaseCommand):
         force = options['yes']
         self.setup_db(force)
 
-        
+
     def setup_db(self,force=False):
-        
-        print "setting up the database"
+
+        print("setting up the database")
         if not force:
-            c = raw_input("  -- this will erase the entire database. continue? y/n >> ")
+            c = input("  -- this will erase the entire database. continue? y/n >> ")
             if not c.lower().startswith("y"):
-                print "     command cancelled."
+                print("     command cancelled.")
                 return
 
         dbinfo = settings.DATABASES['default']
@@ -44,23 +44,23 @@ class Command(BaseCommand):
         cursor = conn.cursor()
         try:
             cursor.execute("DROP DATABASE " + dbinfo['NAME'])
-        except:
-            pass
+        except Exception as e:
+            raise e
         cursor.execute("CREATE DATABASE " + dbinfo['NAME'] + " WITH ENCODING 'UTF8'")
-        
+
         management.call_command('makemigrations')
         management.call_command('migrate')
 
         print("making admin...")
-        
+
         default_user = User.objects.create_user('admin','','cspmaster')
         default_user.is_staff = True
         default_user.is_superuser = True
         default_user.save()
-        
-        
+
+
         print("admin superuser created. password = cspmaster.")
-        
-        
-        
+
+
+
         print("done")
