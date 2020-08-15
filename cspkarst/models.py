@@ -66,3 +66,13 @@ class Sink(models.Model):
                 self.depth_cat = "5+"
         super(Sink, self).save(*args, **kwargs)
         return
+
+class TownUnit(models.Model):
+
+    mcd_name = models.CharField(max_length=50,null=True,blank=True)
+    county_name = models.CharField(max_length=50,null=True,blank=True)
+    notes = models.CharField(max_length=100,null=True,blank=True)
+    geom = models.MultiPolygonField(null=True)
+
+    def __str__(self):
+        return f"{self.mcd_name} - {self.county_name}"
