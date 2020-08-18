@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 from leaflet.admin import LeafletGeoAdmin
-from .models import Sink, TownUnit
+from .models import Sink, TownUnit, Well
 
 class StairAdmin(LeafletGeoAdmin):
     search_fields = ['type']
@@ -11,3 +11,4 @@ class StairAdmin(LeafletGeoAdmin):
 
 admin.site.register(Sink)
 admin.site.register(TownUnit)
+admin.site.register(Well)
