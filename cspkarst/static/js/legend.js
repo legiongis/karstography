@@ -17,7 +17,7 @@ function generateLayerGroupLegend(layerGroup, htmlElId, basemapGroup=false) {
     var elHtml = `
       <div class="col-xs-12 layer-column">
           <label>
-              <div style="display:inline">
+              <div class="layer-label">
                   <input id="`+layer.id+`" type="`+boxType+`" class="`+cssClass+` leaflet-control-layers-selector" name="`+elName+`" checked="">
                   <span> `+layer.name+`</span>
               </div>

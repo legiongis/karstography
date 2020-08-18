@@ -41,30 +41,50 @@
 </div>
 <div id="layer-panel" class="layer-control-panel">
     <div class="container-fluid">
-        <div class="row" style="">
+        <div class="row">
             <div class="col-xs-12">
                 <p style="margin:10px 0px;display:inline; float:right"><a id="open-legend-panel" class="open-legend-btn" href="javascript:void(0)">show legend</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 <a style="float:right" id="close-layers-panel" href="javascript:void(0)"><i class="fa fa-times-circle-o" style="font-size:20px;"></i></a></p>
             </div>
         </div>
         <form class="leaflet-control-layers-list">
-            <h5 style="">Basemaps</h5>
-            <div class="col-xs-12 layer-column">
-                <label>
-                    <div>
-                        <input id="outdoors_labels" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked="">
-                        <span><em>show road labels</em></span>
-                    </div>
-                </label>
+            <div class="row layer-group">
+              <div class="col-xs-12">
+                <h3 class="layer-group-header">Basemaps</h3>
+                <div class="col-xs-12 layer-column">
+                    <label>
+                        <div class="layer-label">
+                            <input id="outdoors_labels" type="checkbox" class="overlay-layer leaflet-control-layers-selector" checked="">
+                            <span><em>show road labels</em></span>
+                        </div>
+                    </label>
+                </div>
+                <div id="basemap-collection" class="leaflet-control-layers-base"></div>
+              </div>
             </div>
-            <div id="basemap-collection" class="leaflet-control-layers-base"></div>
-            <h5 style="padding-left:6px;margin-bottom:4px;">Civil</h5>
-            <div id="civil-collection" class="leaflet-control-layers-overlays"></div>
-            <h5 style="padding-left:6px;margin-bottom:4px;">Natural</h5>
-            <div id="natural-collection" class="leaflet-control-layers-overlays"></div>
-            <h5 style="padding-left:6px;margin-bottom:4px;">Karst</h5>
-            <div id="karst-collection" class="leaflet-control-layers-overlays"></div>
-            <p><em>some layers only have full coverage in Crawford County</em></p>
+            <div class="row layer-group">
+              <div class="col-xs-12">
+                <h3 class="layer-group-header">Karst-related Layers</h3>
+                <div id="karst-collection" class="leaflet-control-layers-overlays"></div>
+              </div>
+            </div>
+            <div class="row layer-group">
+              <div class="col-xs-12">
+                <h3 class="layer-group-header">Civil/Cadastral</h3>
+                <div id="civil-collection" class="leaflet-control-layers-overlays"></div>
+              </div>
+            </div>
+            <div class="row layer-group">
+              <div class="col-xs-12">
+                <h3 class="layer-group-header">Natural Features</h3>
+                <div id="natural-collection" class="leaflet-control-layers-overlays"></div>
+              </div>
+            </div>
+            <div class="row layer-group">
+              <div class="col-xs-12">
+                <p><em>not all layers have the same coverage extent</em></p>
+              </div>
+            </div>
         </form>
     </div>
 </div>
