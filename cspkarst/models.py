@@ -123,3 +123,19 @@ class Well(models.Model):
         "&i_res_criteria=ALL&i_storet_index=1"
         self.sample_db_url = url
         super(Well, self).save(*args, **kwargs)
+
+class PointOfInterest(models.Model):
+
+    CAT_CHOICES = (
+       ("Sink Example","Karst Example"),
+       ("Other","Other"),
+    )
+
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=200,null=True,blank=True)
+    category = models.CharField(max_length=50,choices=CAT_CHOICES)
+    basemap = models.CharField(max_length=50,null=True,blank=True)
+    geom = models.PointField()
+
+    def __str__(self):
+        return self.name
