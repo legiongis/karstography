@@ -64,5 +64,27 @@
   "basemap": "SW WI Hillshade",
   "geom": "SRID=4326;POINT (-90.9618 43.4046)"
  }
+},
+{
+ "model": "cspkarst.pointofinterest",
+ "pk": 7,
+ "fields": {
+  "name": "Roth CAFO: Existing",
+  "description": "location of the existing Roth feeder operation",
+  "category": "Other",
+  "basemap": "Aerial Imagery",
+  "geom": "SRID=4326;POINT (-90.814111 43.107583)"
+ }
+},
+{
+ "model": "cspkarst.pointofinterest",
+ "pk": 8,
+ "fields": {
+  "name": "Roth CAFO: Proposed",
+  "description": "location of the proposed Roth feeder operation",
+  "category": "Other",
+  "basemap": "Aerial Imagery",
+  "geom": "SRID=4326;POINT (-90.8745195 43.1541304)"
+ }
 }
 ]
