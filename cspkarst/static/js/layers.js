@@ -117,7 +117,7 @@ var sinks12 = L.tileLayer.wms(legionows, {
 sinks12.id = 'sinks12';
 sinks12.legendInfo = true;
 sinks12.refreshable = true;
-sinks12.name = "Sinks 1-2 ft";
+sinks12.name = "Sinks (depth 1-2 ft)";
 
 var sinks25 = L.tileLayer.wms(legionows, {
     layers: gs_workspace + ':cspkarst_sink_25',
@@ -133,7 +133,7 @@ var sinks25 = L.tileLayer.wms(legionows, {
 sinks25.id = 'sinks25';
 sinks25.legendInfo = true;
 sinks25.refreshable = true;
-sinks25.name = "Sinks 2-5 ft";
+sinks25.name = "Sinks (depth: 2-5 ft)";
 
 var sinks5 = L.tileLayer.wms(legionows, {
     layers: gs_workspace + ':cspkarst_sink_5',
@@ -149,7 +149,7 @@ var sinks5 = L.tileLayer.wms(legionows, {
 sinks5.id = 'sinks5';
 sinks5.legendInfo = true;
 sinks5.refreshable = true;
-sinks5.name = "Sinks 5+ ft";
+sinks5.name = "Sinks (depth: 5+ ft)";
 
 var sinkholes = L.tileLayer.wms(legionows, {
     layers: gs_workspace + ':cspkarst_sinkholes',
@@ -173,7 +173,7 @@ var sinkholes_heatmap = L.WMS.overlay(legionows, {
     pane: 'tilePane',
 });
 sinkholes_heatmap.id = 'sinkholes_heatmap';
-sinkholes_heatmap.name = "Sinkholes Heatmap";
+sinkholes_heatmap.name = "Sinkholes - Heatmap";
 
 var frac = L.tileLayer.wms(legionows, {
     layers: 'csp:fracture_lines',
@@ -232,7 +232,7 @@ $.ajax({
     }
 });
 wells.id = 'wells';
-wells.name = "Well Locations";
+wells.name = "Private Well Locations";
 
 var qsections = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:plss_qsections',
