@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
-from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
-from django.core import serializers
-from django.conf import settings
-from .models import Sink
-from .forms import SinkForm
 import os
 import json
+from django.shortcuts import render
+from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
+from django.core.serializers import serialize
+from django.conf import settings
+from .models import Sink, Well
+from .forms import SinkForm
+
 
 def index(request):
     return render(request, 'index.html')
@@ -48,8 +49,14 @@ def sink_info(request,sink_id):
         return JsonResponse({'error':'no sink with this sink_id.'},status=404)
 
     return JsonResponse({"lat":instance.geom[1],"lng":instance.geom.coords[0]})
-    
+
 def get_example_locations(request):
     json_data = open(settings.EXAMPLE_LOCATIONS_JSON).read()
     data = json.loads(json_data)
     return JsonResponse(data)
+
+def wells_geojson(request):
+
+    data = serialize('geojson', Well.objects.all(),
+          geometry_field='geom')
+    return JsonResponse(json.loads(data))
