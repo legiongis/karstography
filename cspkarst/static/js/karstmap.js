@@ -35,18 +35,16 @@ function returnView() {
 }
 
 function switchBaseLayer (layername) {
-    for (var key in baseLayers) {
-        if (baseLayers.hasOwnProperty(key)) {
-            blayer = baseLayers[key];
-            map.removeLayer(blayer);
-            if (key == layername) {
-                map.addLayer(blayer);
-            }
-        }
+  $.each(baseLayers, function(index, layer) {
+    map.removeLayer(layer);
+    if (layer.name == layername) {
+      map.addLayer(layer);
     }
+  });
 }
 
 function zoomToExample(latlng,zoom,baselayername) {
+  console.log(latlng);
     switchBaseLayer(baselayername);
     map.flyTo(latlng,zoom);
 }

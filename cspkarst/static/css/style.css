@@ -137,7 +137,7 @@ select.POSSIBLE, option[value="POSSIBLE"] {
 }
 
 .shorten-panel {
-    height: calc(100vh - 60px);
+    height: calc(100vh - 90px);
 }
 
 .example-bottom-panel {
@@ -149,7 +149,7 @@ select.POSSIBLE, option[value="POSSIBLE"] {
     width: 100%;
     display:none;
     overflow-y:auto;
-    height: 60px;
+    height: 90px;
 }
 
 .example-bottom-panel a {
