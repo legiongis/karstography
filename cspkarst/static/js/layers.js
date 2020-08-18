@@ -331,63 +331,63 @@ sinkholes_heatmap.options['zIndex'] = 22;
 sinkholes.setZIndex(39);
 wells.setZIndex(40);
 
-// ~~~~~~~~~~ create layer groups and generate legend ~~~~~~~~~~~~~~~~~~~~ //
-var allLayersGrp = L.layerGroup();
+// ~~~~~~~~~~ create arrays to group layers in legend ~~~~~~~~~~~~~~~~~~~~ //
+var allLayersArray = [];
 
 // special case to push the labels layer to allLayersGrp
-allLayersGrp.addLayer(outdoors_labels);
+allLayersArray.push(outdoors_labels);
 
-// create layer group of basemap layers
+// create array of basemap layers
 var baseLayers = [
-    outdoors,
-    mapbox_aerial,
-    hillshade,
-    usgs,
-    tpi,
+  outdoors,
+  mapbox_aerial,
+  hillshade,
+  usgs,
+  tpi,
 ];
-var baseLayersGrp = L.layerGroup();
+var baseLayersArray = [];
 $.each(baseLayers, function(index, layer){
-    allLayersGrp.addLayer(layer)
-    baseLayersGrp.addLayer(layer);
+  allLayersArray.push(layer)
+  baseLayersArray.push(layer)
 });
 
-// create layer group of civil layers
+// create array of civil layers
 var civilLayers = [
-    civil_boundaries,
-    qsections,
-    sec_composite,
-    townships,
+  civil_boundaries,
+  qsections,
+  sec_composite,
+  townships,
 ];
-var civilLayersGrp = L.layerGroup();
+var civilLayersArray = [];
 $.each(civilLayers, function(index, layer){
-    allLayersGrp.addLayer(layer)
-    civilLayersGrp.addLayer(layer);
+  allLayersArray.push(layer)
+  civilLayersArray.push(layer)
 });
 
-// create layer group of natural layers
+// create array of natural layers
 var naturalLayers = [
-    wi_geology,
-    bedrock,
-    watersheds,
+  wi_geology,
+  bedrock,
+  watersheds,
 ];
-var naturalLayersGrp = L.layerGroup();
+var naturalLayersArray = [];
 $.each(naturalLayers, function(index, layer){
-    allLayersGrp.addLayer(layer)
-    naturalLayersGrp.addLayer(layer);
+  allLayersArray.push(layer)
+  naturalLayersArray.push(layer)
 });
 
-// create layer group of karst layers
+// create array of karst layers
 var karstLayers = [
-    sinks12,
-    sinks25,
-    sinks5,
-    sinkholes_heatmap,
-    sinkholes,
-    frac,
-    wells,
+  sinkholes,
+  sinkholes_heatmap,
+  sinks12,
+  sinks25,
+  sinks5,
+  wells,
+  frac,
 ];
-var karstLayersGrp = L.layerGroup();
+var karstLayersArray = [];
 $.each(karstLayers, function(index, layer){
-    allLayersGrp.addLayer(layer);
-    karstLayersGrp.addLayer(layer);
+  allLayersArray.push(layer);
+  karstLayersArray.push(layer);
 });

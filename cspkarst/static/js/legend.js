@@ -1,8 +1,9 @@
 var seeLegend = '&nbsp;&nbsp;<i class="fa fa-info-circle open-legend-btn" title="open legend for more info"></i>';
 var refreshLayer = '&nbsp;&nbsp;<i class="fa fa-refresh refresh-layer-icon" title="refresh layer"></i>';
 
-function generateLayerGroupLegend(layerGroup, htmlElId, basemapGroup=false) {
-  layerGroup.eachLayer(function(layer) {
+function generateLayerGroupLegend(layerArray, htmlElId, basemapGroup=false) {
+  console.log(layerArray);
+  $.each(layerArray, function(index, layer) {
     if (!layer.legendInfo) { moreInfo = '' } else { moreInfo = seeLegend }
     if (!layer.refreshable) { refreshable = '' } else { refreshable = refreshLayer }
     if (basemapGroup == true) {
@@ -24,20 +25,21 @@ function generateLayerGroupLegend(layerGroup, htmlElId, basemapGroup=false) {
           </label>
           <div class="layer-extra-icons">`+moreInfo+refreshable+`</div>
       </div>`
+    console.log("legend entry: "+ layer.id)
     div = document.getElementById( htmlElId );
     div.insertAdjacentHTML( 'beforeend', elHtml );
   });
 }
 
-generateLayerGroupLegend(baseLayersGrp, 'basemap-collection', true);
-generateLayerGroupLegend(naturalLayersGrp, 'natural-collection');
-generateLayerGroupLegend(civilLayersGrp, 'civil-collection');
-generateLayerGroupLegend(karstLayersGrp, 'karst-collection');
+generateLayerGroupLegend(baseLayersArray, 'basemap-collection', true);
+generateLayerGroupLegend(naturalLayersArray, 'natural-collection');
+generateLayerGroupLegend(civilLayersArray, 'civil-collection');
+generateLayerGroupLegend(karstLayersArray, 'karst-collection');
 
 // radio button layer visibility support for basemaps
 $(".basemap-layer").click( function() {
     self = this;
-    baseLayersGrp.eachLayer(function(layer) {
+    $.each(baseLayersArray, function(index, layer) {
         if (layer.id === self.id) {
             map.addLayer(layer);
         } else {
@@ -49,7 +51,7 @@ $(".basemap-layer").click( function() {
 // basic on/off switch for overlays
 $(".overlay-layer").click( function() {
     self = this;
-    allLayersGrp.eachLayer(function(layer) {
+    $.each(allLayersArray, function(index, layer) {
         if (layer.id === self.id) {
             if (map.hasLayer(layer)) {
                 map.removeLayer(layer);

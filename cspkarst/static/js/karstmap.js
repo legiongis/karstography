@@ -166,11 +166,19 @@ map.addLayer(sinkholes);
 map.addLayer(sinkholes_heatmap);
 
 // initial display of all enabled layers (radio buttons or checkboxes)
-allLayersGrp.eachLayer(function(layer) {
-    var lyrEl = $("#"+layer.id)
-    if (map.hasLayer(layer)) {
-        lyrEl.prop('checked', true);
-    } else {
-        lyrEl.prop('checked', false);
-    }
+$.each(allLayersArray, function(index, layer) {
+  var lyrEl = $("#"+layer.id)
+  if (map.hasLayer(layer)) {
+      lyrEl.prop('checked', true);
+  } else {
+      lyrEl.prop('checked', false);
+  }
 });
+// allLayersGrp.eachLayer(function(layer) {
+//     var lyrEl = $("#"+layer.id)
+//     if (map.hasLayer(layer)) {
+//         lyrEl.prop('checked', true);
+//     } else {
+//         lyrEl.prop('checked', false);
+//     }
+// });
