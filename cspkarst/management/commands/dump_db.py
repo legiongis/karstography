@@ -35,5 +35,7 @@ class Command(BaseCommand):
             indent=1, output="cspkarst/fixtures/TownUnit.json")
         management.call_command('dumpdata', 'cspkarst.Sink',
             indent=1, output="cspkarst/fixtures/Sinks_CrawfordCo.json")
+        management.call_command('dumpdata', 'cspkarst.PointOfInterest',
+            indent=1, output="cspkarst/fixtures/PointOfInterest.json")
 
         print("done")

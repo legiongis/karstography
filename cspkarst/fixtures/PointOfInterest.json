@@ -1,0 +1,68 @@
+[
+{
+ "model": "cspkarst.pointofinterest",
+ "pk": 1,
+ "fields": {
+  "name": "Potential Sinkhole Cluster",
+  "description": "a series of potential sinkholes",
+  "category": "Sink Example",
+  "basemap": "SW WI Hillshade",
+  "geom": "SRID=4326;POINT (-90.94450000000001 43.3134)"
+ }
+},
+{
+ "model": "cspkarst.pointofinterest",
+ "pk": 2,
+ "fields": {
+  "name": "Catchment",
+  "description": "a catchment basin",
+  "category": "Sink Example",
+  "basemap": "SW WI Hillshade",
+  "geom": "SRID=4326;POINT (-90.9605 43.3185)"
+ }
+},
+{
+ "model": "cspkarst.pointofinterest",
+ "pk": 3,
+ "fields": {
+  "name": "Blind Valley",
+  "description": "example of a \"blind valley\"",
+  "category": "Sink Example",
+  "basemap": "SW WI Hillshade",
+  "geom": "SRID=4326;POINT (-90.7381 43.3193)"
+ }
+},
+{
+ "model": "cspkarst.pointofinterest",
+ "pk": 4,
+ "fields": {
+  "name": "Sinkhole Line",
+  "description": "a line of sinkholes",
+  "category": "Sink Example",
+  "basemap": "SW WI Hillshade",
+  "geom": "SRID=4326;POINT (-90.7238 43.3258)"
+ }
+},
+{
+ "model": "cspkarst.pointofinterest",
+ "pk": 5,
+ "fields": {
+  "name": "Ditch/Culvert (Bridge?)",
+  "description": "example of the Ditch/Culvert category, may even be a bridge...",
+  "category": "Sink Example",
+  "basemap": "SW WI Hillshade",
+  "geom": "SRID=4326;POINT (-90.7491 43.2831)"
+ }
+},
+{
+ "model": "cspkarst.pointofinterest",
+ "pk": 6,
+ "fields": {
+  "name": "Field Sinkhole",
+  "description": "example of a sinkhole in a field",
+  "category": "Sink Example",
+  "basemap": "SW WI Hillshade",
+  "geom": "SRID=4326;POINT (-90.9618 43.4046)"
+ }
+}
+]
