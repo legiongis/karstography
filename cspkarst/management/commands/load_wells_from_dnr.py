@@ -1,6 +1,6 @@
 import os
 import json
-import urllib
+import urllib.request
 from datetime import datetime
 from django.core import management
 from django.core.management.base import BaseCommand, CommandError
