@@ -174,11 +174,3 @@ $.each(allLayersArray, function(index, layer) {
       lyrEl.prop('checked', false);
   }
 });
-// allLayersGrp.eachLayer(function(layer) {
-//     var lyrEl = $("#"+layer.id)
-//     if (map.hasLayer(layer)) {
-//         lyrEl.prop('checked', true);
-//     } else {
-//         lyrEl.prop('checked', false);
-//     }
-// });

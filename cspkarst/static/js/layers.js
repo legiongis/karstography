@@ -187,7 +187,6 @@ var frac = L.tileLayer.wms(legionows, {
 frac.id = 'frac';
 frac.name = "Fracture Lines";
 
-
 var getClusterRadius = function(zoom){
   if (zoom < 17) { return 80 }
   if (zoom == 17) { return 50 }
@@ -309,8 +308,8 @@ var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
     format: 'image/png',
 });
 
-// explicitly set all of the layer zindex values. this is necessary because
-// the auto z-indexing doesn't seem to work on the L.WMS.overlay layers
+// explicitly set all of the layer zindex values. not sure how necessary this
+// really is (layer ordering also has a lot to do with panes).
 outdoors.setZIndex(1);
 mapbox_aerial.setZIndex(2);
 hillshade.setZIndex(3);

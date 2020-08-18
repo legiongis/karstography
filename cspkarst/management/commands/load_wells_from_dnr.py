@@ -1,6 +1,5 @@
 import os
 import json
-import requests
 import urllib
 from datetime import datetime
 from django.core import management
