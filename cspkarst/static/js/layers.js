@@ -208,6 +208,8 @@ $.ajax({
     url : root_url+"/wells/",
     success : function (data) {
 
+      var arcgisRestUrl = "https://dnrmaps.wi.gov/arcgis/rest/services/DG_Well_Driller/DG_Well_Driller_WTM_Ext/MapServer/0/query?"
+
       $.each(data['features'], function(index, feature) {
         var marker_coords = [
           feature['geometry']['coordinates'][1],
@@ -221,6 +223,7 @@ $.ajax({
             <h4>WELL ID: ${feature.properties.pk}</h4>
             <h5><a href="${feature.properties.well_constr_url}" target="_blank">View Well Construction Report <i class="fa fa-external-link"></i></a></h5>
             <h5><a href="${feature.properties.sample_db_url}" target="_blank">View Sample Analytical Data<i class="fa fa-external-link"></i></a></h5>
+            <h5><a href="${arcgisRestUrl}where=%22WI_UNIQUE_WELL_NO%22=%27${feature.properties.pk}%27&outSR=4326&outFields=*&f=html" target="_blank">Full Database Entry <i class="fa fa-external-link"></i></a></h5>
             <h5><strong>This point location is based on: ${feature.properties.location_method}</strong></h5>
           `)
 
@@ -382,12 +385,12 @@ $.each(naturalLayers, function(index, layer){
 
 // create array of karst layers
 var karstLayers = [
+  wells,
   sinkholes,
   sinkholes_heatmap,
   sinks12,
   sinks25,
   sinks5,
-  wells,
   frac,
 ];
 var karstLayersArray = [];
