@@ -215,10 +215,14 @@ $.ajax({
         ]
 
         var icon = L.divIcon({className: 'well-icon',html:'<i class="fa fa-circle-o" style="font-size:20px;"></i>'});
-
         var popup = L.popup({'className' : 'latlong-popup'})
           .setLatLng(marker_coords)
-          .setContent('<p>Hello world!<br />This is a nice popup.</p>')
+          .setContent(`
+            <h4>WELL ID: ${feature.properties.pk}</h4>
+            <h5><a href="${feature.properties.well_constr_url}" target="_blank">View Well Construction Report <i class="fa fa-external-link"></i></a></h5>
+            <h5><a href="${feature.properties.sample_db_url}" target="_blank">View Sample Analytical Data<i class="fa fa-external-link"></i></a></h5>
+            <h5><strong>This point location is based on: ${feature.properties.location_method}</strong></h5>
+          `)
 
         marker = new L.marker(marker_coords, {icon: icon});
         marker.bindPopup(popup);
