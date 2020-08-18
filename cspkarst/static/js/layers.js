@@ -166,11 +166,11 @@ sinkholes.refreshable = true;
 sinkholes.name = "Sinkholes";
 
 var sinkholes_heatmap = L.WMS.overlay(legionows, {
-    'layers': gs_workspace + ':cspkarst_sinkholes',
-    'styles': 'sink_heatmap',
-    'format': 'image/png',
-    'transparent': true,
-    pane: 'heatmap-pane',
+    layers: gs_workspace + ':cspkarst_sinkholes',
+    styles: 'sink_heatmap',
+    format: 'image/png',
+    transparent: true,
+    pane: 'tilePane',
 });
 sinkholes_heatmap.id = 'sinkholes_heatmap';
 sinkholes_heatmap.name = "Sinkholes Heatmap";
@@ -245,15 +245,15 @@ qsections.id = 'qsections';
 qsections.name = "PLSS &frac14; Sections";
 
 var sections = L.WMS.overlay(legionows, {
-    'layers': 'wi_ref:plss_sections',
-    'format': 'image/png',
-    'transparent': true,
+    layers: 'wi_ref:plss_sections',
+    format: 'image/png',
+    transparent: true,
     // 'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
 });
 var sectionsappend = L.WMS.overlay(legionows, {
-    'layers': 'wi_ref:plss_sections_toappend',
-    'format': 'image/png',
-    'transparent': true,
+    layers: 'wi_ref:plss_sections_toappend',
+    format: 'image/png',
+    transparent: true,
     // 'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
 });
 var sec_composite = L.layerGroup([sections, sectionsappend]);
@@ -273,20 +273,20 @@ townships.name = "PLSS Townships";
 // use the overlay class from leaflet.wms.js to make a non-tiled layer.
 // necessary for better labeling apparently
 var mcd = L.WMS.overlay(legionows, {
-    'layers': 'wi_ref:cities_towns_and_villages',
-    'format': 'image/png',
-    'transparent': true,
-    'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
+    layers: 'wi_ref:cities_towns_and_villages',
+    format: 'image/png',
+    transparent: true,
+    CQL_FILTER: "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
 });
 mcd.options = {'attribution':"Minor Civil Divisions Fall 2017"};
 mcd.id = 'mcd';
 
 var counties = L.WMS.overlay(legionows, {
-    'layers': 'wi_ref:wi_counties_nrcs_4269',
-    'transparent': true,
-    'format':'image/png',
-    'CQL_FILTER': "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
-    'styles':"counties_karstography"
+    layers: 'wi_ref:wi_counties_nrcs_4269',
+    transparent: true,
+    format:'image/png',
+    CQL_FILTER: "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
+    styles:"counties_karstography"
 });
 counties.options = {'attribution':"Counties <a href='https://gdg.sc.egov.usda.gov/' target='_blank'>NRCS</a>"};
 counties.id = 'counties';

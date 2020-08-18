@@ -151,7 +151,7 @@ map.on("contextmenu", function (event) {
     var latitude = event.latlng.lat.toFixed(4);
     var longitude = event.latlng.lng.toFixed(4);
     var gm = 'http://maps.google.com/maps?z=7&t=k&q=loc:'+latitude+'+'+longitude;
-    var gmlink = '<br><a href="'+gm+'" target="_blank">google maps</a>'
+    var gmlink = '<br><a href="'+gm+'" target="_blank">view in google maps</a>'
     latlongpopup
         .setLatLng(event.latlng)
         .setContent(latitude+', '+longitude+'<br>zoom level: '+map.getZoom()+gmlink)
