@@ -187,6 +187,53 @@ var frac = L.tileLayer.wms(legionows, {
 frac.id = 'frac';
 frac.name = "Fracture Lines";
 
+
+var getClusterRadius = function(zoom){
+  if (zoom < 17) { return 80 }
+  if (zoom == 17) { return 50 }
+  if (zoom > 17) { return 20 }
+}
+
+var wells = L.markerClusterGroup({
+  // iconCreateFunction: function(cluster) {
+  //   return L.divIcon({
+  //     html: '<div><p>' + cluster.getChildCount() + '</p></div>',
+  //     className: 'cluster-marker well-cluster'
+  //   });
+  // },
+  maxClusterRadius: getClusterRadius,
+});
+
+$.ajax({
+    url : root_url+"/wells/",
+    success : function (data) {
+
+      $.each(data['features'], function(index, feature) {
+        var marker_coords = [
+          feature['geometry']['coordinates'][1],
+          feature['geometry']['coordinates'][0]
+        ]
+
+        var icon = L.divIcon({className: 'well-icon',html:'<i class="fa fa-circle-o" style="font-size:20px;"></i>'});
+
+        var popup = L.popup({'className' : 'latlong-popup'})
+          .setLatLng(marker_coords)
+          .setContent('<p>Hello world!<br />This is a nice popup.</p>')
+
+        marker = new L.marker(marker_coords, {icon: icon});
+        marker.bindPopup(popup);
+        wells.addLayer(marker);
+      });
+    },
+    error:function (xhr, ajaxOptions, thrownError){
+        if(xhr.status==404) {
+            console.log(thrownError);
+        }
+    }
+});
+wells.id = 'wells';
+wells.name = "Well Locations";
+
 var qsections = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:plss_qsections',
     format: 'image/png',
@@ -280,8 +327,9 @@ sinks12.setZIndex(32);
 sinks25.setZIndex(33);
 sinks5.setZIndex(34);
 
-// sinkholes_heatmap.options['zIndex'] = 22;
+sinkholes_heatmap.options['zIndex'] = 22;
 sinkholes.setZIndex(39);
+wells.setZIndex(40);
 
 // ~~~~~~~~~~ create layer groups and generate legend ~~~~~~~~~~~~~~~~~~~~ //
 var allLayersGrp = L.layerGroup();
@@ -336,6 +384,7 @@ var karstLayers = [
     sinkholes_heatmap,
     sinkholes,
     frac,
+    wells,
 ];
 var karstLayersGrp = L.layerGroup();
 $.each(karstLayers, function(index, layer){

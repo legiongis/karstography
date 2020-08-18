@@ -282,6 +282,35 @@ button[disabled], html input[disabled] {
     cursor: default;
 }
 
+.cluster-marker {
+	border-radius: 50%;
+  margin-top: -18px !important;
+  margin-left: -18px !important;
+  width: 36px !important;
+	height: 36px !important;
+  text-align: center;
+
+}
+
+.marker-cluster div {
+  color: white !important;
+  font-family:'Lato',sans-serif;
+  font-weight: 900;
+  font-size: 1.2em;
+}
+
+.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+  background-color: rgba(1, 1, 138, .75);
+}
+
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+    background-color: rgba(1, 1, 138, .25);
+}
+
+.well-icon {
+  color: rgba(1, 1, 138, 1);
+}
+
 ul.dashed {
     list-style: none;
     padding-left: 25;
