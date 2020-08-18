@@ -201,6 +201,7 @@ var wells = L.markerClusterGroup({
   //     className: 'cluster-marker well-cluster'
   //   });
   // },
+  polygonOptions: {color: '#01018A'},
   maxClusterRadius: getClusterRadius,
 });
 
