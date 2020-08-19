@@ -127,7 +127,7 @@ class Well(models.Model):
 class PointOfInterest(models.Model):
 
     CAT_CHOICES = (
-       ("Sink Example","Karst Example"),
+       ("Sink Example","Sink Example"),
        ("Other","Other"),
     )
 
