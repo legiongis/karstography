@@ -1,25 +1,26 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
-from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
-from django.core import serializers
-from django.conf import settings
-from .models import Sink
-from .forms import SinkForm
 import os
 import json
+from django.shortcuts import render
+from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
+from django.core.serializers import serialize
+from django.conf import settings
+from .models import Sink, Well, PointOfInterest
+from .forms import SinkForm
+
 
 def index(request):
     return render(request, 'index.html')
-    
+
 def sink_update(request,sink_id):
     try:
         instance = Sink.objects.get(sink_id=sink_id)
     except:
         return JsonResponse({'error':'no sink with this sink_id. (how did you even request this?)'},status=404)
     fields = [f.name for f in instance._meta.get_fields()]
-    
+
     # if POST, iterate the form data and update relevant fields in the instance
     if request.method == 'POST':
         form = SinkForm(request.POST)
@@ -36,11 +37,11 @@ def sink_update(request,sink_id):
     # if a GET prepopulate form with the data from the input sink_id
     else:
         form = SinkForm(instance=instance)
-        
+
     # form.fields['comment'].widget.attrs['readonly'] = True
 
     return render(request, 'sink.html', {'form': form})
-    
+
 def sink_info(request,sink_id):
     try:
         instance = Sink.objects.get(sink_id=sink_id)
@@ -48,8 +49,15 @@ def sink_info(request,sink_id):
         return JsonResponse({'error':'no sink with this sink_id.'},status=404)
 
     return JsonResponse({"lat":instance.geom[1],"lng":instance.geom.coords[0]})
-    
+
 def get_example_locations(request):
-    json_data = open(settings.EXAMPLE_LOCATIONS_JSON).read()
-    data = json.loads(json_data)
-    return JsonResponse(data)
+
+    data = serialize('geojson', PointOfInterest.objects.all(),
+        geometry_field='geom')
+    return JsonResponse(json.loads(data))
+
+def wells_geojson(request):
+
+    data = serialize('geojson', Well.objects.all(),
+          geometry_field='geom')
+    return JsonResponse(json.loads(data))
