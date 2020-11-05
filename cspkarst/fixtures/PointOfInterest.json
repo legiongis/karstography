@@ -84,7 +84,7 @@
   "description": "location of the proposed Roth feeder operation",
   "category": "Other",
   "basemap": "Aerial Imagery",
-  "geom": "SRID=4326;POINT (-90.8745195 43.1541304)"
+  "geom": "SRID=4326;POINT (-90.87451950000001 43.1541304)"
  }
 }
 ]
