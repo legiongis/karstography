@@ -1,0 +1,32 @@
+html {
+  background: rgb(238, 239, 221);
+  line-height: 1;
+}
+
+body {
+  font-family: 'Raleway', sans-serif;
+  color: #003300;
+}
+
+/* these classes mimic the header-row classes in the main app.*/
+.navbar {
+    background-color: #85BF6F;
+    border-radius: 0;
+    border: 0;
+    box-shadow: 0px 0px 10px 2px #003300;
+    color: #003300;
+}
+
+.sidebar {
+    background-color: #96BEF1;
+    border-radius: 0;
+    border: 0;
+    box-shadow: 0px 0px 10px 2px #003300;
+    color: #003300;
+    width: 15rem;
+}
+
+.sidebar a {
+    color:#182F4C;
+    font-weight:900;
+}
