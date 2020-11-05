@@ -1,0 +1,51 @@
+body, html {
+  margin: 0;
+  height:100%;
+  background-color: #db4437;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.container {
+}
+
+a:visited,a:link {
+    color:black;
+}
+
+.help-toggle {
+    text-align:center;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.help-content {
+    display: none;
+}
+
+.wcr-entry {
+    background-color: #dadada;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.wcr-form {
+    border: solid grey 1px;
+}
+
+.wcr-index h2 {
+    text-align: center;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.wcr-index ul {
+    list-style-type: none;
+    
+}
+
+.zoom-container {
+    height:200px;
+    width:450px;
+    background-color:lightgrey;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 10px;
+}

@@ -1,0 +1,150 @@
+/* GENERAL */
+
+.map {
+    width: 100%;
+    height: 600px;
+}
+
+/* attempt at fixing strange right side of map
+@media screen and (max-width: 992px) {
+    .map {
+        border-right: black solid 1px;
+    }
+}
+@media (min-width: 992px) and (max-width: 1900px) {
+    .map {
+        border-right: none;
+    }
+}
+@media (min-width: 1200px) {
+    .map {
+        border-right: black solid 1px;
+    }
+}
+*/
+
+
+.rowhead {
+    color:white;
+    width: 95px;
+    outline: 0px;
+    position: relative;
+    height: 20px;
+    background-color: #637486;
+    text-align: center;
+    font-size: 10pt;
+}
+
+#footbar {
+    color: black;
+    text-align:center;
+}
+
+ul.bar li {
+    display: table;
+    float: left;
+    height: 25px;
+    font-size: 11pt;
+}
+
+ul.bar li p {
+    font-weight: bold;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+ul.bar {
+    padding: 0px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    background-color: #aaa;
+    text-align: center;
+}
+
+/* BAR BUTTONS */
+button {
+    border: 0px;
+    padding: 0px 10px;
+    outline: 0px;
+    position: relative;
+    height: 25px;
+    text-align: center;
+    font-size: 10pt;
+}
+
+button:hover {
+    background-color: #AB1722;
+}
+
+button.selected {
+    background-color: #83A854;
+}
+
+button.lite {
+    background-color: transparent;
+    font-weight: bold;
+}
+
+button.lite:hover {
+    color: #AB1722 !important;
+    background-color: transparent;
+}
+
+/* LEGEND BOXES */
+.info-box {
+    margin-top: -225px;
+    padding: 10px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* OL3 ELEMENTS */
+
+.ol-zoom {
+    color: white !important;
+    background-color: white;
+}
+
+.ol-zoom-in, .ol-zoom-out {
+    color: white !important;
+    background-color: #637486 !important;      
+}
+
+.ol-attribution {
+    background-color: white !important;
+    color: white;
+}
+
+.ol-attribution ul {
+    color: black !important;
+    /*display: block !important;*/
+}
+      
+.ol-attribution ul li {
+    display: list-item !important;
+}
+
+.ol-mouse-position {
+    background-color: #637486;
+    padding: 4px 8px 4px 8px;
+    border: 2px solid white;
+    font-size: small;
+    border-radius: 4px;
+    color: white;
+}
+
+.ol-has-tooltip {
+    color: white;
+}
+
+.ol-control button {
+    padding: 2px !important;
+}
+
+.ol-control button {
+    color: white !important;
+    background-color: #637486;
+}
