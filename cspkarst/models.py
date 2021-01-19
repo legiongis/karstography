@@ -79,34 +79,129 @@ class TownUnit(models.Model):
 
 class Well(models.Model):
 
-    wi_unique_well_no = models.CharField(primary_key=True, max_length=6)
-    watr_seq_no = models.IntegerField(null=True, blank=True)
-    dnr_lat_dd_amt = models.FloatField(null=True, blank=True)
-    dnr_long_dd_amt = models.FloatField(blank=True, null=True)
-    survey_township = models.IntegerField(null=True, blank=True)
-    survey_range = models.IntegerField(null=True, blank=True)
-    survey_range_dir = models.CharField(max_length=1, blank=True, null=True)
-    survey_section = models.IntegerField(null=True, blank=True)
-    q_section = models.CharField(max_length=2, blank=True, null=True)
-    qq_section = models.CharField(max_length=2, blank=True, null=True)
-    well_addr = models.CharField(max_length=100, blank=True, null=True)
-    owner_mailing_addr = models.CharField(max_length=60, blank=True, null=True)
-    esri_oid = models.IntegerField(null=True, blank=True)
-    muni = models.CharField(max_length=45, blank=True, null=True)
-    well_depth_amt = models.FloatField(null=True, blank=True)
-    well_depth_amt_text = models.CharField(max_length=45, blank=True, null=True)
-    constructor_name = models.CharField(max_length=60, blank=True, null=True)
-    well_complete_date = models.DateField(blank=True, null=True)
-    well_status = models.CharField(max_length=15, blank=True, null=True)
-    static_depth_amt = models.FloatField(null=True, blank=True)
-    static_depth_above_below = models.CharField(max_length=25, blank=True, null=True)
-    location_method = models.CharField(max_length=25, blank=True, null=True)
-    casing_depth_amt = models.FloatField(null=True, blank=True)
-    casing_depth_amt_txt = models.CharField(max_length=45, blank=True, null=True)
-    decade_complete = models.CharField(max_length=15, blank=True, null=True)
-    well_constr_url = models.CharField(max_length=115, blank=True, null=True)
-    sample_db_url = models.CharField(max_length=650, blank=True, null=True)
-    geom = models.PointField(null=True)
+    wi_unique_well_no = models.CharField(
+        primary_key=True,
+        max_length=6,
+        verbose_name="WI Unique Well ID"
+    )
+    watr_seq_no = models.IntegerField(
+        null=True, blank=True,
+        verbose_name="Water Seq No."
+    )
+    dnr_lat_dd_amt = models.FloatField(
+        null=True, blank=True,
+        verbose_name="DNR Lat."
+    )
+    dnr_long_dd_amt = models.FloatField(
+        null=True, blank=True,
+        verbose_name="DNR Long."
+    )
+    survey_township = models.IntegerField(
+        null=True, blank=True,
+        verbose_name="Survey Township"
+    )
+    survey_range = models.IntegerField(
+        null=True, blank=True,
+        verbose_name="Survey Range"
+    )
+    survey_range_dir = models.CharField(
+        max_length=1,
+        null=True, blank=True,
+        verbose_name="Survey Range Dir."
+    )
+    survey_section = models.IntegerField(
+        null=True, blank=True,
+        verbose_name="Survey Section"
+    )
+    q_section = models.CharField(
+        max_length=2,
+        null=True, blank=True,
+        verbose_name="Q Section"
+    )
+    qq_section = models.CharField(
+        max_length=2,
+        null=True, blank=True,
+        verbose_name="QQ Section"
+    )
+    well_addr = models.CharField(
+        max_length=100,
+        null=True, blank=True,
+        verbose_name="Well Address"
+    )
+    owner_mailing_addr = models.CharField(
+        max_length=60,
+        blank=True, null=True,
+        verbose_name="Owner Mailing Address"
+    )
+    esri_oid = models.IntegerField(
+        null=True, blank=True,
+        verbose_name="ESRI OID"
+    )
+    muni = models.CharField(
+        max_length=45,
+        blank=True, null=True,
+        verbose_name="Municipality"
+    )
+    well_depth_amt = models.FloatField(
+        null=True, blank=True,
+        verbose_name="Well Depth"
+    )
+    well_depth_amt_text = models.CharField(
+        max_length=45,
+        null=True, blank=True,
+        verbose_name="Well Depth - text"
+    )
+    constructor_name = models.CharField(
+        max_length=60,
+        blank=True, null=True,
+        verbose_name="Constructor Name"
+    )
+    well_complete_date = models.DateField(
+        blank=True, null=True,
+        verbose_name="Well Completion Date"
+    )
+    well_status = models.CharField(
+        max_length=15,
+        blank=True, null=True,
+        verbose_name="Well Status"
+    )
+    static_depth_amt = models.FloatField(
+        null=True, blank=True,
+        verbose_name="Static Depth")
+    static_depth_above_below = models.CharField(
+        max_length=25,
+        blank=True, null=True,
+        verbose_name="Static Depth Above Below"
+    )
+    location_method = models.CharField(
+        max_length=25,
+        blank=True, null=True,
+        verbose_name="Location Method"
+    )
+    casing_depth_amt = models.FloatField(
+        null=True, blank=True,
+        verbose_name="Casing Depth"
+    )
+    casing_depth_amt_txt = models.CharField(
+        max_length=45,
+        blank=True, null=True,
+        verbose_name="Casing Depth - text"
+    )
+    decade_complete = models.CharField(
+        max_length=15,
+        blank=True, null=True,
+        verbose_name="Decade Completed"
+    )
+    well_constr_url = models.CharField(
+        max_length=115,
+        blank=True, null=True,
+        verbose_name="WCR URL"
+    )
+    sample_db_url = models.CharField(
+        max_length=650,
+        blank=True, null=True,
+        verbose_name="Sample DB URL")
+    geom = models.PointField(null=True, verbose_name="Location")
 
     def __str__(self):
         return self.pk
