@@ -1,6 +1,6 @@
 from django.conf import settings
 from cspkarst.models import Sink
-    
+
 def context(request):
     if settings.ENVIRONMENT == "staging":
         gs_workspace = "karstography-stage"
@@ -8,7 +8,6 @@ def context(request):
         gs_workspace = "karstography-prod"
     else:
         gs_workspace = ""
-    print("gs_workspace: "+gs_workspace)
 
     return {
         'mapbox_api_key': settings.MAPBOX_API_KEY,
@@ -16,7 +15,7 @@ def context(request):
         'root_url': settings.ROOT_URL,
         'gs_workspace': gs_workspace,
     }
-    
+
 def sink_counts(request):
     sh_probable = len(Sink.objects.filter(sink_type="SINKHOLE",confidence="PROBABLE"))
     sh_possible = len(Sink.objects.filter(sink_type="SINKHOLE",confidence="POSSIBLE"))

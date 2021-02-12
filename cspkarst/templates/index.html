@@ -18,7 +18,13 @@
             <div style="display:inline;text-align:center;">
                 <p style="margin:10px 0px;">
                     <span style="font-weight:900">
+                        {% if gs_workspace == "karstography-stage" %}
+                        <span style="color:red; font-weight: bold">&#161;Staging Server! </span>
+                        {% endif %}
                         KARST GEOLOGY VIEWER
+                        {% if gs_workspace == "karstography-stage" %}
+                        <span style="color:red; font-weight: bold"> &#161;Staging Server!</span>
+                        {% endif %}
                         {% if user.is_authenticated %}
                             &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
                         {{user.username}}{% endif %}

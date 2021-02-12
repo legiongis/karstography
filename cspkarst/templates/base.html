@@ -27,7 +27,11 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
+	{% if gs_workspace == "karstography-stage" %}
+	<title>STAGING - Karst Geology Viewer</title>
+	{% else %}
 	<title>Karst Geology Viewer</title>
+	{% endif %}
 
     {% leaflet_js %}
     {% leaflet_css %}
