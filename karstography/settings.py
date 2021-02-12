@@ -176,8 +176,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ROOT_URL = ''
 
-EXAMPLE_LOCATIONS_JSON = os.path.join(BASE_DIR,'cspkarst','fixtures','example-locations.json')
-
 # must be either 'production' or 'staging'
 ENVIRONMENT = 'production'
 
