@@ -14,6 +14,7 @@ def context(request):
         'static_url': settings.STATIC_URL,
         'root_url': settings.ROOT_URL,
         'gs_workspace': gs_workspace,
+        'user_is_staff': request.user.is_staff,
     }
 
 def sink_counts(request):

@@ -1,0 +1,21 @@
+<div class="sink-update-section">
+    <div class="sink-update-header">
+        <h5>Well ID: {{ form.wi_unique_well_no.value }}</h5>
+    </div>
+    <div class="sink-update-content">
+    <form action="/" method="post" id="well-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="col-xs-12">
+            <div class="fieldWrapper" title="Category for this sink, based on the assessments described below.">
+                <label for="new-latlng-input">Update Location (lat, long)</label>
+                <input type="text" name="latlng-string" id="new-latlng-input" name="new-latlng-input"/>
+                <p><em>Value must be formatted like this:</em><br><pre>43.317060, -90.843201</pre></p>
+            </div>
+        </div>
+        <div class="col-xs-12 horizontal-rule"></div>
+        <input type="submit" value="Submit" style="margin-top:10px;float:right;margin-right:15px;"/>
+    </form>
+    <button id="form-cancel" onclick="removeSinkForm()" type="cancel" style="margin-top:10px;margin-left:15px">Cancel</button>
+    </div>
+</div>

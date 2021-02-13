@@ -2,7 +2,6 @@ var seeLegend = '&nbsp;&nbsp;<i class="fa fa-info-circle open-legend-btn" title=
 var refreshLayer = '&nbsp;&nbsp;<i class="fa fa-refresh refresh-layer-icon" title="refresh layer"></i>';
 
 function generateLayerGroupLegend(layerArray, htmlElId, basemapGroup=false) {
-  console.log(layerArray);
   $.each(layerArray, function(index, layer) {
     if (!layer.legendInfo) { moreInfo = '' } else { moreInfo = seeLegend }
     if (!layer.refreshable) { refreshable = '' } else { refreshable = refreshLayer }
@@ -25,7 +24,6 @@ function generateLayerGroupLegend(layerArray, htmlElId, basemapGroup=false) {
           </label>
           <div class="layer-extra-icons">`+moreInfo+refreshable+`</div>
       </div>`
-    console.log("legend entry: "+ layer.id)
     div = document.getElementById( htmlElId );
     div.insertAdjacentHTML( 'beforeend', elHtml );
   });

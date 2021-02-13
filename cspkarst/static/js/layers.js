@@ -203,43 +203,82 @@ var wells = L.markerClusterGroup({
   polygonOptions: {color: '#01018A'},
   maxClusterRadius: getClusterRadius,
 });
+wells.id = 'wells';
+wells.name = "Private Well Locations";
 
-$.ajax({
-    url : root_url+"/wells/",
-    success : function (data) {
+var addWellsToGroupLayer = function () {
+  wells.clearLayers();
+  $.ajax({
+      url : root_url+"/wells/",
+      success : function (data) {
 
-      var arcgisRestUrl = "https://dnrmaps.wi.gov/arcgis/rest/services/DG_Well_Driller/DG_Well_Driller_WTM_Ext/MapServer/0/query?"
+        var arcgisRestUrl = "https://dnrmaps.wi.gov/arcgis/rest/services/DG_Well_Driller/DG_Well_Driller_WTM_Ext/MapServer/0/query?"
 
-      $.each(data['features'], function(index, feature) {
-        var marker_coords = [
-          feature['geometry']['coordinates'][1],
-          feature['geometry']['coordinates'][0]
-        ]
+        $.each(data['features'], function(index, feature) {
+          var marker_coords = [
+            feature['geometry']['coordinates'][1],
+            feature['geometry']['coordinates'][0]
+          ]
 
-        var icon = L.divIcon({className: 'well-icon',html:'<i class="fa fa-circle-o" style="font-size:20px;"></i>'});
-        var popup = L.popup({'className' : 'latlong-popup'})
-          .setLatLng(marker_coords)
-          .setContent(`
+          var icon = L.divIcon({className: 'well-icon',html:'<i class="fa fa-circle-o" style="font-size:20px;"></i>'});
+
+          var popupHtml = `
             <h4>WELL ID: ${feature.properties.pk}</h4>
             <h5><a href="${feature.properties.well_constr_url}" target="_blank">View Well Construction Report <i class="fa fa-external-link"></i></a></h5>
             <h5><a href="${feature.properties.sample_db_url}" target="_blank">View Sample Analytical Data<i class="fa fa-external-link"></i></a></h5>
             <h5><a href="${arcgisRestUrl}where=%22WI_UNIQUE_WELL_NO%22=%27${feature.properties.pk}%27&outSR=4326&outFields=*&f=html" target="_blank">Full Database Entry <i class="fa fa-external-link"></i></a></h5>
             <h5><strong>This point location is based on: ${feature.properties.location_method}</strong></h5>
-          `)
+          `
+          var popup = L.popup({'className' : 'latlong-popup'})
+            .setLatLng(marker_coords)
+            .setContent(popupHtml)
 
-        marker = new L.marker(marker_coords, {icon: icon});
-        marker.bindPopup(popup);
-        wells.addLayer(marker);
-      });
-    },
-    error:function (xhr, ajaxOptions, thrownError){
-        if(xhr.status==404) {
-            console.log(thrownError);
-        }
-    }
-});
-wells.id = 'wells';
-wells.name = "Private Well Locations";
+          marker = new L.marker(marker_coords, {icon: icon});
+          if (user_is_staff == "True") {
+            marker.on('click', (function() {
+              $('.map-icon').remove();
+              $.ajax({
+                  url : root_url+"/well-update/"+feature.properties.pk+"/",
+                  success : function (response) {
+                      $("#info-panel").fadeIn();
+                      $("#panel-content").html(response);
+                      $("#well-form").submit(function(event) {
+
+                          // Stop form from submitting normally to avoid a redirect
+                          event.preventDefault();
+                          $.ajax({
+                              url:root_url+"/well-update/"+feature.properties.pk+"/",
+                              type:'post',
+                              data:$('#well-form').serialize(),
+                              success:function(){
+                                  addWellsToGroupLayer();
+                                  $("#panel-content").html('<div class="form-msg" style="text-align:center;margin-top:20px;"><i class="fa fa-check" style="font-size:40px;"></i><p style="font-weight:900;font-size:20px;">saved</p></div>');
+
+                              }
+                          });
+                      });
+                  },
+                  error:function (xhr, ajaxOptions, thrownError){
+                      if(xhr.status==404) {
+                          console.log(thrownError);
+                      }
+                  }
+                });
+              }
+            ));
+          };
+          marker.bindPopup(popup);
+          wells.addLayer(marker);
+        });
+      },
+      error:function (xhr, ajaxOptions, thrownError){
+          if(xhr.status==404) {
+              console.log(thrownError);
+          }
+      }
+  });
+}
+addWellsToGroupLayer()
 
 var qsections = L.tileLayer.wms(legionows, {
     layers: 'wi_ref:plss_qsections',

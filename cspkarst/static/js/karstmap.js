@@ -44,7 +44,6 @@ function switchBaseLayer (layername) {
 }
 
 function zoomToExample(latlng,zoom,baselayername) {
-  console.log(latlng);
     switchBaseLayer(baselayername);
     map.flyTo(latlng,zoom);
 }

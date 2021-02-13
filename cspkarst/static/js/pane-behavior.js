@@ -12,7 +12,6 @@ function openExamplePanel() {
   $.ajax ({
     url:root_url+"/example-locations",
     success: function (data) {
-      console.log(data);
       var html = '';
       var icon = L.divIcon({className: '',html:'<i class="fa fa-bullseye" style="color: red; font-size:20px;"></i>'});
       var pois = L.geoJSON(data, {
@@ -134,7 +133,6 @@ $(document).ready(
                 url : "/sink-form/5",
                 success : function (response) {
                     $("#panel-content").html(response);
-                    console.log("form loaded");
                 }
             });
         });

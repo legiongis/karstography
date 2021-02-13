@@ -202,6 +202,17 @@ class Well(models.Model):
         blank=True, null=True,
         verbose_name="Sample DB URL")
     geom = models.PointField(null=True, verbose_name="Location")
+    geo_corrected = models.BooleanField(
+        max_length=650,
+        blank=True, null=True,
+        verbose_name="Geometry corrected?")
+    geo_corrected_by = models.CharField(
+        max_length=100,
+        blank=True, null=True,
+        verbose_name="Geometry corrected by")
+    geo_corrected_time = models.DateTimeField(
+        blank=True, null=True,
+        verbose_name="Geometry corrected on")
 
     def __str__(self):
         return self.pk
