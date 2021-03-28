@@ -39,7 +39,8 @@ html body {
     cursor:default;
 }
 
-.leaflet-top {
+/* adds extra padding to account for nav bar only on main map page */
+#karstmap .leaflet-top {
     top: 40px;
 }
 
@@ -235,18 +236,21 @@ button[disabled], html input[disabled] {
 .leaflet-popup-content-wrapper {
 }
 
-.leaflet-control-layers {
+/* Commenting out to make the embeddable map /csp-website-embed have a default
+/* style for the layers control. */
+
+/* .leaflet-control-layers {
     width:100%;
     background: unset;
     box-shadow: unset;
-}
+} */
 
-.leaflet-control-layers-separator {
+/* .leaflet-control-layers-separator {
     border-top: none;
     height: unset;
     font-weight:bold;
     margin:unset;
-}
+} */
 
 .leaflet-control-minimap {
     position: relative;

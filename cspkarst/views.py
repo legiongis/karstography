@@ -9,12 +9,17 @@ from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 from django.core.serializers import serialize
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.views.decorators.clickjacking import xframe_options_exempt
 from .models import Sink, Well, PointOfInterest
 from .forms import SinkForm, WellForm
 
 
 def index(request):
     return render(request, 'index.html')
+
+@xframe_options_exempt
+def simple_embed(request):
+    return render(request, 'simple_embed.html')
 
 def sink_update(request,sink_id):
     try:

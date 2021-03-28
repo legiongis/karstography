@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^simple-embed/', views.simple_embed, name='simple_embed'),
     url(r'^json/(?P<sink_id>[\w-]+)/', views.sink_info, name='sink-info'),
     url(r'^sink-update/(?P<sink_id>[\w-]+)/', views.sink_update, name='sink-update'),
     url(r'^example-locations/', views.get_example_locations, name='example-locations'),
