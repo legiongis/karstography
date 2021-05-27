@@ -3,18 +3,18 @@ from cspkarst.models import Sink
 
 def context(request):
     if settings.ENVIRONMENT == "staging":
-        gs_workspace = "karstography-stage"
+        env_suffix = "-stage"
     elif settings.ENVIRONMENT == "production":
-        gs_workspace = "karstography-prod"
+        env_suffix = "-prod"
     else:
-        gs_workspace = ""
+        env_suffix = ""
 
     return {
         'mapbox_api_key': settings.MAPBOX_API_KEY,
         'static_url': settings.STATIC_URL,
         'root_url': settings.ROOT_URL,
-        'gs_workspace': gs_workspace,
         'user_is_staff': request.user.is_staff,
+        'env_suffix': env_suffix,
     }
 
 def sink_counts(request):

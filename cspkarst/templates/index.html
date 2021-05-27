@@ -18,11 +18,11 @@
             <div style="display:inline;text-align:center;">
                 <p style="margin:10px 0px;">
                     <span style="font-weight:900">
-                        {% if gs_workspace == "karstography-stage" %}
+                        {% if env_suffix == "-stage" %}
                         <span style="color:red; font-weight: bold">&#161;Staging Server! </span>
                         {% endif %}
                         KARST GEOLOGY VIEWER
-                        {% if gs_workspace == "karstography-stage" %}
+                        {% if env_suffix == "-stage" %}
                         <span style="color:red; font-weight: bold"> &#161;Staging Server!</span>
                         {% endif %}
                         {% if user.is_authenticated %}
@@ -111,7 +111,7 @@
         <div class="row" style="">
             <div class="col-xs-12">
                 <h4>Sinkholes</h4>
-                <img src="https://db.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography-prod:cspkarst_sinkholes&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0xeeefdd;dpi:300&env=size:1" style="width:140px"></img>
+                <img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sinkholes-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0xeeefdd;dpi:300&env=size:1" style="width:140px"></img>
                 <ul class="dashed">
                     <li>probable: {{sinkhole_probable}}</li>
                     <li>possible: {{sinkhole_possible}}</li>
@@ -120,11 +120,11 @@
             </div>
             <div id="" class="col-xs-12" style="margin-bottom:10px;">
                 <h4>All Sinks</h4>
-                <img src="https://db.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography-stage:cspkarst_sink_12&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0xeeefdd;dpi:300&env=size:1" style="width:140px"></img>
+                <img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0xeeefdd;dpi:300&env=size:10" style="width:140px"></img>
             </div>
             <div id="" class="col-xs-12" style="margin-bottom:10px;">
                 <h4>Carbonate Bedrock</h4>
-                <img src="https://db.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=wi_ref:geology_a_wi_usgs_2005&STYLE=CarbonateBedrock-statewide&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0xeeefdd;dpi:300" style="width:140px"></img>
+                <img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=general:geology_a_wi_usgs_2005&STYLE=geology_carbonate_wi&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0xeeefdd;dpi:300" style="width:140px"></img>
             </div>
             <div id="" class="col-xs-12" style="margin-bottom:10px;">
                 <h4>Depth to Bedrock (ft)</h4>

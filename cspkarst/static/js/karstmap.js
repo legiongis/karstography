@@ -14,13 +14,13 @@ map.addControl(c_fullscreen);
 map.addControl(c_scalebar);
 
 function redrawSinkLayer(){
-    sinks12.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
+    sinks12.setUrl(legionGeoNodeOWS+Math.random()+"&");
     sinks12.redraw();
-    sinks25.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
+    sinks25.setUrl(legionGeoNodeOWS+Math.random()+"&");
     sinks25.redraw();
-    sinks5.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
+    sinks5.setUrl(legionGeoNodeOWS+Math.random()+"&");
     sinks5.redraw();
-    sinkholes.setUrl("https://db.legiongis.com/geoserver/wms?"+Math.random()+"&");
+    sinkholes.setUrl(legionGeoNodeOWS+Math.random()+"&");
     sinkholes.redraw();
 }
 
@@ -61,10 +61,9 @@ var cleanGetFeatureUrl = function (url) {
 var getSinkForm = function (e) {
     $('.map-icon').remove();
     var getFeatureUrl = sinkIdentifyLayer.getFeatureInfoUrl(e.latlng,'application/json');
-    var cleanedGetFeatureUrl = cleanGetFeatureUrl(getFeatureUrl)
-
+    const cleanedGetFeatureUrl = cleanGetFeatureUrl(getFeatureUrl)
     $.ajax({
-        url:cleanedGetFeatureUrl,
+        url: cleanedGetFeatureUrl,
         success: function (data){
             if (data.features.length == 0) {
                 $("#panel-content").html('<div class="form-msg" style="text-align:center;margin-top:20px;"><p style="font-weight:900;font-size:20px;">no sink here...</p></div>')

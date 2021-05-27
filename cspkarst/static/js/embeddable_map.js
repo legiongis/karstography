@@ -47,7 +47,7 @@ var overlayLayers = {
    "Fracture Lines *":frac,
    // "PLSS &frac14; &frac14; Sections":qqsections,
    "PLSS &frac14; Sections":qsections,
-   "PLSS Sections":sec_composite,
+   "PLSS Sections":sections,
    "PLSS Townships":townships,
    // "Sink Locations *":sinks,
    "Sinks 1-2 ft *":sinks12,

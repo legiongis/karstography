@@ -27,7 +27,7 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-	{% if gs_workspace == "karstography-stage" %}
+	{% if env_suffix == "-stage" %}
 	<title>STAGING - Karst Geology Viewer</title>
 	{% else %}
 	<title>Karst Geology Viewer</title>
@@ -53,8 +53,8 @@
         var static_url = "{{static_url}}";
         var root_url = "{{root_url}}";
         var user_name = "{{user.username}}";
-        var gs_workspace = "{{gs_workspace}}";
 				var user_is_staff = "{{user_is_staff}}";
+				var env_suffix = "{{env_suffix}}";
     </script>
 
     <!-- <script src="{% static 'plugins/Leaflet.MakiMarkers.js' %}" type="text/javascript"></script> -->

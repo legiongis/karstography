@@ -1,5 +1,6 @@
 // ~~~~~~~~~~ define all layers ~~~~~~~~~~~~~~~~~~~~ //
-var legionows = "https://db.legiongis.com/geoserver/ows?";
+const legionDBOWS = "https://db.legiongis.com/geoserver/ows?";
+const legionGeoNodeOWS = "https://gn.legiongis.com/geoserver/wms?";
 
 var outdoors = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{
   maxNativeZoom: 18,
@@ -31,7 +32,7 @@ var outdoors_labels = L.tileLayer('https://api.mapbox.com/styles/v1/legiongis/cj
 });
 outdoors_labels.id = 'outdoors_labels'
 
-var hillshade = L.tileLayer.wms(legionows, {
+var hillshade = L.tileLayer.wms(legionDBOWS, {
     layers: 'elevation:driftless_hillshade',
     format: 'image/png',
     transparent: true,
@@ -43,7 +44,7 @@ var hillshade = L.tileLayer.wms(legionows, {
 hillshade.id = 'hillshade'
 hillshade.name = "SW WI Hillshade";
 
-var tpi = L.tileLayer.wms(legionows, {
+var tpi = L.tileLayer.wms(legionDBOWS, {
     layers: 'csp:Crawford_TPI_int16-3857_complete',
     format: 'image/png',
     transparent: true,
@@ -55,7 +56,7 @@ var tpi = L.tileLayer.wms(legionows, {
 tpi.id = 'tpi'
 tpi.name = "Topographic Position Index";
 
-var usgs = L.tileLayer.wms(legionows, {
+var usgs = L.tileLayer.wms(legionDBOWS, {
     layers: 'csp:drg_s_wi023_opt',
     format: 'image/png',
     transparent: true,
@@ -66,8 +67,8 @@ var usgs = L.tileLayer.wms(legionows, {
 usgs.id = 'usgs'
 usgs.name = "USGS Topo";
 
-var watersheds = L.tileLayer.wms(legionows, {
-    layers: 'wi_ref:wi_watersheds',
+var watersheds = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'general:wi_watersheds',
     format: 'image/png',
     transparent: true,
     attribution: "<a href='http://dnr.wi.gov/topic/watersheds/' target='_blank'>Watershed Boundaries (WIDNR)</a>",
@@ -77,7 +78,7 @@ var watersheds = L.tileLayer.wms(legionows, {
 watersheds.id = 'watersheds';
 watersheds.name = "Watershed Boundaries";
 
-var bedrock = L.tileLayer.wms(legionows, {
+var bedrock = L.tileLayer.wms(legionDBOWS, {
     layers: 'csp:Crawford_Depth_to_Bedrock',
     format: 'image/png',
     transparent: true,
@@ -89,22 +90,23 @@ bedrock.id = 'bedrock';
 bedrock.legendInfo = true;
 bedrock.name = "Depth to Bedrock";
 
-var wi_geology = L.tileLayer.wms(legionows, {
-    layers: 'wi_ref:geology_a_wi_usgs_2005',
+var wi_geology = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'general:geology_a_wi_usgs_2005',
     format: 'image/png',
     transparent: true,
     attribution: "<a href='https://mrdata.usgs.gov/geology/state/state.php?state=WI' target='_blank'>USGS Geologic Map, WI</a>",
     tiled: true,
     opacity:0.75,
-    styles:'CarbonateBedrock-statewide',
+    styles:'geology_carbonate_wi',
     maxZoom:19,
 });
 wi_geology.id = 'wi_geology'
 wi_geology.legendInfo = true;
 wi_geology.name = "Carbonate Bedrock";
 
-var sinks12 = L.tileLayer.wms(legionows, {
-    layers: gs_workspace + ':cspkarst_sink_12',
+var sinks12 = L.tileLayer.wms(
+    legionGeoNodeOWS, {
+    layers: 'karstography:cspkarst_sink_12' + env_suffix,
     format: 'image/png',
     transparent: true,
     attribution: "LiDAR-Derived Sink Locations",
@@ -119,8 +121,8 @@ sinks12.legendInfo = true;
 sinks12.refreshable = true;
 sinks12.name = "Sinks (depth 1-2 ft)";
 
-var sinks25 = L.tileLayer.wms(legionows, {
-    layers: gs_workspace + ':cspkarst_sink_25',
+var sinks25 = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'karstography:cspkarst_sink_25' + env_suffix,
     format: 'image/png',
     transparent: true,
     attribution: "LiDAR-Derived Sink Locations",
@@ -135,8 +137,8 @@ sinks25.legendInfo = true;
 sinks25.refreshable = true;
 sinks25.name = "Sinks (depth: 2-5 ft)";
 
-var sinks5 = L.tileLayer.wms(legionows, {
-    layers: gs_workspace + ':cspkarst_sink_5',
+var sinks5 = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'karstography:cspkarst_sink_5' + env_suffix,
     format: 'image/png',
     transparent: true,
     attribution: "LiDAR-Derived Sink Locations",
@@ -151,8 +153,8 @@ sinks5.legendInfo = true;
 sinks5.refreshable = true;
 sinks5.name = "Sinks (depth: 5+ ft)";
 
-var sinkholes = L.tileLayer.wms(legionows, {
-    layers: gs_workspace + ':cspkarst_sinkholes',
+var sinkholes = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'karstography:cspkarst_sinkholes' + env_suffix,
     format: 'image/png',
     transparent: true,
     attribution: "LiDAR-Derived Sink Locations",
@@ -165,9 +167,9 @@ sinkholes.legendInfo = true;
 sinkholes.refreshable = true;
 sinkholes.name = "Sinkholes";
 
-var sinkholes_heatmap = L.WMS.overlay(legionows, {
-    layers: gs_workspace + ':cspkarst_sinkholes',
-    styles: 'sink_heatmap',
+var sinkholes_heatmap = L.WMS.overlay(legionGeoNodeOWS, {
+    layers: 'karstography:cspkarst_sinkholes' + env_suffix,
+    styles: 'karst.sink_heatmap',
     format: 'image/png',
     transparent: true,
     pane: 'tilePane',
@@ -175,8 +177,8 @@ var sinkholes_heatmap = L.WMS.overlay(legionows, {
 sinkholes_heatmap.id = 'sinkholes_heatmap';
 sinkholes_heatmap.name = "Sinkholes - Heatmap";
 
-var frac = L.tileLayer.wms(legionows, {
-    layers: 'csp:fracture_lines',
+var frac = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'general:fracture_lines',
     format: 'image/png',
     transparent: true,
     attribution: "Fracture Lines (CSP staff)",
@@ -280,8 +282,8 @@ var addWellsToGroupLayer = function () {
 }
 addWellsToGroupLayer()
 
-var qsections = L.tileLayer.wms(legionows, {
-    layers: 'wi_ref:plss_qsections',
+var qsections = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'general:plss_qsections',
     format: 'image/png',
     transparent: true,
     tiled: true,
@@ -290,24 +292,17 @@ var qsections = L.tileLayer.wms(legionows, {
 qsections.id = 'qsections';
 qsections.name = "PLSS &frac14; Sections";
 
-var sections = L.WMS.overlay(legionows, {
-    layers: 'wi_ref:plss_sections',
+var sections = L.WMS.overlay(legionGeoNodeOWS, {
+    layers: 'general:plss_sections',
     format: 'image/png',
     transparent: true,
     // 'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
 });
-var sectionsappend = L.WMS.overlay(legionows, {
-    layers: 'wi_ref:plss_sections_toappend',
-    format: 'image/png',
-    transparent: true,
-    // 'CQL_FILTER': "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
-});
-var sec_composite = L.layerGroup([sections, sectionsappend]);
-sec_composite.id = 'sec_composite';
-sec_composite.name = "PLSS Sections";
+sections.id = 'sections';
+sections.name = "PLSS Sections";
 
-var townships = L.tileLayer.wms(legionows, {
-    layers: 'wi_ref:plss_townships',
+var townships = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'general:plss_townships',
     format: 'image/png',
     transparent: true,
     tiled: true,
@@ -318,8 +313,8 @@ townships.name = "PLSS Townships";
 
 // use the overlay class from leaflet.wms.js to make a non-tiled layer.
 // necessary for better labeling apparently
-var mcd = L.WMS.overlay(legionows, {
-    layers: 'wi_ref:cities_towns_and_villages',
+var mcd = L.WMS.overlay(legionGeoNodeOWS, {
+    layers: 'general:cities_towns_and_villages',
     format: 'image/png',
     transparent: true,
     CQL_FILTER: "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
@@ -327,8 +322,8 @@ var mcd = L.WMS.overlay(legionows, {
 mcd.options = {'attribution':"Minor Civil Divisions Fall 2017"};
 mcd.id = 'mcd';
 
-var counties = L.WMS.overlay(legionows, {
-    layers: 'wi_ref:wi_counties_nrcs_4269',
+var counties = L.WMS.overlay(legionGeoNodeOWS, {
+    layers: 'general:wi_counties_nrcs_4269',
     transparent: true,
     format:'image/png',
     CQL_FILTER: "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
@@ -343,10 +338,11 @@ civil_boundaries.name = "Civil Boundaries";
 
 // this is an invisible layer with a larger circle style which is used in the
 // click selection process. (larger circle means easier selection)
-var sinkIdentifyLayer = new L.tileLayer.betterWms(legionows+Math.random()+"&", {
-    layers: gs_workspace + ':cspkarst_sink',
+// var sinkIdentifyLayer = new L.tileLayer.betterWms(legionGeoNodeOWS + Math.random(), {
+var sinkIdentifyLayer = new L.tileLayer.betterWms(legionGeoNodeOWS, {
+    layers: 'karstography:cspkarst_sink' + env_suffix,
     transparent: true,
-    styles: 'sink_invisible_10pt_pt',
+    styles: 'karst.sink_invisible_10pt',
     format: 'image/png',
 });
 
@@ -363,7 +359,6 @@ wi_geology.setZIndex(21);
 bedrock.setZIndex(22);
 qsections.setZIndex(23);
 sections.options['zIndex'] = 24;
-sectionsappend.options['zIndex'] = 25;
 mcd.options['zIndex'] = 26;
 counties.options['zIndex'] = 27;
 watersheds.setZIndex(28);
@@ -401,7 +396,7 @@ $.each(baseLayers, function(index, layer){
 var civilLayers = [
   civil_boundaries,
   qsections,
-  sec_composite,
+  sections,
   townships,
 ];
 var civilLayersArray = [];
