@@ -1,5 +1,4 @@
 // ~~~~~~~~~~ define all layers ~~~~~~~~~~~~~~~~~~~~ //
-const legionDBOWS = "https://db.legiongis.com/geoserver/ows?";
 const legionGeoNodeOWS = "https://gn.legiongis.com/geoserver/wms?";
 
 var outdoors = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token='+mapbox_api_key,{
@@ -32,8 +31,8 @@ var outdoors_labels = L.tileLayer('https://api.mapbox.com/styles/v1/legiongis/cj
 });
 outdoors_labels.id = 'outdoors_labels'
 
-var hillshade = L.tileLayer.wms(legionDBOWS, {
-    layers: 'elevation:driftless_hillshade',
+var hillshade = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'wi-elevation:sw-wi-hillshade',
     format: 'image/png',
     transparent: true,
     attribution: "Hillshade derived from <a href='http://www.wisconsinview.org/' target='_blank'>WisconsinView</a> LiDAR",
@@ -44,8 +43,8 @@ var hillshade = L.tileLayer.wms(legionDBOWS, {
 hillshade.id = 'hillshade'
 hillshade.name = "SW WI Hillshade";
 
-var tpi = L.tileLayer.wms(legionDBOWS, {
-    layers: 'csp:Crawford_TPI_int16-3857_complete',
+var tpi = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'karstography:Crawford_TPI_int16-3857_complete',
     format: 'image/png',
     transparent: true,
     attribution: "<a href='http://www.gdal.org/gdaldem.html#gdaldem_TPI' target='_blank'>TPI</a> derived from <a href='http://www.wisconsinview.org/'>WisconsinView</a> LiDAR",
@@ -56,8 +55,8 @@ var tpi = L.tileLayer.wms(legionDBOWS, {
 tpi.id = 'tpi'
 tpi.name = "Topographic Position Index";
 
-var usgs = L.tileLayer.wms(legionDBOWS, {
-    layers: 'csp:drg_s_wi023_opt',
+var usgs = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'karstography:drg_s_wi023_opt',
     format: 'image/png',
     transparent: true,
     attribution: "USGS Topo",
@@ -78,8 +77,8 @@ var watersheds = L.tileLayer.wms(legionGeoNodeOWS, {
 watersheds.id = 'watersheds';
 watersheds.name = "Watershed Boundaries";
 
-var bedrock = L.tileLayer.wms(legionDBOWS, {
-    layers: 'csp:Crawford_Depth_to_Bedrock',
+var bedrock = L.tileLayer.wms(legionGeoNodeOWS, {
+    layers: 'karstography:Crawford_Depth_to_Bedrock',
     format: 'image/png',
     transparent: true,
     attribution: "<a href='https://websoilsurvey.sc.egov.usda.gov/App/HomePage.htm' target='_blank'>USGS Soil Survey</a>",
