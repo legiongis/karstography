@@ -2,6 +2,7 @@ karstography/settings_local.py
 cspkarst/dnr_well_cache/*.geojson
 assets
 env
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
