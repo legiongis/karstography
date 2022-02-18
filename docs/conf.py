@@ -13,12 +13,13 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
+from datetime import datetime
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'CSP Karst Geography Viewer'
-copyright = '2020, Legion GIS, LLC'
+project = 'Karstology'
+copyright = f'{datetime.now().year}, Legion GIS, LLC'
 author = 'Legion GIS, LLC'
 
 # The full version, including alpha/beta/rc tags
@@ -54,7 +55,7 @@ html_theme = 'press'
 html_theme_options = {
   "external_links": [
       ("Github", "https://github.com/legiongis/karstography"),
-      ("Back to Viewer", "/"),
+      ("Back to Site", "/"),
   ]
 }
 
