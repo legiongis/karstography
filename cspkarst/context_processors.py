@@ -18,8 +18,8 @@ def context(request):
     }
 
 def sink_counts(request):
-    sh_probable = len(Sink.objects.filter(sink_type="SINKHOLE",confidence="PROBABLE"))
-    sh_possible = len(Sink.objects.filter(sink_type="SINKHOLE",confidence="POSSIBLE"))
+    sh_probable = Sink.objects.filter(sink_type="SINKHOLE",confidence="PROBABLE").count()
+    sh_possible = Sink.objects.filter(sink_type="SINKHOLE",confidence="POSSIBLE").count()
     return {
         'sinkhole_total': sh_probable+sh_possible,
         'sinkhole_probable': sh_probable,

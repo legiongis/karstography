@@ -4,6 +4,10 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from .models import Sink, TownUnit, Well, PointOfInterest
 
+class SinkAdmin(admin.ModelAdmin):
+
+    list_filter = ("depth_cat",)
+
 class WellAdmin(admin.ModelAdmin):
 
     # make all the fields that come from the DNR db immutable in admin pages
@@ -37,7 +41,7 @@ class WellAdmin(admin.ModelAdmin):
         "sample_db_url",
     )
 
-admin.site.register(Sink)
+admin.site.register(Sink, SinkAdmin)
 admin.site.register(TownUnit)
 admin.site.register(Well, WellAdmin)
 admin.site.register(PointOfInterest)
