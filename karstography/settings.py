@@ -58,7 +58,7 @@ ROOT_URLCONF = 'karstography.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['karstography/templates', 'cspkarst/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,6 +132,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "cspkarst", "static"),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, "cspkarst", "staticfiles")
 
 LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (22.28,114.15),
