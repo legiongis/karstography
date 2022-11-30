@@ -42,10 +42,10 @@ export const styleDefs = {
   wells: new Style({
     image: new RegularShape({
       fill: new Fill({
-        color: 'rgba(1,1,138,.5)',
+        color: 'rgba(1,1,138,.4)',
       }),
       stroke: new Stroke({
-        color: 'rgb(1,1,138)',
+        color: 'rgba(1,1,138,.8)',
         width: 1.25,
       }),
       points: 4,
