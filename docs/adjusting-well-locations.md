@@ -1,1 +1,0 @@
-# Adjusting Well Locations
