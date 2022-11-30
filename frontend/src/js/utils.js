@@ -174,17 +174,36 @@ function crawfordTPI() {
 
 // KARST LAYER SECTION
 
-const wellsLayer = new VectorTileLayer({
-  declutter: false,
-  source: new VectorTileSource({
-    attributions: 'WNHGS',
-    format: new MVT(),
-    url: 'http://localhost:7800/public.cspkarst_well/{z}/{x}/{y}.pbf'
-  }),
-  style: styleDefs.wells,
-  zIndex: 40,
-  id: 'wells',
-});
+// Generally, the layer objects created here need to have the following structure
+
+// id: 'id'
+// name: 'Display Name'
+// visible: whether to activate layer on initial map load
+// info: (optional) a legend item or content
+// layer: ol layer object (see below)
+
+// Further, the ol layer object must have an extra 'id' property whose value
+// matches the id on the parent wrapper object.
+
+function wellsLayer(pg_tileserv_url) {
+  const layerId = 'wells'
+  return {
+    id: layerId,
+    name:"Private Well Locations",
+    visible: false,
+    layer: new VectorTileLayer({
+      id: layerId,
+      declutter: false,
+      source: new VectorTileSource({
+        attributions: 'WNHGS',
+        format: new MVT(),
+        url: pg_tileserv_url + 'public.cspkarst_well/{z}/{x}/{y}.pbf'
+      }),
+      style: styleDefs.wells,
+      zIndex: 40,
+    }),
+  }
+}
 
 function getSinkholeStyle(feature) {
   if (feature.getProperties().confidence == "PROBABLE") {
@@ -194,34 +213,51 @@ function getSinkholeStyle(feature) {
   }
 }
 
-const sinkholesLayer = new VectorTileLayer({
-  declutter: false,
-  source: new VectorTileSource({
-    attributions: 'WNHGS',
-    format: new MVT(),
-    url: "http://localhost:7800/public.cspkarst_sink/{z}/{x}/{y}.pbf?filter=sink_type='SINKHOLE'"
-  }),
-  style: getSinkholeStyle,
-  zIndex: 39,
-  id: 'sinkholes',
-})
+function sinkholesLayer(pgTileservUrl) {
+  const layerId = 'sinkholes';
+  return {
+    id: layerId,
+    name: 'Sinkholes',
+    visible: true,
+    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sinkholes-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:1" style="width:140px" />',
+    layer: new VectorTileLayer({
+      id: layerId,
+      declutter: false,
+      source: new VectorTileSource({
+        attributions: 'WNHGS',
+        format: new MVT(),
+        url: pgTileservUrl + "public.cspkarst_sink/{z}/{x}/{y}.pbf?filter=sink_type='SINKHOLE'"
+      }),
+      style: getSinkholeStyle,
+      zIndex: 39,
+    }),
+  }
+}
 
-// seems like the best way to keep heatmap visually "static", i.e. make it
-// cover the exact same extent regardless of zoom level, would be to attach
-// a listener to map.on('moveend') which gets the new zoom level and uses
-// setRadius and setBlur on this layer.
-const sinkholeHeatmapLayer = new HeatmapLayer({
-  zIndex: 32,
-  id: 'heatmap',
-  source: new VectorSource({
-    url: "/api/v1/sinks?format=geojson&sink_type=SINKHOLE",
-    format: new GeoJSON(),
-  }),
-  blur: 20, // default is 8
-  radius: 10, // default is 15
-  // weight: 1, // this can hold a function as well
-  // gradient: [] // default is ['#00f', '#0ff', '#0f0', '#ff0', '#f00']
-});
+function sinkholeHeatmapLayer() {
+  const layerId = 'heatmap';
+  return {
+    id: layerId,
+    name: 'Sinkholes - Heatmap',
+    visible: true,
+    // seems like the best way to keep heatmap visually "static", i.e. make it
+    // cover the exact same extent regardless of zoom level, would be to attach
+    // a listener to map.on('moveend') which gets the new zoom level and uses
+    // setRadius and setBlur on this layer.
+    layer: new HeatmapLayer({
+      zIndex: 32,
+      id: layerId,
+      source: new VectorSource({
+        url: "/api/v1/sinks?format=geojson&sink_type=SINKHOLE",
+        format: new GeoJSON(),
+      }),
+      blur: 20, // default is 8
+      radius: 10, // default is 15
+      // weight: 1, // this can hold a function as well
+      // gradient: [] // default is ['#00f', '#0ff', '#0f0', '#ff0', '#f00']
+    })
+  }
+} 
 
 const sinkPaint = {
   "circle-color": [
@@ -245,89 +281,79 @@ const sinkPaint = {
   "circle-radius": 3,
 }
 
-const sinks12StyleDef = {
-  "version": 8,
-  "sources": {
-    "sinks": {
-      "type": "vector",
-      "tiles": [
-        "http://localhost:7800/public.cspkarst_sink_12/{z}/{x}/{y}.pbf?properties=sink_type,in_nfhl,in_row&filter=in_nfhl%20=%20'false'%20AND%20in_row%20=%20'false'",
-      ]
-    }
-  },
-  "layers": [
-    {
-      "id": "public.cspkarst_sink_12",
-      "source": "sinks",
-      "source-layer": "public.cspkarst_sink_12",
-      "type": "circle",
-      "paint": sinkPaint,
-    }
-  ]  
+function getSinkStyleDef(dbTable, pgTileservUrl) {
+  return {
+    version: 8,
+    sources: {
+      sinks: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + dbTable + "/{z}/{x}/{y}.pbf?properties=sink_type,in_nfhl,in_row&filter=in_nfhl%20=%20'false'%20AND%20in_row%20=%20'false'",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: dbTable,
+        source: "sinks",
+        'source-layer': dbTable,
+        type: "circle",
+        paint: sinkPaint,
+      }
+    ]  
+  }
 }
 
-const sinks12Layer = new VectorTileLayer({
-  declutter: false,
-  zIndex: 32,
-  id: 'sinks12',
-})
-applyStyle(sinks12Layer, sinks12StyleDef)
-
-const sinks25StyleDef = {
-  "version": 8,
-  "sources": {
-    "sinks": {
-      "type": "vector",
-      "tiles": [
-        "http://localhost:7800/public.cspkarst_sink_25/{z}/{x}/{y}.pbf?properties=sink_type,in_nfhl,in_row&filter=in_nfhl%20=%20'false'%20AND%20in_row%20=%20'false'",
-      ]
-    }
-  },
-  "layers": [
-    {
-      "id": "public.cspkarst_sink_25",
-      "source": "sinks",
-      "source-layer": "public.cspkarst_sink_25",
-      "type": "circle",
-      "paint": sinkPaint,
-    }
-  ]  
+function sinks12Layer(pgTileservUrl) {
+  const layerId = 'sinks12';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 32,
+  })
+  applyStyle(layer, getSinkStyleDef('public.cspkarst_sink_12', pgTileservUrl))
+  return {
+    id: layerId,
+    name: 'Sinks (depth: 1-2 ft)',
+    visible: false,
+    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
+    layer: layer,
+  }
 }
 
-const sinks25Layer = new VectorTileLayer({
-  declutter: false,
-  zIndex: 33,
-  id: 'sinks25',
-})
-applyStyle(sinks25Layer, sinks25StyleDef)
-
-const sinks5StyleDef = {
-  "version": 8,
-  "sources": {
-    "sinks": {
-      "type": "vector",
-      "tiles": [
-        "http://localhost:7800/public.cspkarst_sink_5/{z}/{x}/{y}.pbf?properties=sink_type,in_nfhl,in_row&filter=in_nfhl%20=%20'false'%20AND%20in_row%20=%20'false'",
-      ]
-    }
-  },
-  "layers": [
-    {
-      "id": "public.cspkarst_sink_5",
-      "source": "sinks",
-      "source-layer": "public.cspkarst_sink_5",
-      "type": "circle",
-      "paint": sinkPaint,
-    }
-  ]  
+function sinks25Layer(pgTileservUrl) {
+  const layerId = 'sinks25';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 33,
+  })
+  applyStyle(layer, getSinkStyleDef('public.cspkarst_sink_25', pgTileservUrl))
+  return {
+    id: layerId,
+    name: 'Sinks (depth: 2-5 ft)',
+    visible: false,
+    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
+    layer: layer,
+  }
 }
 
-const sinks5Layer = new VectorTileLayer({
-  declutter: false,
-  zIndex: 34,
-  id: 'sinks5',
-})
-applyStyle(sinks5Layer, sinks5StyleDef)
+function sinks5Layer(pgTileservUrl) {
+  const layerId = 'sinks5';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 34,
+  })
+  applyStyle(layer, getSinkStyleDef('public.cspkarst_sink_5', pgTileservUrl))
+  return {
+    id: layerId,
+    name: 'Sinks (depth: 5+ ft)',
+    visible: false,
+    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
+    layer: layer,
+  }
+}
 
 const fracLineLayer = new TileLayer({
   id: "frac",
@@ -471,44 +497,14 @@ export class LayerDefs {
     ]
   }
 
-  karstLayers = function() {
+  karstLayers = function(pgTileservUrl) {
     return [
-      {
-        name:"Private Well Locations",
-        id: wellsLayer.get('id'),
-        layer: wellsLayer,
-        visible: false
-      },
-      {
-        name:"Sinkholes", 
-        id: sinkholesLayer.get('id'), 
-        layer: sinkholesLayer, 
-        visible: true,
-        info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sinkholes-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:1" style="width:140px" />'},
-      {
-        name:"Sinkholes - Heatmap", 
-        id: sinkholeHeatmapLayer.get('id'), 
-        layer: sinkholeHeatmapLayer, 
-        visible: true
-      },
-      {
-        name:"Sinks (depth: 1-2 ft)", 
-        id: sinks12Layer.get('id'), 
-        layer: sinks12Layer, 
-        visible: false,
-        info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />'},
-      {
-        name:"Sinks (depth: 2-5 ft)",
-        id: sinks25Layer.get('id'),
-        layer: sinks25Layer,
-        visible: false,
-        info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />'},
-      {
-        name:"Sinks (depth: 5+ ft)",
-        id: sinks5Layer.get('id'),
-        layer: sinks5Layer,
-        visible: false,
-        info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />'},
+      wellsLayer(pgTileservUrl),
+      sinkholesLayer(pgTileservUrl),
+      sinkholeHeatmapLayer(),
+      sinks12Layer(pgTileservUrl),
+      sinks25Layer(pgTileservUrl),
+      sinks5Layer(pgTileservUrl),
       {
         name:"Fracture Lines",
         id: fracLineLayer.get('id'),

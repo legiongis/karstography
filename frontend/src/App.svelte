@@ -19,8 +19,10 @@ import {LayerDefs, styleDefs} from './js/utils';
 
 const layerDefs = new LayerDefs();
 
-export let user;
-export let mapbox_api_key;
+export let USER;
+export let MAPBOX_API_KEY;
+export let PG_TILESERV_URL;
+
 let showLayerPanel = false;
 let showInfoPanel = false;
 let showExamplePanel = false;
@@ -63,13 +65,13 @@ $:  if (viewer) {
 }
 
 let showLabelLayer = false;
-const labelsLayer = layerDefs.labelLayer(mapbox_api_key);
+const labelsLayer = layerDefs.labelLayer(MAPBOX_API_KEY);
 $: {
 	labelsLayer.layer.setVisible(showLabelLayer)
 }
 
 let currentBasemap = 'hillshade';
-const baseLayers = layerDefs.baseLayers(mapbox_api_key);
+const baseLayers = layerDefs.baseLayers(MAPBOX_API_KEY);
 function setBasemap(layerId) {
 	baseLayers.forEach( function(layerObj) {
 		layerObj.layer.setVisible(layerObj.id == layerId);
@@ -77,7 +79,7 @@ function setBasemap(layerId) {
 }
 $: setBasemap(currentBasemap);
 
-const karstLayers = layerDefs.karstLayers()
+const karstLayers = layerDefs.karstLayers(PG_TILESERV_URL)
 karstLayers.forEach( function (layerObj) {
     layerObj.layer.setVisible(layerObj.visible);
 	overlayVisible[layerObj.id] = layerObj.layer.getVisible();
@@ -100,10 +102,6 @@ const overlayGroups = [
     {name: "Civil Layers", layers: civilLayers},
     {name: "Natural Layers", layers: naturalLayers},
 ]
-
-var vectorServer = "http://localhost:7800/";
-var vectorLayerId = "public.cspkarst_well";
-var vectorUrl = vectorServer + vectorLayerId + "/{z}/{x}/{y}.pbf";
 
 let currentZoom;
 
@@ -202,9 +200,9 @@ function toggleInfo(layerid) {
             <button class="link-button" on:click={() => {showInfoPanel=!showInfoPanel}}>info</button> |
             <button class="link-button" on:click={() => {showExamplePanel=!showExamplePanel}}>examples</button>
         </div>
-		<div><h1 style="display:inline;">Karst Geology Viewer</h1>{#if user.username}&nbsp;| <span>{user.username}</span>{/if}</div>
+		<div><h1 style="display:inline;">Karst Geology Viewer</h1>{#if USER.username}&nbsp;| <span>{USER.username}</span>{/if}</div>
 		<div>
-            {#if user.username}
+            {#if USER.username}
             <button class="link-button" onclick="window.location.href='/logout?next=/viewer'">logout</button> |
             {:else}
             <button class="link-button" onclick="window.location.href='/login?next=/viewer'">login</button> |

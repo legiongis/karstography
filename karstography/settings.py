@@ -134,6 +134,8 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "cspkarst", "staticfiles")
 
+PG_TILESERV_URL = 'http://localhost:7800/'
+
 LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (22.28,114.15),
     'DEFAULT_ZOOM': 14,
