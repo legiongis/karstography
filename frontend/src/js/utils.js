@@ -5,7 +5,7 @@ import {
   XYZ, TileWMS,
 } from 'ol/source';
 import {GeoJSON, MVT} from 'ol/format';
-import {Style, Fill, Stroke, Circle, Icon} from 'ol/style';
+import {Style, Fill, Stroke, Circle, Icon, RegularShape} from 'ol/style';
 import {
   Heatmap as HeatmapLayer,
   Tile as TileLayer,
@@ -40,13 +40,18 @@ export const styleDefs = {
   greenFill: greenFill,
 
   wells: new Style({
-    image: new Circle({
-      fill: greenFill,
-      stroke: stroke,
-      radius: 5,
+    image: new RegularShape({
+      fill: new Fill({
+        color: 'rgba(1,1,138,.5)',
+      }),
+      stroke: new Stroke({
+        color: 'rgb(1,1,138)',
+        width: 1.25,
+      }),
+      points: 4,
+      radius: 4,
+      angle: Math.PI / 4,
     }),
-    fill: greenFill,
-    stroke: stroke,
   }),
 
   highlight: new Style({

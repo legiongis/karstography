@@ -3,6 +3,7 @@ import { onMount } from 'svelte';
 
 import Map from 'ol/Map';
 import {fromLonLat} from 'ol/proj';
+import Overlay from 'ol/Overlay';
 
 import {Attribution, Zoom, ScaleLine} from 'ol/control';
 
@@ -15,6 +16,9 @@ import {DragPan, MouseWheelZoom, defaults} from 'ol/interaction';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
+import {toLonLat} from 'ol/proj';
+import {toStringHDMS} from 'ol/coordinate';
+
 import {LayerDefs, styleDefs} from './js/utils';
 
 const layerDefs = new LayerDefs();
@@ -26,7 +30,12 @@ export let PG_TILESERV_URL;
 let showLayerPanel = false;
 let showInfoPanel = false;
 let showExamplePanel = false;
-let showAboutModal = true;
+let showAboutModal = false;
+
+let container;
+let content;
+let closer;
+let overlay;
 
 let poiList = [];
 const poiLayer = layerDefs.poiLayer()
@@ -107,6 +116,18 @@ let currentZoom;
 
 function MapView() {
 
+    container = document.getElementById('popup');
+    content = document.getElementById('popup-content');
+    closer = document.getElementById('popup-closer');
+    overlay = new Overlay({
+        element: container,
+        autoPan: {
+            animation: {
+            duration: 250,
+            },
+        },
+    });
+
 	const map = new Map({
 		target: 'karstmap',
 		view: new View({
@@ -118,6 +139,7 @@ function MapView() {
             new ScaleLine({units: 'us'}),
             new Zoom(),
         ],
+        overlays: [overlay],
         interactions: defaults({mouseWheelZoom: false}).extend([
             new MouseWheelZoom({
                 constrainResolution: true,
@@ -134,6 +156,10 @@ function MapView() {
     map.addLayer(highlightLayer)
     map.addLayer(poiLayer.layer)
 
+    const highlightLayers = [
+        'public.cspkarst_sink',
+        'public.cspkarst_well',
+    ]
 	map.on('pointermove', function (event) {
         highlightLayer.getSource().clear();
         let hit = false;
@@ -141,10 +167,8 @@ function MapView() {
             event.pixel,
             function (feature) {
                 if (hit) return // only hover on one point at a time
-                hit = true;
-                console.log(feature)
-                console.log(feature.getProperties().layer)
-                if (feature.getProperties().layer == 'public.cspkarst_sink') {
+                if (highlightLayers.indexOf(feature.getProperties().layer) >= 0) {
+                    hit = true;
                     // source.addFeature(new Feature(fromExtent(feature.getGeometry().getExtent())));
                     highlightLayer.getSource().addFeature(new Feature(new Point(feature.getFlatCoordinates())));
                 }
@@ -163,6 +187,50 @@ function MapView() {
         };
     });
 
+    
+    closer.onclick = function () {
+        overlay.setPosition(undefined);
+        closer.blur();
+        return false;
+    };
+    const popupLayers = [
+        'public.cspkarst_well',
+    ]
+    map.on('singleclick', function (event) {
+        let hit = false;
+        map.forEachFeatureAtPixel(
+            event.pixel,
+            function (feature) {
+                if (hit) return // only hover on one point at a time
+                const props = feature.getProperties();
+                if (popupLayers.indexOf(props.layer) >= 0) {
+                    hit = true;
+                    console.log(props)
+                    let popupContent = 'none';
+                    if (props.layer == 'public.cspkarst_well') {
+                        const grnWellDetails = "https://dnr.wi.gov/GRNext/WellInventory/Details/"
+                        popupContent = `
+                            <h4>WELL ID: ${props.wi_unique_well_no}</h4>
+                            <p>
+                            <a href="${props.well_constr_url}" target="_blank">View Well Construction Report <i class="fa fa-external-link"></i></a><br>
+                            <a href="${grnWellDetails}${props.wi_unique_well_no}" target="_blank">View in GRN <i class="fa fa-external-link"></i></a><br>
+                            <span>This point location is based on: ${props.location_method}
+                            </p>
+                        `
+                    }
+                    content.innerHTML = popupContent;
+                    overlay.setPosition(feature.getFlatCoordinates());
+                }
+            },
+            {
+            hitTolerance: 2,
+            }
+        );
+        
+
+        
+    });
+
     map.addLayer(labelsLayer.layer)
     baseLayers.forEach(function (layerObj) { map.addLayer(layerObj.layer); })
     karstLayers.forEach(function (layerObj) { map.addLayer(layerObj.layer); })
@@ -175,6 +243,8 @@ function MapView() {
 let viewer;
 onMount(() => {
 	viewer = new MapView();
+
+    
 })
 
 function toggleInfo(layerid) {
@@ -278,6 +348,13 @@ function toggleInfo(layerid) {
         </div>
     </div>
     {/if}
+    <!-- <div id='pop' class='popup'>
+        <p>some content</p>
+    </div> -->
+    <div id="popup" class="ol-popup" style="">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content">veeveve</div>
+    </div>
 </main>
 
 <style>
@@ -423,17 +500,10 @@ flex-direction: column;
   padding: 7px;
 }
 
-
-
 .container-fluid {
     position:relative;
     z-index: 50000;
 }
-
-
-
-
-
 
 .leaflet-container {
     height:100%;
@@ -699,4 +769,55 @@ ul.dashed > li::before {
 			max-width: none;
 		}
 	}
+
+
+.popup {
+    display:flex;
+    height: 200px;
+    background: red;
+    position: absolute;
+}
+
+.ol-popup {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -50px;
+    min-width: 280px;
+    z-index: 1000000000;
+}
+.ol-popup:after, .ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+.ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+}
+.ol-popup:before {
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+}
+.ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+}
+.ol-popup-closer:after {
+    content: "✖";
+}
 </style>
