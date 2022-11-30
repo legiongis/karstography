@@ -30,3 +30,7 @@ body {
     color:#182F4C;
     font-weight:900;
 }
+
+p.caption {
+  margin: 10px 0px 0px 0px;
+}
