@@ -1,5 +1,5 @@
 html {
-  background: rgb(238, 239, 221);
+  background: rgb(254, 255, 241);
   line-height: 1;
 }
 
@@ -21,7 +21,7 @@ body {
     background-color: #96BEF1;
     border-radius: 0;
     border: 0;
-    box-shadow: 0px 0px 10px 2px #003300;
+    box-shadow: 0px 0px 10px 2px #96BEF1;
     color: #003300;
     width: 15rem;
 }
@@ -32,5 +32,10 @@ body {
 }
 
 p.caption {
-  margin: 10px 0px 0px 0px;
+    margin: 10px 0px 0px 0px;
 }
+
+.content, .page-edit, .page-nav {
+    margin: 0 !important;
+}
+

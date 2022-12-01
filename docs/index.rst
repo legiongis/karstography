@@ -2,7 +2,7 @@
 Welcome!
 ========
 
-The `Karst Geology Viewer` is a creation of the `Crawford Stewardship Project <https://crawfordstewardship.org>`_ to map and explore the geology of southwestern Wisconsin. YOu can read more about the project here.
+The `Karst Geology Viewer` is a creation of the `Crawford Stewardship Project <https://crawfordstewardship.org>`_ to map and explore the geology of southwestern Wisconsin. You can read more about the project here.
 
 .. toctree::
    :maxdepth: 1
