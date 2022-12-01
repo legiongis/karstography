@@ -200,7 +200,7 @@ function wellsLayer(pg_tileserv_url) {
       id: layerId,
       declutter: false,
       source: new VectorTileSource({
-        attributions: 'WNHGS',
+        attributions: 'Wisconsin Department of Natural Resources - Bureau of Drinking Water and Groundater',
         format: new MVT(),
         url: pg_tileserv_url + 'public.cspkarst_well/{z}/{x}/{y}.pbf'
       }),

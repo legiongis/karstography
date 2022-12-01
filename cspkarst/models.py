@@ -161,7 +161,7 @@ class Well(models.Model):
         verbose_name="Well Completion Date"
     )
     well_status = models.CharField(
-        max_length=15,
+        max_length=50,
         blank=True, null=True,
         verbose_name="Well Status"
     )
@@ -169,12 +169,12 @@ class Well(models.Model):
         null=True, blank=True,
         verbose_name="Static Depth")
     static_depth_above_below = models.CharField(
-        max_length=25,
+        max_length=50,
         blank=True, null=True,
         verbose_name="Static Depth Above Below"
     )
     location_method = models.CharField(
-        max_length=25,
+        max_length=50,
         blank=True, null=True,
         verbose_name="Location Method"
     )
