@@ -19,6 +19,8 @@ import Point from 'ol/geom/Point';
 import {toLonLat} from 'ol/proj';
 import {toStringHDMS} from 'ol/coordinate';
 
+import sync from 'ol-hashed';
+
 import {LayerDefs, styleDefs} from './js/utils';
 
 const layerDefs = new LayerDefs();
@@ -28,10 +30,10 @@ export let MAPBOX_API_KEY;
 export let PG_TILESERV_URL;
 
 let showLayerPanel = false;
-let showSinkPanel = true;
+let showSinkPanel = false;
 let showInstructions = false;
 let showExamplePanel = false;
-let showAboutModal = false;
+let showAboutModal = true;
 
 let container;
 let content;
@@ -268,6 +270,7 @@ function MapView() {
 let viewer;
 onMount(() => {
     viewer = new MapView();
+    sync(viewer.map);
 })
 
 function toggleInfo(layerid) {
