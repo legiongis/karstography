@@ -450,9 +450,9 @@ function toggleInfo(layerid) {
         <div><h1 style="display:inline;">Karst Geology Viewer</h1>{#if USER.username}&nbsp;| <span>{USER.username}</span>{/if}</div>
         <div>
             {#if USER.username}
-            <button class="link-button" onclick="window.location.href='/logout?next=/viewer'">logout</button> |
+            <button class="link-button" onclick="window.location.href='/logout?next=/'">logout</button> |
             {:else}
-            <button class="link-button" onclick="window.location.href='/login?next=/viewer'">login</button> |
+            <button class="link-button" onclick="window.location.href='/login?next=/'">login</button> |
             {/if}
             <button class="link-button" on:click={() => {showAboutModal=!showAboutModal}}>about</button> |
             <button class="link-button" on:click={() => {showLayerPanel=!showLayerPanel}}>layers</button>
