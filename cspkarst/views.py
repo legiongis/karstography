@@ -1,78 +1,21 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import os
 import json
 from datetime import datetime
 from django.shortcuts import render
-from django.http import HttpResponseRedirect,JsonResponse,HttpResponse, HttpResponseBadRequest, Http404
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.core.serializers import serialize
 from django.conf import settings
-from django.core.exceptions import ValidationError
-from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views import View
 from django.http import HttpResponseBadRequest
 
-from .models import Sink, Well, PointOfInterest
-from .forms import SinkForm, WellForm
-
-
-def index(request):
-    return render(request, 'index.html')
-
-@xframe_options_exempt
-def simple_embed(request):
-    return render(request, 'simple_embed.html')
-
-def sink_update(request,sink_id):
-    try:
-        instance = Sink.objects.get(sink_id=sink_id)
-    except:
-        return JsonResponse({'error':'no sink with this sink_id. (how did you even request this?)'},status=404)
-    fields = [f.name for f in instance._meta.get_fields()]
-
-    # if POST, iterate the form data and update relevant fields in the instance
-    if request.method == 'POST':
-        form = SinkForm(request.POST)
-        if form.is_valid():
-            for k, v in request.POST.items():
-                if k in fields:
-                    if v == '':
-                        v = None
-                    if v == 'on':
-                        v = True
-                    setattr(instance, k, v)
-            instance.save()
-
-    # if a GET prepopulate form with the data from the input sink_id
-    else:
-        form = SinkForm(instance=instance)
-
-    # form.fields['comment'].widget.attrs['readonly'] = True
-
-    return render(request, 'sink.html', {'form': form})
-
-def sink_info(request,sink_id):
-    try:
-        instance = Sink.objects.get(sink_id=sink_id)
-    except:
-        return JsonResponse({'error':'no sink with this sink_id.'},status=404)
-
-    return JsonResponse({"lat":instance.geom[1],"lng":instance.geom.coords[0]})
-
-def get_example_locations(request):
-
-    data = serialize('geojson', PointOfInterest.objects.all(),
-        geometry_field='geom')
-    return JsonResponse(json.loads(data))
-
-def wells_geojson(request):
-
-    data = serialize('geojson', Well.objects.all(),
-          geometry_field='geom')
-    return JsonResponse(json.loads(data))
+from cspkarst.models import Sink, Well, PointOfInterest
 
 def well_update(request, well_id):
+    """DEPRECATED: This view is not implemented anymore, but is retained as template for
+    how the well updates can be managed in the future."""
+    from .forms import SinkForm, WellForm
     try:
         instance = Well.objects.get(wi_unique_well_no=well_id)
     except:
@@ -104,8 +47,6 @@ def well_update(request, well_id):
     else:
         form = WellForm(instance=instance)
 
-    # form.fields['comment'].widget.attrs['readonly'] = True
-
     return render(request, 'well.html', {'form': form})
 
 class Viewer(View):
@@ -118,15 +59,20 @@ class Viewer(View):
         if request.user:
             user["username"] = request.user.username
 
+        pois = PointOfInterest.objects.all()
+        pois_serialized = serialize('geojson', pois, geometry_field='geom')
+
         params = {
             "USER": user,
             "MAPBOX_API_KEY": settings.MAPBOX_API_KEY,
             'PG_TILESERV_URL': settings.PG_TILESERV_URL,
             'SINKHOLE_TOTAL': sh_probable+sh_possible,
             'SINKHOLE_PROBABLE': sh_probable,
-            'SINKHOLE_POSSIBLE': sh_possible
+            'SINKHOLE_POSSIBLE': sh_possible,
+            'EXAMPLES_GEOJSON': pois_serialized,
+            'ENVIRONMENT': settings.ENVIRONMENT,
         }
-        return render(request, "viewer/index.html", context={'SVELTE_PROPS': params})
+        return render(request, "index.html", context={'SVELTE_PROPS': params})
 
 class APIV1View(View):
 
