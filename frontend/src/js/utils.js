@@ -34,6 +34,10 @@ const highlightStroke = new Stroke({
   color: '#00ffaa',
   width: 2,
 })
+const selectedStroke = new Stroke({
+  color: '#dd06cf',
+  width: 2,
+})
 
 export const styleDefs = {
 
@@ -58,6 +62,14 @@ export const styleDefs = {
     image: new Circle({
       fill: null,
       stroke: highlightStroke,
+      radius: 8,
+    })
+  }),
+
+  selected: new Style({
+    image: new Circle({
+      fill: null,
+      stroke: selectedStroke,
       radius: 8,
     })
   }),
@@ -293,7 +305,7 @@ function getSinkStyleDef(dbTable, pgTileservUrl) {
       sinks: {
         type: "vector",
         tiles: [
-          pgTileservUrl + dbTable + "/{z}/{x}/{y}.pbf?properties=sink_type,in_nfhl,in_row&filter=in_nfhl%20=%20'false'%20AND%20in_row%20=%20'false'",
+          pgTileservUrl + dbTable + "/{z}/{x}/{y}.pbf?filter=in_nfhl%20=%20'false'%20AND%20in_row%20=%20'false'",
         ]
       }
     },
