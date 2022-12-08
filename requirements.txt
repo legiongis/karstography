@@ -1,5 +1,4 @@
 Django==3.2
-django-leaflet==0.26.0
 Markdown==3.2.1
 psycopg2-binary==2.8.4
 pyshp==2.1.0

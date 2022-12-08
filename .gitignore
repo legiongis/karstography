@@ -1,3 +1,5 @@
+frontend/node_modules/
+frontend/public/build/
 karstography/settings_local.py
 cspkarst/dnr_well_cache/*.geojson
 cspkarst/static/frontend
