@@ -1,0 +1,24 @@
+html body {
+	height: 100vh;
+	font-family: 'Raleway', sans-serif;
+	margin: 0;
+}
+.login-page-background {
+    height:100%;
+    background-color:#6493ce
+}
+.login-panel {
+    background-color: #85BF6F;
+    box-shadow: 0px 0px 10px 2px #003300;
+    width: 350px;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 2em;
+    margin: auto;
+}
+.login-panel-content {
+    padding: 20px 5px;
+}
+
+

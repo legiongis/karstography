@@ -1,15 +1,11 @@
-asgiref==3.2.5
-Django==3.0.7
+Django==3.2
 django-leaflet==0.26.0
 Markdown==3.2.1
 psycopg2-binary==2.8.4
 pyshp==2.1.0
-pytz==2019.3
-six==1.14.0
-sqlparse==0.3.1
 
 # for the docs
 django-docs==0.3.1
-Sphinx==3.3.0
+Sphinx==5.0.2
 recommonmark==0.6.0
 romnnn-sphinx-press-theme==0.5.6

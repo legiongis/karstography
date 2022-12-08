@@ -5,11 +5,14 @@ import os
 import json
 from datetime import datetime
 from django.shortcuts import render
-from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
+from django.http import HttpResponseRedirect,JsonResponse,HttpResponse, HttpResponseBadRequest, Http404
 from django.core.serializers import serialize
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views import View
+from django.http import HttpResponseBadRequest
+
 from .models import Sink, Well, PointOfInterest
 from .forms import SinkForm, WellForm
 
@@ -104,3 +107,61 @@ def well_update(request, well_id):
     # form.fields['comment'].widget.attrs['readonly'] = True
 
     return render(request, 'well.html', {'form': form})
+
+class Viewer(View):
+    def get(self, request):
+
+        sh_probable = Sink.objects.filter(sink_type="SINKHOLE",confidence="PROBABLE").count()
+        sh_possible = Sink.objects.filter(sink_type="SINKHOLE",confidence="POSSIBLE").count()
+
+        user = {"username": ""}
+        if request.user:
+            user["username"] = request.user.username
+
+        params = {
+            "USER": user,
+            "MAPBOX_API_KEY": settings.MAPBOX_API_KEY,
+            'PG_TILESERV_URL': settings.PG_TILESERV_URL,
+            'SINKHOLE_TOTAL': sh_probable+sh_possible,
+            'SINKHOLE_PROBABLE': sh_probable,
+            'SINKHOLE_POSSIBLE': sh_possible
+        }
+        return render(request, "viewer/index.html", context={'SVELTE_PROPS': params})
+
+class APIV1View(View):
+
+    def get(self, request, record_type):
+
+        query_params = {k:v[0] for k, v in dict(request.GET).items()}
+        f = query_params.pop('format')
+        if f != 'geojson':
+            return HttpResponseBadRequest("<h1>Bad Request</h1><p>Incorrect url parameters, <code>format=geojson</code> must be present.</p>")
+
+        valid_record_types = ['sinks', 'wells', 'pois']
+        if not record_type in valid_record_types:
+            return HttpResponseBadRequest(f"""
+            <h1>Bad Request</h1>
+            <p>Incorrect record type. Supported values are: {", ".join(['<code>'+i+'</code>' for i in valid_record_types])}</p>
+            """)
+
+        # set defaults. fields=None returns ALL fields
+        geom_field = 'geom'
+        get_fields = None
+
+        # set model class as needed, and augment defaults if necessary
+        if record_type == "sinks":
+            model = Sink
+            get_fields = () # empty tuple returns no fields
+        elif record_type == "wells":
+            model = Well
+        elif record_type == "pois":
+            model = PointOfInterest
+
+        try:
+            items = model.objects.filter(**query_params)
+        except Exception as e:
+            return HttpResponseBadRequest(f"<h1>Bad Request</h1><p>Database query error: <code>{e}</code></p>")
+
+        serialized = serialize('geojson', items, geometry_field=geom_field, fields=get_fields)
+        data = json.loads(serialized)
+        return JsonResponse(data)

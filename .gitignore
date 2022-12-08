@@ -1,5 +1,6 @@
 karstography/settings_local.py
 cspkarst/dnr_well_cache/*.geojson
+cspkarst/static/frontend
 assets
 env
 .vscode
