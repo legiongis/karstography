@@ -2,21 +2,21 @@
 import { onMount } from 'svelte';
 
 import Map from 'ol/Map';
-import {fromLonLat} from 'ol/proj';
+import View from 'ol/View';
+
+import {fromLonLat, toLonLat} from 'ol/proj';
 import Overlay from 'ol/Overlay';
 
 import {Attribution, Zoom, ScaleLine} from 'ol/control';
 
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import View from 'ol/View';
 
 import {MouseWheelZoom, defaults} from 'ol/interaction';
 
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
-import {toLonLat} from 'ol/proj';
 import {toStringHDMS} from 'ol/coordinate';
 
 import sync from 'ol-hashed';
@@ -28,6 +28,8 @@ const layerDefs = new LayerDefs();
 export let USER;
 export let MAPBOX_API_KEY;
 export let PG_TILESERV_URL;
+export let EXAMPLES_GEOJSON;
+export let ENVIRONMENT;
 
 let showLayerPanel = false;
 let showSinkPanel = false;
@@ -44,7 +46,7 @@ let disableInput = true;
 let currentSink = null;
 
 let poiList = [];
-const poiLayer = layerDefs.poiLayer()
+const poiLayer = layerDefs.poiLayer(EXAMPLES_GEOJSON)
 $: {
     if (showExamplePanel) {
         poiList = [];
@@ -447,7 +449,11 @@ function toggleInfo(layerid) {
             <button class="link-button" on:click={() => {showSinkPanel=!showSinkPanel}}>sink evaluation</button> |
             <button class="link-button" on:click={() => {showExamplePanel=!showExamplePanel}}>examples</button>
         </div>
-        <div><h1 style="display:inline;">Karst Geology Viewer</h1>{#if USER.username}&nbsp;| <span>{USER.username}</span>{/if}</div>
+        <div>
+            {#if ENVIRONMENT == "staging"}<span style="color:red">¡Staging Server!</span>{/if}
+            <h1 style="display:inline;">Karst Geology Viewer</h1>
+            {#if ENVIRONMENT == "staging"}<span style="color:red">¡Staging Server!</span>{/if}
+            {#if USER.username}&nbsp;| <span>{USER.username}</span>{/if}</div>
         <div>
             {#if USER.username}
             <button class="link-button" onclick="window.location.href='/logout?next=/'">logout</button> |

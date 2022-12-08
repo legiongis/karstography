@@ -488,15 +488,22 @@ const watershedsLayer = new TileLayer({
 })
 
 // POI/EXAMPLES LAYER
-const poiLayer = new VectorLayer({
-  zIndex: 5000,
-  id: 'pois',
-  source: new VectorSource({
-    url: "/api/v1/pois?format=geojson",
-    format: new GeoJSON(),
-  }),
-  style: styleDefs.poiStyle,
-});
+function poiLayer(geojson) {
+
+  return {
+    name: "Examples",
+    id: 'pois',
+    layer: new VectorLayer({
+      zIndex: 5000,
+      id: 'pois',
+      source: new VectorSource({
+        features: new GeoJSON().readFeatures(geojson),
+      }),
+      style: styleDefs.poiStyle,
+    }),
+    visible:false,   
+  }
+}
 
 export class LayerDefs {
 
@@ -590,12 +597,7 @@ export class LayerDefs {
     ]
   }
 
-  poiLayer = function() {
-    return {
-      name: "Examples",
-      id: poiLayer.get('id'),
-      layer: poiLayer,
-      visible:false,      
-    }
+  poiLayer = function(geojson) {
+    return poiLayer(geojson)
   }
 }
