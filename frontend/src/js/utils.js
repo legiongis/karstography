@@ -123,7 +123,7 @@ function outdoorsLabels(apiKey) {
         // tileSize: 512,
         // resolution: 1,
       }),
-      zIndex: 2,
+      zIndex: 24,
     })
   };
 };
@@ -268,6 +268,7 @@ function sinkholeHeatmapLayer() {
         url: "/api/v1/sinks?format=geojson&sink_type=SINKHOLE",
         format: new GeoJSON(),
       }),
+      opacity: .7,
       blur: 20, // default is 8
       radius: 10, // default is 15
       // weight: 1, // this can hold a function as well
@@ -455,6 +456,7 @@ const townshipsLayer = new TileLayer({
 const carbLayer = new TileLayer({
   id: "carbonate",
   zIndex: 21,
+  opacity: .7,
   source: new TileWMS({
     url: "https://gn.legiongis.com/geoserver/ows",
     params: {
@@ -467,6 +469,7 @@ const carbLayer = new TileLayer({
 const depthLayer = new TileLayer({
   id: "bedrockDepth",
   zIndex: 22,
+  opacity: .7,
   source: new TileWMS({
     url: "https://gn.legiongis.com/geoserver/ows",
     params: {
@@ -477,7 +480,7 @@ const depthLayer = new TileLayer({
 })
 const watershedsLayer = new TileLayer({
   id: "watersheds",
-  zIndex: 28,
+  zIndex: 23,
   source: new TileWMS({
     url: "https://gn.legiongis.com/geoserver/ows",
     params: {
