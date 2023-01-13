@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Sink, TownUnit, Well, PointOfInterest
+from .models import Sink, TownUnit, Well, PointOfInterest, FractureLine
 
 class SinkAdmin(admin.ModelAdmin):
 
@@ -45,3 +45,4 @@ admin.site.register(Sink, SinkAdmin)
 admin.site.register(TownUnit)
 admin.site.register(Well, WellAdmin)
 admin.site.register(PointOfInterest)
+admin.site.register(FractureLine)

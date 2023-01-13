@@ -245,3 +245,7 @@ class PointOfInterest(models.Model):
 
     def __str__(self):
         return self.name
+
+class FractureLine(models.Model):
+
+    geom = models.MultiLineStringField(blank=True, null=True, srid=4326)

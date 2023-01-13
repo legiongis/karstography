@@ -373,18 +373,45 @@ function sinks5Layer(pgTileservUrl) {
   }
 }
 
-const fracLineLayer = new TileLayer({
-  id: "frac",
-  zIndex: 30,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'general:fracture_lines',
-      'TILED': true,
+function fracLineLayer(pgTileservUrl) {
+  const layerId = 'frac';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 30,
+  })
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      fracture_lines: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.cspkarst_fractureline/{z}/{x}/{y}.pbf",
+        ]
+      }
     },
-  }),
-  attributions: "Fracture Lines (CSP staff)"
-})
+    layers: [
+      {
+        id: 'public.cspkarst_fractureline',
+        source: "fracture_lines",
+        'source-layer': 'public.cspkarst_fractureline',
+        type: "line",
+        paint: {
+          'line-color': "#aa3333",
+          'line-width': 3,
+        },
+      }
+    ]  
+  });
+  return {
+    id: layerId,
+    name: 'Fracture Lines',
+    visible: false,
+    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
+    layer: layer,
+    visible: false
+  }
+}
 
 
 // CIVIL LAYER SECTION
@@ -532,12 +559,7 @@ export class LayerDefs {
       sinks12Layer(pgTileservUrl),
       sinks25Layer(pgTileservUrl),
       sinks5Layer(pgTileservUrl),
-      {
-        name:"Fracture Lines",
-        id: fracLineLayer.get('id'),
-        layer: fracLineLayer,
-        visible: false
-      },
+      fracLineLayer(pgTileservUrl),
     ]
   }
 
