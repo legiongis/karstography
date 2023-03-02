@@ -299,14 +299,21 @@ const sinkPaint = {
   "circle-radius": 3,
 }
 
-function getSinkStyleDef(dbTable, pgTileservUrl) {
+function getSinkStyleDef(dbTable, pgTileservUrl, depthCat) {
+  // fully encoded the query string doesn't seem to work
+  const queryStr = `filter=in_nfhl = 'false' AND in_row = 'false' AND depth_cat = '${depthCat}'`
+  const encodedQueryStr = encodeURIComponent(queryStr)
+  // the encoding is kind of tricky: encoding the entire string fails, but the spaces must be
+  // replaced with %20 and the depth_cat value must be encoded, but not the single quotes or =
+  const queryStr2 = `filter=in_nfhl%20=%20'false'%20AND%20in_row%20=%20'false'%20AND%20depth_cat%20=%20'${depthCat}'`
+  console.log(encodedQueryStr)
   return {
     version: 8,
     sources: {
       sinks: {
         type: "vector",
         tiles: [
-          pgTileservUrl + dbTable + "/{z}/{x}/{y}.pbf?filter=in_nfhl%20=%20'false'%20AND%20in_row%20=%20'false'",
+          pgTileservUrl + dbTable + "/{z}/{x}/{y}.pbf?" + queryStr2,
         ]
       }
     },
@@ -329,7 +336,7 @@ function sinks12Layer(pgTileservUrl) {
     declutter: false,
     zIndex: 32,
   })
-  applyStyle(layer, getSinkStyleDef('public.cspkarst_sink_12', pgTileservUrl))
+  applyStyle(layer, getSinkStyleDef('public.cspkarst_sink', pgTileservUrl, '1-2'))
   return {
     id: layerId,
     name: 'Sinks (depth: 1-2 ft)',
@@ -346,7 +353,7 @@ function sinks25Layer(pgTileservUrl) {
     declutter: false,
     zIndex: 33,
   })
-  applyStyle(layer, getSinkStyleDef('public.cspkarst_sink_25', pgTileservUrl))
+  applyStyle(layer, getSinkStyleDef('public.cspkarst_sink', pgTileservUrl, '2-5'))
   return {
     id: layerId,
     name: 'Sinks (depth: 2-5 ft)',
@@ -363,7 +370,9 @@ function sinks5Layer(pgTileservUrl) {
     declutter: false,
     zIndex: 34,
   })
-  applyStyle(layer, getSinkStyleDef('public.cspkarst_sink_5', pgTileservUrl))
+  // there is a '+' character in the depth_cat value which must be url encoded
+  // i.e. '5+' becomes '5%2B'
+  applyStyle(layer, getSinkStyleDef('public.cspkarst_sink', pgTileservUrl, '5%2B'))
   return {
     id: layerId,
     name: 'Sinks (depth: 5+ ft)',
