@@ -3,19 +3,21 @@
 from django.db import connection
 from django.db import migrations, models
 
-def remove_sink_category_views(apps,schema_editor):
+def remove_sink_views(apps,schema_editor):
     '''adds new db views categorizing sinks by their depth. this is mostly to support
     easier layering in geoserver'''
 
     cursor = connection.cursor()
     cursor.execute("DROP VIEW IF EXISTS cspkarst_sinkholes;")
-    for d in ['01', '12', '25', '5']:
-        sql = """
-        DROP VIEW IF EXISTS cspkarst_sink_{};
-        """.format(d)
-        cursor.execute(sql)
+    cursor.execute("DROP VIEW IF EXISTS cspkarst_sink_01;")
+    cursor.execute("DROP VIEW IF EXISTS cspkarst_sink_12;")
+    cursor.execute("DROP VIEW IF EXISTS cspkarst_sink_25;")
+    cursor.execute("DROP VIEW IF EXISTS cspkarst_sink_5;")
 
     return
+
+def reverse_remove_sink_views(apps, schema_editor):
+    pass
 
 class Migration(migrations.Migration):
 
@@ -24,7 +26,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(remove_sink_category_views),
+        migrations.RunPython(remove_sink_views, reverse_remove_sink_views),
         migrations.AlterField(
             model_name='fractureline',
             name='id',
