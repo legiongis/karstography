@@ -8,6 +8,7 @@ def remove_sink_category_views(apps,schema_editor):
     easier layering in geoserver'''
 
     cursor = connection.cursor()
+    cursor.execute("DROP VIEW IF EXISTS cspkarst_sinkholes;")
     for d in ['01', '12', '25', '5']:
         sql = """
         DROP VIEW IF EXISTS cspkarst_sink_{};
