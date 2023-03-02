@@ -16,4 +16,4 @@ The problem with the setup was that the configuration of the layers in Geoserver
 Move to Locally Generated Vector Tiles
 --------------------------------------
 
-Near the end of 2022, we undertook a significant overhaul of the application components, ultimately replacing (or beginning to replace) GeoServer with pg_tileserv, and Leaflet with OpenLayers. We replaced the original jQuery + Bootstrap front-end with Svelte. The most detailed description of this overhaul can currently be found in [this pull request](https://github.com/legiongis/karstography/pull/29).
+Near the end of 2022, we undertook a significant overhaul of the application components, ultimately replacing (or beginning to replace) GeoServer with pg_tileserv, and Leaflet with OpenLayers. We replaced the original jQuery + Bootstrap front-end with Svelte. The most detailed description of this overhaul can currently be found in `this pull request <https://github.com/legiongis/karstography/pull/29>`_.

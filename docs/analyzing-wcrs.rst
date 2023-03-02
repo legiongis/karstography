@@ -9,7 +9,7 @@ Background
 
 Any time a new well is drilled, a detailed geological log is made, recording the depth and composition of each sedimentary layer that is encountered on the way down. This information is recorded in a Well Construction Report (WCR) which is then submitted to the state. After examining many of these drill logs, the CSP determined it would be possible to detect evidence of karstic activity in the well by looking for specific geologic layers and terminology.
 
-In the state of Wisconsin, all post-1989 well-drilling and sample records are stored in a publicly accessible database, called the `Groundwater Retrieval Network <https://dnr.wi.gov/topic/Groundwater/grn.html>`_. Therefore, finding evidence of karst activity in post-1989 wells was undertaken as a data download and algorithmic analysis.
+In the state of Wisconsin, all post-1989 well-drilling and sample records are stored in a publicly accessible database, called the `Groundwater Retrieval Network <https://dnr.wi.gov/topic/Groundwater/grn.html>`_. Therefore, finding evidence of karstic activity in post-1989 wells was undertaken as a data download and algorithmic analysis.
 
 However, to evaluate wells that were drilled prior to 1989, we had to turn to scanned images of historic WCRs. These WCRs exist as PDF files maintained by the `Wisconsin Geological & Natural History Survey <https://wgnhs.wisc.edu>`_ (WGNHS). We requested all of the historic WCRs for Crawford County, and received `1,136 PDFs <http://ftp.legiongis.com/wcr-crawford>`_.
 
@@ -53,7 +53,7 @@ Next, respondents were asked to look for signs of karst activity within the dril
 
 **4. Record Drill Log Geology**
 
-Finally, if karst activity was encountered in the drill log, the volunteers were instructed to depth of each geologic layer, as well as its reported material.
+Finally, if karst activity was encountered in the drill log, the volunteers were instructed to record the depth of each geologic layer, as well as its reported material.
 
 Results
 =======
@@ -63,6 +63,10 @@ On the evening of August 8th, 2016, approximately 20 volunteers met for two hour
 .. image:: _static/img/wcr-eval-results.png
 
 The full summary of results can be seen above. Of the 1,136 WCRs, 440 were recorded by a driller other than Corpian, so we did not seek further assessment on these wells. Of the remaining 696 WCRs that were recorded by Corpian, 391 had carbonate characteristics, and of these, 108 had karst indicators in the drill log. You can also access the raw Google Form responses `here <https://docs.google.com/spreadsheets/d/1RdV2OxA6jlCYrHaBD7waGpBJ2_SxZtZP8-NHfOKZe3U/edit?usp=sharing>`_.
+
+.. image:: _static/img/wcr-full-chart.png
+
+Or, visualizing these same results as percentages, we can see that we only analyzed about 60% of the WCRs (those recorded by Corpian) but of these 60% more than half were carbonate, and a little over one third of those carbonate wells had evidence of karstic activity.
 
 We also scripted the extraction of the same data for all WCRs from after 1989, and the results are shown below. The markedly lower proportion of carbonate geology in this set of WCRs may be due to a systematic failure to find the correct terminology, and ultimately deserve more research.
 
