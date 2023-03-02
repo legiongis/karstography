@@ -236,7 +236,7 @@ function sinkholesLayer(pgTileservUrl) {
     id: layerId,
     name: 'Sinkholes',
     visible: true,
-    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sinkholes-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:1" style="width:140px" />',
+    info: '<img src="/static/img/sinkhole-layer-legend.png" style="width:140px" />',
     layer: new VectorTileLayer({
       id: layerId,
       declutter: false,
@@ -341,7 +341,7 @@ function sinks12Layer(pgTileservUrl) {
     id: layerId,
     name: 'Sinks (depth: 1-2 ft)',
     visible: false,
-    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
+    info: '<img src="/static/img/sink-layer-legend.png" style="width:140px;" />',
     layer: layer,
   }
 }
@@ -358,7 +358,7 @@ function sinks25Layer(pgTileservUrl) {
     id: layerId,
     name: 'Sinks (depth: 2-5 ft)',
     visible: false,
-    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
+    info: '<img src="/static/img/sink-layer-legend.png" style="width:140px;" />',
     layer: layer,
   }
 }
@@ -377,7 +377,7 @@ function sinks5Layer(pgTileservUrl) {
     id: layerId,
     name: 'Sinks (depth: 5+ ft)',
     visible: false,
-    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
+    info: '<img src="/static/img/sink-layer-legend.png" style="width:140px;" />',
     layer: layer,
   }
 }
@@ -416,7 +416,6 @@ function fracLineLayer(pgTileservUrl) {
     id: layerId,
     name: 'Fracture Lines',
     visible: false,
-    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
     layer: layer,
     visible: false
   }
@@ -613,14 +612,14 @@ export class LayerDefs {
         id: carbLayer.get('id'),
         layer: carbLayer,
         visible: false,
-        info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=general:geology_a_wi_usgs_2005&STYLE=geology_carbonate_wi&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300" style="width:140px" />'
+        info: '<img src="/static/img/carbonate-bedrock-legend.png" style="width:140px" />'
       },
       {
         name:"Depth to Bedrock", 
         id: depthLayer.get('id'),
         layer: depthLayer,
         visible: false,
-        info: ' <img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:Crawford_Depth_to_Bedrock&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300;columns:3" style="width:150px" />'
+        info: '<img src="/static/img/depth-to-bedrock-legend.png" style="width:140px" />'
       },
       {
         name:"Watershed Boundaries",
