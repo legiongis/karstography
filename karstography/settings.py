@@ -18,6 +18,8 @@ CACHE_DIR = os.path.join(BASE_DIR, ".cache")
 if not os.path.isdir(CACHE_DIR):
     os.mkdir(CACHE_DIR)
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 DOCS_ROOT = os.path.join(BASE_DIR, 'docs/_build/html')
 
 # Quick-start development settings - unsuitable for production
