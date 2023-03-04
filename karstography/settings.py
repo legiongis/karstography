@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cspkarst',
     'docs',
+    'reference_layers',
 ]
 
 MIDDLEWARE = [

@@ -14,6 +14,7 @@ import {
 } from 'ol/layer';
 
 import { applyStyle } from 'ol-mapbox-style';
+import LayerGroup from 'ol/layer/Group';
 
 const greenFill =  new Fill({
   color: '#00ed00',
@@ -123,7 +124,7 @@ function outdoorsLabels(apiKey) {
         // tileSize: 512,
         // resolution: 1,
       }),
-      zIndex: 24,
+      zIndex: 30,
     })
   };
 };
@@ -306,7 +307,6 @@ function getSinkStyleDef(dbTable, pgTileservUrl, depthCat) {
   // the encoding is kind of tricky: encoding the entire string fails, but the spaces must be
   // replaced with %20 and the depth_cat value must be encoded, but not the single quotes or =
   const queryStr2 = `filter=in_nfhl%20=%20'false'%20AND%20in_row%20=%20'false'%20AND%20depth_cat%20=%20'${depthCat}'`
-  console.log(encodedQueryStr)
   return {
     version: 8,
     sources: {
@@ -421,69 +421,287 @@ function fracLineLayer(pgTileservUrl) {
   }
 }
 
-
 // CIVIL LAYER SECTION
+function countyLayer(pgTileservUrl) {
+  const layerId = 'counties';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 28,
+  })
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_county: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_county/{z}/{x}/{y}.pbf",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: 'public.reference_layers_county',
+        source: "reference_layers_county",
+        'source-layer': 'public.reference_layers_county',
+        type: "line",
+        paint: {
+          'line-color': "#000000",
+          'line-width': 2,
+        },
+      }
+    ]  
+  });
+  return {
+    id: layerId,
+    name: 'Counties',
+    visible: true,
+    layer: layer,
+  }
+}
 
-const mcdLayer = new TileLayer({
-  zIndex: 26,
-  id: "mcd",
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      LAYERS: 'general:cities_towns_and_villages',
-      TILED: true,
-      CQL_FILTER: "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
+function mcdLayer(pgTileservUrl) {
+  const cvLyr = new VectorTileLayer({declutter: false})
+  applyStyle(cvLyr, {
+    version: 8,
+    sources: {
+      reference_layers_minorcivildivision: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_minorcivildivision/{z}/{x}/{y}.pbf",
+        ]
+      }
     },
-  }),
-  attributions: "Minor Civil Divisions (Fall 2017)",
-})
-const countyLayer = new TileLayer({
-  zIndex: 27,
-  id: "counties",
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      LAYERS: 'general:wi_counties_nrcs_4269',
-      TILED: true,
-      CQL_FILTER: "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
+    layers: [
+      {
+        id: 'public.reference_layers_minorcivildivision',
+        source: "reference_layers_minorcivildivision",
+        'source-layer': 'public.reference_layers_minorcivildivision',
+        type: "line",
+        filter: ['any', ["==", ["get", "ctv"], "C"], ["==", ["get", "ctv"], "V"]],
+        paint: {
+          'line-color': "#ffe310",
+          'line-width': 2,
+        },
+      },
+    ]
+  });
+  const townLyr = new VectorTileLayer({declutter: false})
+  applyStyle(townLyr, {
+    version: 8,
+    sources: {
+      reference_layers_minorcivildivision: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_minorcivildivision/{z}/{x}/{y}.pbf",
+        ]
+      }
     },
-  }),
-  attributions: "Counties <a href='https://gdg.sc.egov.usda.gov/' target='_blank'>NRCS</a>",
-})
+    layers: [
+      {
+        id: 'public.reference_layers_minorcivildivision',
+        source: "reference_layers_minorcivildivision",
+        'source-layer': 'public.reference_layers_minorcivildivision',
+        type: "line",
+        filter: ["==", ["get", "ctv"], "T"],
+        paint: {
+          'line-color': "#ff7a06",
+          'line-width': 2,
+        },
+      },
+    ]
+  });
+  const layerId = 'mcd';
+  const layerGroup = new LayerGroup({
+    id: layerId,
+    layers: [townLyr, cvLyr],
+    zIndex: 27,
+  })
+  return {
+    id: layerId,
+    name: 'Minor Civil Divisions',
+    visible: true,
+    layer: layerGroup,
+  }
+}
 
-const qsectionsLayer = new TileLayer({
-  id: "plss_qsections",
-  zIndex: 23,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'general:plss_qsections',
-      'TILED': true,
-    },
+function twpLayer(pgTileservUrl) {
+  const layerId = 'townships';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 25,
   })
-})
-const sectionsLayer = new TileLayer({
-  id: "plss_sections",
-  zIndex: 23,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'general:plss_sections',
-      'TILED': true,
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_plsstownship: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_plsstownship/{z}/{x}/{y}.pbf",
+        ]
+      }
     },
+    layers: [
+      {
+        id: 'public.reference_layers_plsstownship',
+        source: "reference_layers_plsstownship",
+        'source-layer': 'public.reference_layers_plsstownship',
+        type: "line",
+        paint: {
+          'line-color': "#000000",
+          'line-width': 1,
+        },
+      }
+    ]  
+  });
+  return {
+    id: layerId,
+    name: 'PLSS Townships',
+    visible: true,
+    layer: layer,
+  }
+}
+
+function secLayer(pgTileservUrl) {
+  const layerId = 'sections';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 24,
   })
-})
-const townshipsLayer = new TileLayer({
-  id: "townships",
-  zIndex: 30,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'general:plss_townships',
-      'TILED': true,
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_plsssection: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_plsssection/{z}/{x}/{y}.pbf",
+        ]
+      }
     },
+    layers: [
+      {
+        id: 'public.reference_layers_plsssection',
+        source: "reference_layers_plsssection",
+        'source-layer': 'public.reference_layers_plsssection',
+        type: "line",
+        paint: {
+          'line-color': "#000000",
+          'line-width': .5,
+        },
+      }
+    ]  
+  });
+  return {
+    id: layerId,
+    name: 'PLSS Sections',
+    visible: true,
+    layer: layer,
+  }
+}
+
+function qsecLayer(pgTileservUrl) {
+  const layerId = 'qsections';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 23,
   })
-})
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_plssquartersection: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_plssquartersection/{z}/{x}/{y}.pbf",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: 'public.reference_layers_plssquartersection',
+        source: "reference_layers_plssquartersection",
+        'source-layer': 'public.reference_layers_plssquartersection',
+        type: "line",
+        paint: {
+          'line-color': "#000000",
+          'line-width': .25,
+          'line-dasharray': [2, 4],
+        },
+      }
+    ]  
+  });
+  return {
+    id: layerId,
+    name: 'PLSS ¼ Sections',
+    visible: true,
+    layer: layer,
+  }
+}
+
+
+
+// const mcdLayer2 = new TileLayer({
+//   zIndex: 26,
+//   id: "mcd",
+//   source: new TileWMS({
+//     url: "https://gn.legiongis.com/geoserver/ows",
+//     params: {
+//       LAYERS: 'general:cities_towns_and_villages',
+//       TILED: true,
+//       CQL_FILTER: "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
+//     },
+//   }),
+//   attributions: "Minor Civil Divisions (Fall 2017)",
+// })
+// const countyLayer = new TileLayer({
+//   zIndex: 27,
+//   id: "counties",
+//   source: new TileWMS({
+//     url: "https://gn.legiongis.com/geoserver/ows",
+//     params: {
+//       LAYERS: 'general:wi_counties_nrcs_4269',
+//       TILED: true,
+//       CQL_FILTER: "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
+//     },
+//   }),
+//   attributions: "Counties <a href='https://gdg.sc.egov.usda.gov/' target='_blank'>NRCS</a>",
+// })
+
+// const qsectionsLayer = new TileLayer({
+//   id: "plss_qsections",
+//   zIndex: 23,
+//   source: new TileWMS({
+//     url: "https://gn.legiongis.com/geoserver/ows",
+//     params: {
+//       'LAYERS': 'general:plss_qsections',
+//       'TILED': true,
+//     },
+//   })
+// })
+// const sectionsLayer = new TileLayer({
+//   id: "plss_sections",
+//   zIndex: 23,
+//   source: new TileWMS({
+//     url: "https://gn.legiongis.com/geoserver/ows",
+//     params: {
+//       'LAYERS': 'general:plss_sections',
+//       'TILED': true,
+//     },
+//   })
+// })
+// const townshipsLayer = new TileLayer({
+//   id: "townships",
+//   zIndex: 30,
+//   source: new TileWMS({
+//     url: "https://gn.legiongis.com/geoserver/ows",
+//     params: {
+//       'LAYERS': 'general:plss_townships',
+//       'TILED': true,
+//     },
+//   })
+// })
 
 
 // NATURAL LAYER SECTION
@@ -571,37 +789,42 @@ export class LayerDefs {
     ]
   }
 
-  civilLayers = function() {
+  civilLayers = function(pgTileservUrl) {
     return [
-      {
-        name:"Minor Civil Divisions",
-        id: mcdLayer.get('id'),
-        layer: mcdLayer, visible: true
-      },
-      {
-        name:"Counties",
-        id: countyLayer.get('id'),
-        layer: countyLayer,
-        visible: false
-      },
-      {
-        name:"PLSS ¼ Sections",
-        id: qsectionsLayer.get('id'),
-        layer: qsectionsLayer, 
-        visible: false
-      },
-      {
-        name:"PLSS Sections",
-        id: sectionsLayer.get('id'),
-        layer: sectionsLayer,
-        visible: false
-      },
-      {
-        name:"PLSS Townships",
-        id: townshipsLayer.get('id'),
-        layer: townshipsLayer,
-        visible: false
-      },
+      // {
+      //   name:"Minor Civil Divisions",
+      //   id: mcdLayer.get('id'),
+      //   layer: mcdLayer, visible: true
+      // },
+      // {
+      //   name:"Counties",
+      //   id: countyLayer.get('id'),
+      //   layer: countyLayer,
+      //   visible: false
+      // },
+      mcdLayer(pgTileservUrl),
+      countyLayer(pgTileservUrl),
+      // {
+      //   name:"PLSS ¼ Sections",
+      //   id: qsectionsLayer.get('id'),
+      //   layer: qsectionsLayer, 
+      //   visible: false
+      // },
+      twpLayer(pgTileservUrl),
+      secLayer(pgTileservUrl),
+      qsecLayer(pgTileservUrl),
+      // {
+      //   name:"PLSS Sections",
+      //   id: sectionsLayer.get('id'),
+      //   layer: sectionsLayer,
+      //   visible: false
+      // },
+      // {
+      //   name:"PLSS Townships",
+      //   id: townshipsLayer.get('id'),
+      //   layer: townshipsLayer,
+      //   visible: false
+      // },
     ]
   }
 

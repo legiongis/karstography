@@ -102,7 +102,7 @@ karstLayers.forEach( function (layerObj) {
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();
 });
 
-const civilLayers = layerDefs.civilLayers()
+const civilLayers = layerDefs.civilLayers(PG_TILESERV_URL)
 civilLayers.forEach( function (layerObj) {
     layerObj.layer.setVisible(layerObj.visible);
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();
@@ -153,6 +153,7 @@ function MapView() {
                 constrainResolution: true,
             }),
         ]),
+        maxTilesLoading: 32,
     });
 
     const highlightLayer = new VectorLayer({
