@@ -558,7 +558,7 @@ function twpLayer(pgTileservUrl) {
   return {
     id: layerId,
     name: 'PLSS Townships',
-    visible: true,
+    visible: false,
     layer: layer,
   }
 }
@@ -596,7 +596,7 @@ function secLayer(pgTileservUrl) {
   return {
     id: layerId,
     name: 'PLSS Sections',
-    visible: true,
+    visible: false,
     layer: layer,
   }
 }
@@ -635,7 +635,7 @@ function qsecLayer(pgTileservUrl) {
   return {
     id: layerId,
     name: 'PLSS ¼ Sections',
-    visible: true,
+    visible: false,
     layer: layer,
   }
 }
