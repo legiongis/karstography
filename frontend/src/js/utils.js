@@ -157,44 +157,32 @@ function mapboxAerial(apiKey) {
     })
   }
 }
-function hillshade() {
+function hillshade(titilerUrl) {
+  const layer = makeTitilerXYZLayer(titilerUrl, "https://legion-maps.us-southeast-1.linodeobjects.com/csp/drg/drg_s_wi023_opt.tif")
+  layer.setZIndex(1)
   return {
     id: "hillshade",
     name: "SW WI Hillshade",
-    layer: new TileLayer({
-      source: new TileWMS({
-        url: "https://gn.legiongis.com/geoserver/ows",
-        params: {
-          'LAYERS': 'wi-elevation:sw-wi-hillshade',
-          'TILED': true,
-        },
-      }),
-      zIndex: 1,
-    })
+    layer: makeTitilerXYZLayer(titilerUrl, "https://legion-maps.us-southeast-1.linodeobjects.com/csp/hillshades/sw-wi-hillshades-mosaic.json"),
   }
 }
 
 function usgsTopo(titilerUrl) {
+  const layer = makeTitilerXYZLayer(titilerUrl, "https://legion-maps.us-southeast-1.linodeobjects.com/csp/drg/drg_s_wi023_opt.tif")
+  layer.setZIndex(1)
   return {
     id: "usgstopo",
     name: "USGS Topo",
-    layer: makeTitilerXYZLayer(titilerUrl, "https://legion-maps.us-southeast-1.linodeobjects.com/csp/drg/drg_s_wi023_opt.tif")
+    layer: layer,
   }
 }
-function crawfordTPI() {
+function crawfordTPI(titilerUrl) {
+  const layer = makeTitilerXYZLayer(titilerUrl, "https://legion-maps.us-southeast-1.linodeobjects.com/csp/tpi/Crawford_TPI-3857.tif")
+  layer.setZIndex(1)
   return {
     id: "tpi",
     name: "Topographic Position Index",
-    layer: new TileLayer({
-      source: new TileWMS({
-        url: "https://gn.legiongis.com/geoserver/ows",
-        params: {
-          'LAYERS': 'karstography:Crawford_TPI_int16-3857_complete',
-          'TILED': true,
-        },
-        attributions: "<a href='http://www.gdal.org/gdaldem.html#gdaldem_TPI' target='_blank'>TPI</a> derived from <a href='http://www.wisconsinview.org/'>WisconsinView</a> LiDAR",
-      })
-    }),
+    layer: layer,
   }
 }
 
@@ -779,9 +767,9 @@ export class LayerDefs {
     return [
       mapboxOutdoors(apiKey),
       mapboxAerial(apiKey),
-      hillshade(),
+      hillshade(titilerUrl),
       usgsTopo(titilerUrl),
-      crawfordTPI(),
+      crawfordTPI(titilerUrl),
     ]
   }
 
