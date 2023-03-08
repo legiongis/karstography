@@ -28,6 +28,7 @@ const layerDefs = new LayerDefs();
 export let USER;
 export let MAPBOX_API_KEY;
 export let PG_TILESERV_URL;
+export let TITILER_URL;
 export let EXAMPLES_GEOJSON;
 export let ENVIRONMENT;
 
@@ -88,7 +89,7 @@ $: {
 }
 
 let currentBasemap = 'hillshade';
-const baseLayers = layerDefs.baseLayers(MAPBOX_API_KEY);
+const baseLayers = layerDefs.baseLayers(MAPBOX_API_KEY, TITILER_URL);
 function setBasemap(layerId) {
     baseLayers.forEach( function(layerObj) {
         layerObj.layer.setVisible(layerObj.id == layerId);

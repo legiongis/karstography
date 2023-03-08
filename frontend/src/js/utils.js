@@ -99,6 +99,22 @@ export const styleDefs = {
   }),
 }
 
+function makeTitilerXYZLayer(host, cogUrl) {
+  const cogUrlEncode = encodeURIComponent(cogUrl)
+  let url;
+  if (String(cogUrl).endsWith(".json")) {
+      url = host +"/mosaicjson/tiles/{z}/{x}/{y}.png?TileMatrixSetId=WebMercatorQuad&url=" + cogUrlEncode;
+  } else {
+      url = host +"/cog/tiles/{z}/{x}/{y}.png?TileMatrixSetId=WebMercatorQuad&url=" + cogUrlEncode;
+  }
+  return new TileLayer({
+    source: new XYZ({
+      url: url,
+    }),
+    // extent: transformExtent(vol.extent, "EPSG:4326", "EPSG:3857")
+  });
+}
+
 // BASE LAYER CREATION SECTION
 function mapboxOutdoors(apiKey) {
   return {
@@ -157,20 +173,12 @@ function hillshade() {
     })
   }
 }
-function usgsTopo() {
+
+function usgsTopo(titilerUrl) {
   return {
     id: "usgstopo",
     name: "USGS Topo",
-    layer: new TileLayer({
-      source: new TileWMS({
-        url: "https://gn.legiongis.com/geoserver/ows",
-        params: {
-          'LAYERS': 'karstography:drg_s_wi023_opt',
-          'TILED': true,
-        },
-      }),
-      zIndex: 1,
-    }),
+    layer: makeTitilerXYZLayer(titilerUrl, "https://legion-maps.us-southeast-1.linodeobjects.com/csp/drg/drg_s_wi023_opt.tif")
   }
 }
 function crawfordTPI() {
@@ -767,12 +775,12 @@ export class LayerDefs {
     return outdoorsLabels(apiKey)
   }
 
-  baseLayers = function(apiKey) {
+  baseLayers = function(apiKey, titilerUrl) {
     return [
       mapboxOutdoors(apiKey),
       mapboxAerial(apiKey),
       hillshade(),
-      usgsTopo(),
+      usgsTopo(titilerUrl),
       crawfordTPI(),
     ]
   }
