@@ -702,31 +702,69 @@ function qsecLayer(pgTileservUrl) {
 
 // NATURAL LAYER SECTION
 
-const carbLayer = new TileLayer({
-  id: "carbonate",
-  zIndex: 21,
-  opacity: .7,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'general:geology_a_wi_usgs_2005',
-      'TILED': true,
-      'STYLES': 'geology_carbonate_wi'
-    },
-  })
-})
-const depthLayer = new TileLayer({
-  id: "bedrockDepth",
-  zIndex: 22,
-  opacity: .7,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'karstography:Crawford_Depth_to_Bedrock',
-      'TILED': true,
-    },
-  })
-})
+// const carbLayer = new TileLayer({
+//   id: "carbonate",
+//   zIndex: 21,
+//   opacity: .7,
+//   source: new TileWMS({
+//     url: "https://gn.legiongis.com/geoserver/ows",
+//     params: {
+//       'LAYERS': 'general:geology_a_wi_usgs_2005',
+//       'TILED': true,
+//       'STYLES': 'geology_carbonate_wi'
+//     },
+//   })
+// })
+function carbonateLayer(apiKey) {
+  const layerId = 'carbonate';
+  return {
+    id: layerId,
+    name: "Carbonate Bedrock",
+    layer: new TileLayer({
+      id: layerId,
+      source: new XYZ({
+        url: 'https://api.mapbox.com/styles/v1/legiongis/clh6rrh0l01hd01qndmio9c4o/tiles/256/{z}/{x}/{y}?access_token=' + apiKey,
+        // tileSize: 512,
+        // resolution: 1,
+      }),
+      opacity: .7,
+      zIndex: 21,
+    }),
+    visible: false,
+    info: '<img src="/static/img/carbonate-bedrock-legend.png" style="width:140px" />',
+  };
+};
+function depthToBedrockLayer(apiKey) {
+  const layerId = 'bedrockDepth';
+  return {
+    id: layerId,
+    name: "Depth to Bedrock",
+    layer: new TileLayer({
+      id: layerId,
+      source: new XYZ({
+        url: 'https://api.mapbox.com/styles/v1/legiongis/clh6siyim01hf01qn6iv4a6wn/tiles/256/{z}/{x}/{y}?access_token=' + apiKey,
+        // tileSize: 512,
+        // resolution: 1,
+      }),
+      opacity: .7,
+      zIndex: 22,
+    }),
+    visible: false,
+    info: '<img src="/static/img/depth-to-bedrock-legend.png" style="width:140px" />',
+  };
+};
+// const depthLayer = new TileLayer({
+//   id: "bedrockDepth",
+//   zIndex: 22,
+//   opacity: .7,
+//   source: new TileWMS({
+//     url: "https://gn.legiongis.com/geoserver/ows",
+//     params: {
+//       'LAYERS': 'karstography:Crawford_Depth_to_Bedrock',
+//       'TILED': true,
+//     },
+//   })
+// })
 
 function huc8Layer(pgTileservUrl) {
   const layerId = 'huc8layer';
@@ -779,7 +817,7 @@ function huc10Layer(pgTileservUrl) {
       reference_layers_hydrologicunit: {
         type: "vector",
         tiles: [
-          pgTileservUrl + "public.reference_layers_hydrologicunit/{z}/{x}/{y}.pbf?filter=category%20=%20'Subbasin'",
+          pgTileservUrl + "public.reference_layers_hydrologicunit/{z}/{x}/{y}.pbf?filter=category%20=%20'Watershed'",
         ]
       }
     },
@@ -927,22 +965,18 @@ export class LayerDefs {
     ]
   }
 
-  naturalLayers = function(pgTileservUrl) {
+  naturalLayers = function(pgTileservUrl, apiKey) {
     return [
-      {
-        name:"Carbonate Bedrock",
-        id: carbLayer.get('id'),
-        layer: carbLayer,
-        visible: false,
-        info: '<img src="/static/img/carbonate-bedrock-legend.png" style="width:140px" />'
-      },
-      {
-        name:"Depth to Bedrock", 
-        id: depthLayer.get('id'),
-        layer: depthLayer,
-        visible: false,
-        info: '<img src="/static/img/depth-to-bedrock-legend.png" style="width:140px" />'
-      },
+      // {
+      //   name:"Carbonate Bedrock",
+      //   id: carbLayer.get('id'),
+      //   layer: carbLayer,
+      //   visible: false,
+      //   info: '<img src="/static/img/carbonate-bedrock-legend.png" style="width:140px" />'
+      // },
+
+      carbonateLayer(apiKey),
+      depthToBedrockLayer(apiKey),
       huc8Layer(pgTileservUrl),
       huc10Layer(pgTileservUrl),
       huc12Layer(pgTileservUrl),
