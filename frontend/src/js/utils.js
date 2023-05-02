@@ -636,85 +636,8 @@ function qsecLayer(pgTileservUrl) {
   }
 }
 
-
-
-// const mcdLayer2 = new TileLayer({
-//   zIndex: 26,
-//   id: "mcd",
-//   source: new TileWMS({
-//     url: "https://gn.legiongis.com/geoserver/ows",
-//     params: {
-//       LAYERS: 'general:cities_towns_and_villages',
-//       TILED: true,
-//       CQL_FILTER: "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
-//     },
-//   }),
-//   attributions: "Minor Civil Divisions (Fall 2017)",
-// })
-// const countyLayer = new TileLayer({
-//   zIndex: 27,
-//   id: "counties",
-//   source: new TileWMS({
-//     url: "https://gn.legiongis.com/geoserver/ows",
-//     params: {
-//       LAYERS: 'general:wi_counties_nrcs_4269',
-//       TILED: true,
-//       CQL_FILTER: "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
-//     },
-//   }),
-//   attributions: "Counties <a href='https://gdg.sc.egov.usda.gov/' target='_blank'>NRCS</a>",
-// })
-
-// const qsectionsLayer = new TileLayer({
-//   id: "plss_qsections",
-//   zIndex: 23,
-//   source: new TileWMS({
-//     url: "https://gn.legiongis.com/geoserver/ows",
-//     params: {
-//       'LAYERS': 'general:plss_qsections',
-//       'TILED': true,
-//     },
-//   })
-// })
-// const sectionsLayer = new TileLayer({
-//   id: "plss_sections",
-//   zIndex: 23,
-//   source: new TileWMS({
-//     url: "https://gn.legiongis.com/geoserver/ows",
-//     params: {
-//       'LAYERS': 'general:plss_sections',
-//       'TILED': true,
-//     },
-//   })
-// })
-// const townshipsLayer = new TileLayer({
-//   id: "townships",
-//   zIndex: 30,
-//   source: new TileWMS({
-//     url: "https://gn.legiongis.com/geoserver/ows",
-//     params: {
-//       'LAYERS': 'general:plss_townships',
-//       'TILED': true,
-//     },
-//   })
-// })
-
-
 // NATURAL LAYER SECTION
 
-// const carbLayer = new TileLayer({
-//   id: "carbonate",
-//   zIndex: 21,
-//   opacity: .7,
-//   source: new TileWMS({
-//     url: "https://gn.legiongis.com/geoserver/ows",
-//     params: {
-//       'LAYERS': 'general:geology_a_wi_usgs_2005',
-//       'TILED': true,
-//       'STYLES': 'geology_carbonate_wi'
-//     },
-//   })
-// })
 function carbonateLayer(apiKey) {
   const layerId = 'carbonate';
   return {
@@ -753,18 +676,6 @@ function depthToBedrockLayer(apiKey) {
     info: '<img src="/static/img/depth-to-bedrock-legend.png" style="width:140px" />',
   };
 };
-// const depthLayer = new TileLayer({
-//   id: "bedrockDepth",
-//   zIndex: 22,
-//   opacity: .7,
-//   source: new TileWMS({
-//     url: "https://gn.legiongis.com/geoserver/ows",
-//     params: {
-//       'LAYERS': 'karstography:Crawford_Depth_to_Bedrock',
-//       'TILED': true,
-//     },
-//   })
-// })
 
 function huc8Layer(pgTileservUrl) {
   const layerId = 'huc8layer';
@@ -928,53 +839,16 @@ export class LayerDefs {
 
   civilLayers = function(pgTileservUrl) {
     return [
-      // {
-      //   name:"Minor Civil Divisions",
-      //   id: mcdLayer.get('id'),
-      //   layer: mcdLayer, visible: true
-      // },
-      // {
-      //   name:"Counties",
-      //   id: countyLayer.get('id'),
-      //   layer: countyLayer,
-      //   visible: false
-      // },
       mcdLayer(pgTileservUrl),
       countyLayer(pgTileservUrl),
-      // {
-      //   name:"PLSS ¼ Sections",
-      //   id: qsectionsLayer.get('id'),
-      //   layer: qsectionsLayer, 
-      //   visible: false
-      // },
       twpLayer(pgTileservUrl),
       secLayer(pgTileservUrl),
       qsecLayer(pgTileservUrl),
-      // {
-      //   name:"PLSS Sections",
-      //   id: sectionsLayer.get('id'),
-      //   layer: sectionsLayer,
-      //   visible: false
-      // },
-      // {
-      //   name:"PLSS Townships",
-      //   id: townshipsLayer.get('id'),
-      //   layer: townshipsLayer,
-      //   visible: false
-      // },
     ]
   }
 
   naturalLayers = function(pgTileservUrl, apiKey) {
     return [
-      // {
-      //   name:"Carbonate Bedrock",
-      //   id: carbLayer.get('id'),
-      //   layer: carbLayer,
-      //   visible: false,
-      //   info: '<img src="/static/img/carbonate-bedrock-legend.png" style="width:140px" />'
-      // },
-
       carbonateLayer(apiKey),
       depthToBedrockLayer(apiKey),
       huc8Layer(pgTileservUrl),
