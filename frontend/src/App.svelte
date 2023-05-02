@@ -109,7 +109,7 @@ civilLayers.forEach( function (layerObj) {
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();
 });
 
-const naturalLayers = layerDefs.naturalLayers()
+const naturalLayers = layerDefs.naturalLayers(PG_TILESERV_URL)
 naturalLayers.forEach( function (layerObj) {
     layerObj.layer.setVisible(layerObj.visible);
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();

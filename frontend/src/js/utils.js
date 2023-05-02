@@ -727,17 +727,120 @@ const depthLayer = new TileLayer({
     },
   })
 })
-const watershedsLayer = new TileLayer({
-  id: "watersheds",
-  zIndex: 23,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'general:wi_watersheds',
-      'TILED': true,
-    },
+
+function huc8Layer(pgTileservUrl) {
+  const layerId = 'huc8layer';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 23,
   })
-})
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_hydrologicunit: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_hydrologicunit/{z}/{x}/{y}.pbf?filter=category%20=%20'Subbasin'",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: 'public.reference_layers_hydrologicunit',
+        source: "reference_layers_hydrologicunit",
+        'source-layer': 'public.reference_layers_hydrologicunit',
+        type: "line",
+        paint: {
+          'line-color': "#6B1824",
+          'line-width': 2.25,
+        },
+      }
+    ]
+  });
+  return {
+    id: layerId,
+    name: 'Subbasins (HUC8)',
+    visible: false,
+    layer: layer,
+  }
+}
+
+function huc10Layer(pgTileservUrl) {
+  const layerId = 'huc10layer';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 23,
+  })
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_hydrologicunit: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_hydrologicunit/{z}/{x}/{y}.pbf?filter=category%20=%20'Subbasin'",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: 'public.reference_layers_hydrologicunit',
+        source: "reference_layers_hydrologicunit",
+        'source-layer': 'public.reference_layers_hydrologicunit',
+        type: "line",
+        paint: {
+          'line-color': "#9E2335",
+          'line-width': 1.5,
+        },
+      }
+    ]
+  });
+  return {
+    id: layerId,
+    name: 'Watersheds (HUC10)',
+    visible: false,
+    layer: layer,
+  }
+}
+
+function huc12Layer(pgTileservUrl) {
+  const layerId = 'huc12layer';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 23,
+  })
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_hydrologicunit: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_hydrologicunit/{z}/{x}/{y}.pbf?filter=category%20=%20'Subwatershed'",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: 'public.reference_layers_hydrologicunit',
+        source: "reference_layers_hydrologicunit",
+        'source-layer': 'public.reference_layers_hydrologicunit',
+        type: "line",
+        paint: {
+          'line-color': "#EA344F",
+          'line-width': .75,
+        },
+      },
+    ]
+  });
+  return {
+    id: layerId,
+    name: 'Subwatersheds (HUC12)',
+    visible: false,
+    layer: layer,
+  }
+}
 
 // POI/EXAMPLES LAYER
 function poiLayer(geojson) {
@@ -824,7 +927,7 @@ export class LayerDefs {
     ]
   }
 
-  naturalLayers = function() {
+  naturalLayers = function(pgTileservUrl) {
     return [
       {
         name:"Carbonate Bedrock",
@@ -840,12 +943,9 @@ export class LayerDefs {
         visible: false,
         info: '<img src="/static/img/depth-to-bedrock-legend.png" style="width:140px" />'
       },
-      {
-        name:"Watershed Boundaries",
-        id: watershedsLayer.get('id'),
-        layer: watershedsLayer,
-        visible: false
-      },
+      huc8Layer(pgTileservUrl),
+      huc10Layer(pgTileservUrl),
+      huc12Layer(pgTileservUrl),
     ]
   }
 
