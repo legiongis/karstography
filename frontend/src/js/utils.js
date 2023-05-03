@@ -214,7 +214,7 @@ function wellsLayer(pg_tileserv_url) {
         url: pg_tileserv_url + 'public.cspkarst_well/{z}/{x}/{y}.pbf'
       }),
       style: styleDefs.wells,
-      zIndex: 40,
+      zIndex: 50,
     }),
   }
 }
@@ -243,7 +243,7 @@ function sinkholesLayer(pgTileservUrl) {
         url: pgTileservUrl + "public.cspkarst_sink/{z}/{x}/{y}.pbf?filter=sink_type='SINKHOLE'"
       }),
       style: getSinkholeStyle,
-      zIndex: 39,
+      zIndex: 49,
     }),
   }
 }
@@ -259,7 +259,7 @@ function sinkholeHeatmapLayer() {
     // a listener to map.on('moveend') which gets the new zoom level and uses
     // setRadius and setBlur on this layer.
     layer: new HeatmapLayer({
-      zIndex: 32,
+      zIndex: 42,
       id: layerId,
       source: new VectorSource({
         url: "/api/v1/sinks?format=geojson&sink_type=SINKHOLE",
@@ -330,7 +330,7 @@ function sinks12Layer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 32,
+    zIndex: 44,
   })
   applyStyle(layer, getSinkStyleDef('public.cspkarst_sink', pgTileservUrl, '1-2'))
   return {
@@ -347,7 +347,7 @@ function sinks25Layer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 33,
+    zIndex: 45,
   })
   applyStyle(layer, getSinkStyleDef('public.cspkarst_sink', pgTileservUrl, '2-5'))
   return {
@@ -364,7 +364,7 @@ function sinks5Layer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 34,
+    zIndex: 46,
   })
   // there is a '+' character in the depth_cat value which must be url encoded
   // i.e. '5+' becomes '5%2B'
@@ -383,7 +383,7 @@ function fracLineLayer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 30,
+    zIndex: 40,
   })
   applyStyle(layer, {
     version: 8,
@@ -423,7 +423,7 @@ function countyLayer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 28,
+    zIndex: 38,
   })
   applyStyle(layer, {
     version: 8,
@@ -511,7 +511,7 @@ function mcdLayer(pgTileservUrl) {
   const layerGroup = new LayerGroup({
     id: layerId,
     layers: [townLyr, cvLyr],
-    zIndex: 27,
+    zIndex: 37,
   })
   return {
     id: layerId,
@@ -526,7 +526,7 @@ function twpLayer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 25,
+    zIndex: 35,
   })
   applyStyle(layer, {
     version: 8,
@@ -564,7 +564,7 @@ function secLayer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 24,
+    zIndex: 34,
   })
   applyStyle(layer, {
     version: 8,
@@ -602,7 +602,7 @@ function qsecLayer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 23,
+    zIndex: 33,
   })
   applyStyle(layer, {
     version: 8,
@@ -651,7 +651,7 @@ function carbonateLayer(apiKey) {
         // resolution: 1,
       }),
       opacity: .7,
-      zIndex: 21,
+      zIndex: 22,
     }),
     visible: false,
     info: '<img src="/static/img/carbonate-bedrock-legend.png" style="width:140px" />',
@@ -670,7 +670,7 @@ function depthToBedrockLayer(apiKey) {
         // resolution: 1,
       }),
       opacity: .7,
-      zIndex: 22,
+      zIndex: 23,
     }),
     visible: false,
     info: '<img src="/static/img/depth-to-bedrock-legend.png" style="width:140px" />',
@@ -682,7 +682,7 @@ function huc8Layer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 23,
+    zIndex: 28,
   })
   applyStyle(layer, {
     version: 8,
@@ -720,7 +720,7 @@ function huc10Layer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 23,
+    zIndex: 27,
   })
   applyStyle(layer, {
     version: 8,
@@ -758,7 +758,7 @@ function huc12Layer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 23,
+    zIndex: 26,
   })
   applyStyle(layer, {
     version: 8,
