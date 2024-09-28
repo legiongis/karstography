@@ -45,7 +45,7 @@ class Command(BaseCommand):
         try:
             cursor.execute("DROP DATABASE " + dbinfo['NAME'])
         except Exception as e:
-            raise e
+            pass
         cursor.execute("CREATE DATABASE " + dbinfo['NAME'] + " WITH ENCODING 'UTF8'")
 
         management.call_command('makemigrations')
