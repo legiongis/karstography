@@ -66,6 +66,7 @@ class Viewer(View):
             "USER": user,
             "MAPBOX_API_KEY": settings.MAPBOX_API_KEY,
             'PG_TILESERV_URL': settings.PG_TILESERV_URL,
+            "TITILER_URL": settings.TITILER_URL,
             'SINKHOLE_TOTAL': sh_probable+sh_possible,
             'SINKHOLE_PROBABLE': sh_probable,
             'SINKHOLE_POSSIBLE': sh_possible,

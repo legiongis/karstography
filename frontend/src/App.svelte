@@ -28,6 +28,7 @@ const layerDefs = new LayerDefs();
 export let USER;
 export let MAPBOX_API_KEY;
 export let PG_TILESERV_URL;
+export let TITILER_URL;
 export let EXAMPLES_GEOJSON;
 export let ENVIRONMENT;
 
@@ -88,7 +89,7 @@ $: {
 }
 
 let currentBasemap = 'hillshade';
-const baseLayers = layerDefs.baseLayers(MAPBOX_API_KEY);
+const baseLayers = layerDefs.baseLayers(MAPBOX_API_KEY, TITILER_URL);
 function setBasemap(layerId) {
     baseLayers.forEach( function(layerObj) {
         layerObj.layer.setVisible(layerObj.id == layerId);
@@ -102,13 +103,13 @@ karstLayers.forEach( function (layerObj) {
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();
 });
 
-const civilLayers = layerDefs.civilLayers()
+const civilLayers = layerDefs.civilLayers(PG_TILESERV_URL)
 civilLayers.forEach( function (layerObj) {
     layerObj.layer.setVisible(layerObj.visible);
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();
 });
 
-const naturalLayers = layerDefs.naturalLayers()
+const naturalLayers = layerDefs.naturalLayers(PG_TILESERV_URL, MAPBOX_API_KEY)
 naturalLayers.forEach( function (layerObj) {
     layerObj.layer.setVisible(layerObj.visible);
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();
@@ -153,6 +154,7 @@ function MapView() {
                 constrainResolution: true,
             }),
         ]),
+        maxTilesLoading: 32,
     });
 
     const highlightLayer = new VectorLayer({

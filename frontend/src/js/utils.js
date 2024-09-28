@@ -14,6 +14,7 @@ import {
 } from 'ol/layer';
 
 import { applyStyle } from 'ol-mapbox-style';
+import LayerGroup from 'ol/layer/Group';
 
 const greenFill =  new Fill({
   color: '#00ed00',
@@ -98,6 +99,22 @@ export const styleDefs = {
   }),
 }
 
+function makeTitilerXYZLayer(host, cogUrl) {
+  const cogUrlEncode = encodeURIComponent(cogUrl)
+  let url;
+  if (String(cogUrl).endsWith(".json")) {
+      url = host +"/mosaicjson/tiles/{z}/{x}/{y}.png?TileMatrixSetId=WebMercatorQuad&url=" + cogUrlEncode;
+  } else {
+      url = host +"/cog/tiles/{z}/{x}/{y}.png?TileMatrixSetId=WebMercatorQuad&url=" + cogUrlEncode;
+  }
+  return new TileLayer({
+    source: new XYZ({
+      url: url,
+    }),
+    // extent: transformExtent(vol.extent, "EPSG:4326", "EPSG:3857")
+  });
+}
+
 // BASE LAYER CREATION SECTION
 function mapboxOutdoors(apiKey) {
   return {
@@ -123,7 +140,7 @@ function outdoorsLabels(apiKey) {
         // tileSize: 512,
         // resolution: 1,
       }),
-      zIndex: 24,
+      zIndex: 30,
     })
   };
 };
@@ -140,52 +157,32 @@ function mapboxAerial(apiKey) {
     })
   }
 }
-function hillshade() {
+function hillshade(titilerUrl) {
+  const layer = makeTitilerXYZLayer(titilerUrl, "https://legion-maps.us-southeast-1.linodeobjects.com/csp/drg/drg_s_wi023_opt.tif")
+  layer.setZIndex(1)
   return {
     id: "hillshade",
     name: "SW WI Hillshade",
-    layer: new TileLayer({
-      source: new TileWMS({
-        url: "https://gn.legiongis.com/geoserver/ows",
-        params: {
-          'LAYERS': 'wi-elevation:sw-wi-hillshade',
-          'TILED': true,
-        },
-      }),
-      zIndex: 1,
-    })
+    layer: makeTitilerXYZLayer(titilerUrl, "https://legion-maps.us-southeast-1.linodeobjects.com/csp/hillshades/sw-wi-hillshades-mosaic.json"),
   }
 }
-function usgsTopo() {
+
+function usgsTopo(titilerUrl) {
+  const layer = makeTitilerXYZLayer(titilerUrl, "https://legion-maps.us-southeast-1.linodeobjects.com/csp/drg/drg_s_wi023_opt.tif")
+  layer.setZIndex(1)
   return {
     id: "usgstopo",
     name: "USGS Topo",
-    layer: new TileLayer({
-      source: new TileWMS({
-        url: "https://gn.legiongis.com/geoserver/ows",
-        params: {
-          'LAYERS': 'karstography:drg_s_wi023_opt',
-          'TILED': true,
-        },
-      }),
-      zIndex: 1,
-    }),
+    layer: layer,
   }
 }
-function crawfordTPI() {
+function crawfordTPI(titilerUrl) {
+  const layer = makeTitilerXYZLayer(titilerUrl, "https://legion-maps.us-southeast-1.linodeobjects.com/csp/tpi/Crawford_TPI-3857.tif")
+  layer.setZIndex(1)
   return {
     id: "tpi",
     name: "Topographic Position Index",
-    layer: new TileLayer({
-      source: new TileWMS({
-        url: "https://gn.legiongis.com/geoserver/ows",
-        params: {
-          'LAYERS': 'karstography:Crawford_TPI_int16-3857_complete',
-          'TILED': true,
-        },
-        attributions: "<a href='http://www.gdal.org/gdaldem.html#gdaldem_TPI' target='_blank'>TPI</a> derived from <a href='http://www.wisconsinview.org/'>WisconsinView</a> LiDAR",
-      })
-    }),
+    layer: layer,
   }
 }
 
@@ -217,7 +214,7 @@ function wellsLayer(pg_tileserv_url) {
         url: pg_tileserv_url + 'public.cspkarst_well/{z}/{x}/{y}.pbf'
       }),
       style: styleDefs.wells,
-      zIndex: 40,
+      zIndex: 50,
     }),
   }
 }
@@ -236,7 +233,7 @@ function sinkholesLayer(pgTileservUrl) {
     id: layerId,
     name: 'Sinkholes',
     visible: true,
-    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sinkholes-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:1" style="width:140px" />',
+    info: '<img src="/static/img/sinkhole-layer-legend.png" style="width:140px" />',
     layer: new VectorTileLayer({
       id: layerId,
       declutter: false,
@@ -246,7 +243,7 @@ function sinkholesLayer(pgTileservUrl) {
         url: pgTileservUrl + "public.cspkarst_sink/{z}/{x}/{y}.pbf?filter=sink_type='SINKHOLE'"
       }),
       style: getSinkholeStyle,
-      zIndex: 39,
+      zIndex: 49,
     }),
   }
 }
@@ -262,7 +259,7 @@ function sinkholeHeatmapLayer() {
     // a listener to map.on('moveend') which gets the new zoom level and uses
     // setRadius and setBlur on this layer.
     layer: new HeatmapLayer({
-      zIndex: 32,
+      zIndex: 42,
       id: layerId,
       source: new VectorSource({
         url: "/api/v1/sinks?format=geojson&sink_type=SINKHOLE",
@@ -306,7 +303,6 @@ function getSinkStyleDef(dbTable, pgTileservUrl, depthCat) {
   // the encoding is kind of tricky: encoding the entire string fails, but the spaces must be
   // replaced with %20 and the depth_cat value must be encoded, but not the single quotes or =
   const queryStr2 = `filter=in_nfhl%20=%20'false'%20AND%20in_row%20=%20'false'%20AND%20depth_cat%20=%20'${depthCat}'`
-  console.log(encodedQueryStr)
   return {
     version: 8,
     sources: {
@@ -334,14 +330,14 @@ function sinks12Layer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 32,
+    zIndex: 44,
   })
   applyStyle(layer, getSinkStyleDef('public.cspkarst_sink', pgTileservUrl, '1-2'))
   return {
     id: layerId,
     name: 'Sinks (depth: 1-2 ft)',
     visible: false,
-    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
+    info: '<img src="/static/img/sink-layer-legend.png" style="width:140px;" />',
     layer: layer,
   }
 }
@@ -351,14 +347,14 @@ function sinks25Layer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 33,
+    zIndex: 45,
   })
   applyStyle(layer, getSinkStyleDef('public.cspkarst_sink', pgTileservUrl, '2-5'))
   return {
     id: layerId,
     name: 'Sinks (depth: 2-5 ft)',
     visible: false,
-    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
+    info: '<img src="/static/img/sink-layer-legend.png" style="width:140px;" />',
     layer: layer,
   }
 }
@@ -368,7 +364,7 @@ function sinks5Layer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 34,
+    zIndex: 46,
   })
   // there is a '+' character in the depth_cat value which must be url encoded
   // i.e. '5+' becomes '5%2B'
@@ -377,7 +373,7 @@ function sinks5Layer(pgTileservUrl) {
     id: layerId,
     name: 'Sinks (depth: 5+ ft)',
     visible: false,
-    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
+    info: '<img src="/static/img/sink-layer-legend.png" style="width:140px;" />',
     layer: layer,
   }
 }
@@ -387,7 +383,7 @@ function fracLineLayer(pgTileservUrl) {
   const layer = new VectorTileLayer({
     id: layerId,
     declutter: false,
-    zIndex: 30,
+    zIndex: 40,
   })
   applyStyle(layer, {
     version: 8,
@@ -416,115 +412,384 @@ function fracLineLayer(pgTileservUrl) {
     id: layerId,
     name: 'Fracture Lines',
     visible: false,
-    info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:cspkarst_sink_12-prod&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300&env=size:10" style="width:140px" />',
     layer: layer,
     visible: false
   }
 }
 
-
 // CIVIL LAYER SECTION
-
-const mcdLayer = new TileLayer({
-  zIndex: 26,
-  id: "mcd",
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      LAYERS: 'general:cities_towns_and_villages',
-      TILED: true,
-      CQL_FILTER: "cnty_name IN ('CRAWFORD','VERNON','IOWA','GRANT','RICHLAND','LAFAYETTE')"
-    },
-  }),
-  attributions: "Minor Civil Divisions (Fall 2017)",
-})
-const countyLayer = new TileLayer({
-  zIndex: 27,
-  id: "counties",
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      LAYERS: 'general:wi_counties_nrcs_4269',
-      TILED: true,
-      CQL_FILTER: "countyname IN ('Crawford','Vernon','Iowa','Grant','Richland','Lafayette')",
-    },
-  }),
-  attributions: "Counties <a href='https://gdg.sc.egov.usda.gov/' target='_blank'>NRCS</a>",
-})
-
-const qsectionsLayer = new TileLayer({
-  id: "plss_qsections",
-  zIndex: 23,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'general:plss_qsections',
-      'TILED': true,
-    },
+function countyLayer(pgTileservUrl) {
+  const layerId = 'counties';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 38,
   })
-})
-const sectionsLayer = new TileLayer({
-  id: "plss_sections",
-  zIndex: 23,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'general:plss_sections',
-      'TILED': true,
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_county: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_county/{z}/{x}/{y}.pbf",
+        ]
+      }
     },
-  })
-})
-const townshipsLayer = new TileLayer({
-  id: "townships",
-  zIndex: 30,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'general:plss_townships',
-      'TILED': true,
-    },
-  })
-})
+    layers: [
+      {
+        id: 'public.reference_layers_county',
+        source: "reference_layers_county",
+        'source-layer': 'public.reference_layers_county',
+        type: "line",
+        paint: {
+          'line-color': "#000000",
+          'line-width': 2,
+        },
+      }
+    ]  
+  });
+  return {
+    id: layerId,
+    name: 'Counties',
+    visible: true,
+    layer: layer,
+  }
+}
 
+function mcdLayer(pgTileservUrl) {
+  const cvLyr = new VectorTileLayer({declutter: false})
+  applyStyle(cvLyr, {
+    version: 8,
+    sources: {
+      reference_layers_minorcivildivision: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_minorcivildivision/{z}/{x}/{y}.pbf",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: 'public.reference_layers_minorcivildivision',
+        source: "reference_layers_minorcivildivision",
+        'source-layer': 'public.reference_layers_minorcivildivision',
+        type: "line",
+        filter: ['any', ["==", ["get", "ctv"], "C"], ["==", ["get", "ctv"], "V"]],
+        paint: {
+          'line-color': "#ffe310",
+          'line-width': 2,
+        },
+      },
+    ]
+  });
+  const townLyr = new VectorTileLayer({declutter: false})
+  applyStyle(townLyr, {
+    version: 8,
+    sources: {
+      reference_layers_minorcivildivision: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_minorcivildivision/{z}/{x}/{y}.pbf",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: 'public.reference_layers_minorcivildivision',
+        source: "reference_layers_minorcivildivision",
+        'source-layer': 'public.reference_layers_minorcivildivision',
+        type: "line",
+        filter: ["==", ["get", "ctv"], "T"],
+        paint: {
+          'line-color': "#ff7a06",
+          'line-width': 2,
+        },
+      },
+    ]
+  });
+  const layerId = 'mcd';
+  const layerGroup = new LayerGroup({
+    id: layerId,
+    layers: [townLyr, cvLyr],
+    zIndex: 37,
+  })
+  return {
+    id: layerId,
+    name: 'Minor Civil Divisions',
+    visible: true,
+    layer: layerGroup,
+  }
+}
+
+function twpLayer(pgTileservUrl) {
+  const layerId = 'townships';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 35,
+  })
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_plsstownship: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_plsstownship/{z}/{x}/{y}.pbf",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: 'public.reference_layers_plsstownship',
+        source: "reference_layers_plsstownship",
+        'source-layer': 'public.reference_layers_plsstownship',
+        type: "line",
+        paint: {
+          'line-color': "#000000",
+          'line-width': 1,
+        },
+      }
+    ]  
+  });
+  return {
+    id: layerId,
+    name: 'PLSS Townships',
+    visible: false,
+    layer: layer,
+  }
+}
+
+function secLayer(pgTileservUrl) {
+  const layerId = 'sections';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 34,
+  })
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_plsssection: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_plsssection/{z}/{x}/{y}.pbf",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: 'public.reference_layers_plsssection',
+        source: "reference_layers_plsssection",
+        'source-layer': 'public.reference_layers_plsssection',
+        type: "line",
+        paint: {
+          'line-color': "#000000",
+          'line-width': .5,
+        },
+      }
+    ]  
+  });
+  return {
+    id: layerId,
+    name: 'PLSS Sections',
+    visible: false,
+    layer: layer,
+  }
+}
+
+function qsecLayer(pgTileservUrl) {
+  const layerId = 'qsections';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 33,
+  })
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_plssquartersection: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_plssquartersection/{z}/{x}/{y}.pbf",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: 'public.reference_layers_plssquartersection',
+        source: "reference_layers_plssquartersection",
+        'source-layer': 'public.reference_layers_plssquartersection',
+        type: "line",
+        paint: {
+          'line-color': "#000000",
+          'line-width': .25,
+          'line-dasharray': [2, 4],
+        },
+      }
+    ]  
+  });
+  return {
+    id: layerId,
+    name: 'PLSS ¼ Sections',
+    visible: false,
+    layer: layer,
+  }
+}
 
 // NATURAL LAYER SECTION
 
-const carbLayer = new TileLayer({
-  id: "carbonate",
-  zIndex: 21,
-  opacity: .7,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'general:geology_a_wi_usgs_2005',
-      'TILED': true,
-      'STYLES': 'geology_carbonate_wi'
-    },
+function carbonateLayer(apiKey) {
+  const layerId = 'carbonate';
+  return {
+    id: layerId,
+    name: "Carbonate Bedrock",
+    layer: new TileLayer({
+      id: layerId,
+      source: new XYZ({
+        url: 'https://api.mapbox.com/styles/v1/legiongis/clh6rrh0l01hd01qndmio9c4o/tiles/256/{z}/{x}/{y}?access_token=' + apiKey,
+        // tileSize: 512,
+        // resolution: 1,
+      }),
+      opacity: .7,
+      zIndex: 22,
+    }),
+    visible: false,
+    info: '<img src="/static/img/carbonate-bedrock-legend.png" style="width:140px" />',
+  };
+};
+function depthToBedrockLayer(apiKey) {
+  const layerId = 'bedrockDepth';
+  return {
+    id: layerId,
+    name: "Depth to Bedrock",
+    layer: new TileLayer({
+      id: layerId,
+      source: new XYZ({
+        url: 'https://api.mapbox.com/styles/v1/legiongis/clh6siyim01hf01qn6iv4a6wn/tiles/256/{z}/{x}/{y}?access_token=' + apiKey,
+        // tileSize: 512,
+        // resolution: 1,
+      }),
+      opacity: .7,
+      zIndex: 23,
+    }),
+    visible: false,
+    info: '<img src="/static/img/depth-to-bedrock-legend.png" style="width:140px" />',
+  };
+};
+
+function huc8Layer(pgTileservUrl) {
+  const layerId = 'huc8layer';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 28,
   })
-})
-const depthLayer = new TileLayer({
-  id: "bedrockDepth",
-  zIndex: 22,
-  opacity: .7,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'karstography:Crawford_Depth_to_Bedrock',
-      'TILED': true,
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_hydrologicunit: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_hydrologicunit/{z}/{x}/{y}.pbf?filter=category%20=%20'Subbasin'",
+        ]
+      }
     },
+    layers: [
+      {
+        id: 'public.reference_layers_hydrologicunit',
+        source: "reference_layers_hydrologicunit",
+        'source-layer': 'public.reference_layers_hydrologicunit',
+        type: "line",
+        paint: {
+          'line-color': "#6B1824",
+          'line-width': 2.25,
+        },
+      }
+    ]
+  });
+  return {
+    id: layerId,
+    name: 'Subbasins (HUC8)',
+    visible: false,
+    layer: layer,
+  }
+}
+
+function huc10Layer(pgTileservUrl) {
+  const layerId = 'huc10layer';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 27,
   })
-})
-const watershedsLayer = new TileLayer({
-  id: "watersheds",
-  zIndex: 23,
-  source: new TileWMS({
-    url: "https://gn.legiongis.com/geoserver/ows",
-    params: {
-      'LAYERS': 'general:wi_watersheds',
-      'TILED': true,
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_hydrologicunit: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_hydrologicunit/{z}/{x}/{y}.pbf?filter=category%20=%20'Watershed'",
+        ]
+      }
     },
+    layers: [
+      {
+        id: 'public.reference_layers_hydrologicunit',
+        source: "reference_layers_hydrologicunit",
+        'source-layer': 'public.reference_layers_hydrologicunit',
+        type: "line",
+        paint: {
+          'line-color': "#9E2335",
+          'line-width': 1.5,
+        },
+      }
+    ]
+  });
+  return {
+    id: layerId,
+    name: 'Watersheds (HUC10)',
+    visible: false,
+    layer: layer,
+  }
+}
+
+function huc12Layer(pgTileservUrl) {
+  const layerId = 'huc12layer';
+  const layer = new VectorTileLayer({
+    id: layerId,
+    declutter: false,
+    zIndex: 26,
   })
-})
+  applyStyle(layer, {
+    version: 8,
+    sources: {
+      reference_layers_hydrologicunit: {
+        type: "vector",
+        tiles: [
+          pgTileservUrl + "public.reference_layers_hydrologicunit/{z}/{x}/{y}.pbf?filter=category%20=%20'Subwatershed'",
+        ]
+      }
+    },
+    layers: [
+      {
+        id: 'public.reference_layers_hydrologicunit',
+        source: "reference_layers_hydrologicunit",
+        'source-layer': 'public.reference_layers_hydrologicunit',
+        type: "line",
+        paint: {
+          'line-color': "#EA344F",
+          'line-width': .75,
+        },
+      },
+    ]
+  });
+  return {
+    id: layerId,
+    name: 'Subwatersheds (HUC12)',
+    visible: false,
+    layer: layer,
+  }
+}
 
 // POI/EXAMPLES LAYER
 function poiLayer(geojson) {
@@ -550,13 +815,13 @@ export class LayerDefs {
     return outdoorsLabels(apiKey)
   }
 
-  baseLayers = function(apiKey) {
+  baseLayers = function(apiKey, titilerUrl) {
     return [
       mapboxOutdoors(apiKey),
       mapboxAerial(apiKey),
-      hillshade(),
-      usgsTopo(),
-      crawfordTPI(),
+      hillshade(titilerUrl),
+      usgsTopo(titilerUrl),
+      crawfordTPI(titilerUrl),
     ]
   }
 
@@ -572,62 +837,23 @@ export class LayerDefs {
     ]
   }
 
-  civilLayers = function() {
+  civilLayers = function(pgTileservUrl) {
     return [
-      {
-        name:"Minor Civil Divisions",
-        id: mcdLayer.get('id'),
-        layer: mcdLayer, visible: true
-      },
-      {
-        name:"Counties",
-        id: countyLayer.get('id'),
-        layer: countyLayer,
-        visible: false
-      },
-      {
-        name:"PLSS ¼ Sections",
-        id: qsectionsLayer.get('id'),
-        layer: qsectionsLayer, 
-        visible: false
-      },
-      {
-        name:"PLSS Sections",
-        id: sectionsLayer.get('id'),
-        layer: sectionsLayer,
-        visible: false
-      },
-      {
-        name:"PLSS Townships",
-        id: townshipsLayer.get('id'),
-        layer: townshipsLayer,
-        visible: false
-      },
+      mcdLayer(pgTileservUrl),
+      countyLayer(pgTileservUrl),
+      twpLayer(pgTileservUrl),
+      secLayer(pgTileservUrl),
+      qsecLayer(pgTileservUrl),
     ]
   }
 
-  naturalLayers = function() {
+  naturalLayers = function(pgTileservUrl, apiKey) {
     return [
-      {
-        name:"Carbonate Bedrock",
-        id: carbLayer.get('id'),
-        layer: carbLayer,
-        visible: false,
-        info: '<img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=general:geology_a_wi_usgs_2005&STYLE=geology_carbonate_wi&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300" style="width:140px" />'
-      },
-      {
-        name:"Depth to Bedrock", 
-        id: depthLayer.get('id'),
-        layer: depthLayer,
-        visible: false,
-        info: ' <img src="https://gn.legiongis.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=karstography:Crawford_Depth_to_Bedrock&LEGEND_OPTIONS=fontName:URW%20Gothic%20L%20Book;bgColor:0x96BEF1;dpi:300;columns:3" style="width:150px" />'
-      },
-      {
-        name:"Watershed Boundaries",
-        id: watershedsLayer.get('id'),
-        layer: watershedsLayer,
-        visible: false
-      },
+      carbonateLayer(apiKey),
+      depthToBedrockLayer(apiKey),
+      huc8Layer(pgTileservUrl),
+      huc10Layer(pgTileservUrl),
+      huc12Layer(pgTileservUrl),
     ]
   }
 

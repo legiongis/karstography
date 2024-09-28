@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cspkarst',
     'docs',
+    'reference_layers',
 ]
 
 MIDDLEWARE = [
@@ -137,6 +138,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, "cspkarst", "staticfiles")
 
 PG_TILESERV_URL = 'http://localhost:7800/'
+TITILER_URL = "http://localhost:8000"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
