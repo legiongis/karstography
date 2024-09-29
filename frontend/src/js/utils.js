@@ -801,7 +801,10 @@ function poiLayer(geojson) {
       zIndex: 5000,
       id: 'pois',
       source: new VectorSource({
-        features: new GeoJSON().readFeatures(geojson),
+        features: new GeoJSON().readFeatures(geojson, {
+          dataProjection: 'EPSG:4326',
+          featureProjection: 'EPSG:3857',
+        }),
       }),
       style: styleDefs.poiStyle,
     }),

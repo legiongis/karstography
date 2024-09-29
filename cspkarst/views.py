@@ -61,19 +61,21 @@ class Viewer(View):
 
         pois = PointOfInterest.objects.all()
         pois_serialized = serialize('geojson', pois, geometry_field='geom')
-
-        params = {
-            "USER": user,
-            "MAPBOX_API_KEY": settings.MAPBOX_API_KEY,
-            'PG_TILESERV_URL': settings.PG_TILESERV_URL,
-            "TITILER_URL": settings.TITILER_URL,
-            'SINKHOLE_TOTAL': sh_probable+sh_possible,
-            'SINKHOLE_PROBABLE': sh_probable,
-            'SINKHOLE_POSSIBLE': sh_possible,
-            'EXAMPLES_GEOJSON': pois_serialized,
-            'ENVIRONMENT': settings.ENVIRONMENT,
+        context = {
+            "user": user,
+            "mapbox_api_key": settings.MAPBOX_API_KEY,
+            "pg_tileserv_url": settings.PG_TILESERV_URL,
+            "titiler_url": settings.TITILER_URL,
+            "sinkhole_counts": {
+                "total": sh_probable+sh_possible,
+                "possible": sh_possible,
+                "probable": sh_probable,
+            },
+            'examples_geojson': pois_serialized,
+            'environment': settings.ENVIRONMENT,
         }
-        return render(request, "index.html", context={'SVELTE_PROPS': params})
+
+        return render(request, "index.html", context={'SVELTE_PROPS': {'CONTEXT': context}})
 
 class APIV1View(View):
 
