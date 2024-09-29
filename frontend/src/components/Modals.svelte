@@ -6,7 +6,7 @@
 <div class="modal-background" on:click={() => {showAboutModal=!showAboutModal}} on:keypress={() => {showAboutModal=!showAboutModal}}>
     <div class="modal-content">
         <h2>Welcome</h2>
-        <p>The <em>Karst Geology Viewer</em> is a creation of the <a href="https://crawfordstewardship.org" target="_blank">Crawford Stewardship Project</a> to map and explore the geology of southwestern Wisconsin.</p>
+        <p>The <em>Karst Geology Viewer</em> is a creation of the <a href="https://crawfordstewardship.org" rel="noreferrer" target="_blank">Crawford Stewardship Project</a> to map and explore the geology of southwestern Wisconsin.</p>
         <p><a href="/about" target="_blank">learn more</a></p>
         <button>Close</button>
     </div>
