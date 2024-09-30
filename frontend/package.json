@@ -16,7 +16,7 @@
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
-    "svelte": "^3.0.0"
+    "svelte": "^4.2.19"
   },
   "dependencies": {
     "ol": "^10.2.0",
