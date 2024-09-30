@@ -6,15 +6,16 @@ The `Karst Geology Viewer` is a creation of the `Crawford Stewardship Project <h
 
 .. toctree::
    :maxdepth: 1
-   :caption: Welcome!
+   :caption: Overview
 
    introduction
+   data
+   methods
 
 .. toctree::
    :maxdepth: 1
    :caption: Volunteer Activities
 
-   activities
    analyzing-wcrs
    adjusting-well-locations
    evaluating-sinks
@@ -23,7 +24,6 @@ The `Karst Geology Viewer` is a creation of the `Crawford Stewardship Project <h
    :maxdepth: 2
    :caption: Behind the Scenes
 
-   generating-sinks-from-lidar
    creating-karstology
 
 :ref:`Search Docs <search>`

@@ -1,9 +1,10 @@
 <script>
     export let onClick;
     export let bold = false;
+    export let title = "";
 </script>
 
-<button on:click={onClick} style={bold ? 'font-weight:900' : ''}>
+<button on:click={onClick} {title} style={bold ? 'font-weight:900' : ''}>
     <slot/>
 </button>
 <style>

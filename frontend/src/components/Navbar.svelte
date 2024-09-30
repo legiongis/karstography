@@ -22,13 +22,14 @@
         {#if environment == "staging"}<span style="color:red">¡Staging Server!</span>{/if}
         {#if user.username}&nbsp;| <span>{user.username}</span>{/if}</div>
     <div>
+        <LinkButton bold={true} title="open layers panel" onClick={() => {showLayerPanel=!showLayerPanel}}>layers</LinkButton> |
+        <a href="/about/data.html">data</a> |
+        <a href="/about">about</a> |
         {#if user.username}
-        <LinkButton bold={true} onClick={() => {window.location.href='/logout?next=/'}}>logout</LinkButton> |
+        <a href="/logout?next=/">logout</a>
         {:else}
-        <LinkButton bold={true} onClick={() => {window.location.href='/login?next=/'}}>login</LinkButton> |
+        <a href="/login?next=/">login</a>
         {/if}
-        <LinkButton bold={true} onClick={() => {showAboutModal=!showAboutModal}}>about</LinkButton> |
-        <LinkButton bold={true} onClick={() => {showLayerPanel=!showLayerPanel}}>layers</LinkButton>
     </div>
 </div>
 
@@ -52,6 +53,14 @@
     #navbar div {
         padding: 0px 10px;
         text-align: center;
+    }
+
+    #navbar a {
+        color: black;
+        text-decoration: none;
+    }
+    #navbar a:hover {
+        text-decoration: underline;
     }
 
     #navbar div h1 {

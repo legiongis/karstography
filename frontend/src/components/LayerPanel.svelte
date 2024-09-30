@@ -74,7 +74,10 @@
     </div>
     {/each}
     <div class="layer-group">
-        <p><em>not all layers have the same coverage extent</em></p>
+        <p><em>
+            see the <a href="/about/data">data page</a> for downloads<br/>
+            not all layers have the same coverage extent
+        </em></p>
     </div>
 </div>
 {/if}
