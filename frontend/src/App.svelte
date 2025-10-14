@@ -229,11 +229,12 @@ function MapView() {
                     hit = true;
                     let popupContent = 'none';
                     if (props.layer == 'public.cspkarst_well') {
+                        const wcrDownloadUrl = "https://apps.dnr.wi.gov/wellconstructionpub/ReportViewer.aspx?id=WellConstructionReport&download=false&WUWN="
                         const grnWellDetails = "https://dnr.wi.gov/GRNext/WellInventory/Details/"
                         popupContent = `
                             <h4>WELL ID: ${props.wi_unique_well_no}</h4>
                             <p>
-                            <a href="${props.well_constr_url}" target="_blank">View Well Construction Report <i class="fa fa-external-link"></i></a><br>
+                            <a href="${wcrDownloadUrl}${props.wi_unique_well_no}" target="_blank">View Well Construction Report <i class="fa fa-external-link"></i></a><br>
                             <a href="${grnWellDetails}${props.wi_unique_well_no}" target="_blank">View in GRN <i class="fa fa-external-link"></i></a><br>
                             <span>This point location is based on: ${props.location_method}
                             </p>
