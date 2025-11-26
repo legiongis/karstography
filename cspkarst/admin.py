@@ -6,7 +6,10 @@ from .models import Sink, TownUnit, Well, PointOfInterest, FractureLine
 
 class SinkAdmin(admin.ModelAdmin):
 
-    list_filter = ("depth_cat",)
+    list_filter = (
+        "depth_cat",
+        "sink_type",
+    )
 
 class WellAdmin(admin.ModelAdmin):
 
