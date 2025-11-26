@@ -11,9 +11,9 @@ $(document).ready(function() {
 
         var modalId = i+"modal";
         var imgID = i+"image";
-        var pdfLink = "https://ftp.legiongis.com/wcr-crawford/pdf/CR"+i+".pdf";
-        var thumbLink = "https://ftp.legiongis.com/wcr-crawford/thumbs/CR"+i+"_thumb.png";
-        var jpgLink = "https://ftp.legiongis.com/wcr-crawford/jpeg/CR"+i+".jpg";
+        var pdfLink = "https://csp.us-southeast-1.linodeobjects.com/wcr-crawford/pdf/CR"+i+".pdf";
+        var thumbLink = "https://csp.us-southeast-1.linodeobjects.com/wcr-crawford/thumbs/CR"+i+"_thumb.png";
+        var jpgLink = "https://csp.us-southeast-1.linodeobjects.com/wcr-crawford/jpeg/CR"+i+".jpg";
         var containerId = "CR"+i;
         
         
@@ -39,8 +39,8 @@ $(document).ready(function() {
         // </a>
         $(divContent).insertBefore("#end");
         // if (isInArray(i, seconds)){
-            // var pdfLink_2 = "https://ftp.legiongis.com/wcr-crawford/pdf/CR"+i+"_2.pdf";
-            // var thumbLink_2 = "https://ftp.legiongis.com/wcr-crawford/thumbs/CR"+i+"_2_thumb.png";
+            // var pdfLink_2 = "https://csp.us-southeast-1.linodeobjects.com/wcr-crawford/pdf/CR"+i+"_2.pdf";
+            // var thumbLink_2 = "https://csp.us-southeast-1.linodeobjects.com/wcr-crawford/thumbs/CR"+i+"_2_thumb.png";
             // $('<div class="col-xs-6 col-sm-3">\
                 // <div class="tile">\
                     // <a href="'+pdfLink_2+'">\

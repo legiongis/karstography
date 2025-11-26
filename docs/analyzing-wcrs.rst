@@ -11,7 +11,7 @@ Any time a new well is drilled, a detailed geological log is made, recording the
 
 In the state of Wisconsin, all post-1989 well-drilling and sample records are stored in a publicly accessible database, called the `Groundwater Retrieval Network <https://dnr.wi.gov/topic/Groundwater/grn.html>`_. Therefore, finding evidence of karstic activity in post-1989 wells was undertaken as a data download and algorithmic analysis.
 
-However, to evaluate wells that were drilled prior to 1989, we had to turn to scanned images of historic WCRs. These WCRs exist as PDF files maintained by the `Wisconsin Geological & Natural History Survey <https://wgnhs.wisc.edu>`_ (WGNHS). We requested all of the historic WCRs for Crawford County, and received `1,136 PDFs <http://ftp.legiongis.com/wcr-crawford>`_.
+However, to evaluate wells that were drilled prior to 1989, we had to turn to scanned images of historic WCRs. These WCRs exist as PDF files maintained by the `Wisconsin Geological & Natural History Survey <https://wgnhs.wisc.edu>`_ (WGNHS). We requested all of the historic WCRs for Crawford County, and received `1,136 PDFs <https://csp.us-southeast-1.linodeobjects.com/wcr-crawford>`_.
 
 Methodology
 ===========
