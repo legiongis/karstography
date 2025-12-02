@@ -103,9 +103,9 @@ function makeTitilerXYZLayer(host, cogUrl) {
   const cogUrlEncode = encodeURIComponent(cogUrl)
   let url;
   if (String(cogUrl).endsWith(".json")) {
-      url = host +"/mosaicjson/tiles/{z}/{x}/{y}.png?TileMatrixSetId=WebMercatorQuad&url=" + cogUrlEncode;
+      url = host +"/mosaicjson/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=" + cogUrlEncode;
   } else {
-      url = host +"/cog/tiles/{z}/{x}/{y}.png?TileMatrixSetId=WebMercatorQuad&url=" + cogUrlEncode;
+      url = host +"/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=" + cogUrlEncode;
   }
   return new TileLayer({
     source: new XYZ({
