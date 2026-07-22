@@ -1,9 +1,6 @@
 from django.core import management
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from django.conf import settings
-import psycopg2 as db
-import os
 
 
 class Command(BaseCommand):
@@ -22,31 +19,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        force = options['yes']
-        self.setup_db(force)
-
-
-    def setup_db(self,force=False):
-
         print("setting up the database")
-        if not force:
-            c = input("  -- this will erase the entire database. continue? y/n >> ")
-            if not c.lower().startswith("y"):
-                print("     command cancelled.")
-                return
-
-        dbinfo = settings.DATABASES['default']
-
-        # Postgres version
-        conn = db.connect(host=dbinfo['HOST'], user=dbinfo['USER'],
-                        password=dbinfo['PASSWORD'], port=int(dbinfo['PORT']))
-        conn.autocommit = True
-        cursor = conn.cursor()
-        try:
-            cursor.execute("DROP DATABASE " + dbinfo['NAME'])
-        except Exception as e:
-            pass
-        cursor.execute("CREATE DATABASE " + dbinfo['NAME'] + " WITH ENCODING 'UTF8'")
 
         management.call_command('makemigrations')
         management.call_command('migrate')

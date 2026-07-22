@@ -55,20 +55,24 @@ psql -U postgres
 > CREATE USER karstographer WITH ENCRYPTED PASSWORD 'karstographer_pw';
 > ALTER ROLE karstographer WITH SUPERUSER;
 > CREATE DATABASE karstography WITH OWNER karstographer;
+> /c karstography
+> CREATE EXTENSION PostGIS;
 ```
 
-Create a new file `karstography/settings_local.py` and put the following database settings into it (make sure this matches the db name, user, and password you created above):
+Or use the provided script (this will delete and recrate the existing database):
 
 ```
-from .settings import DATABASES
+source ./scripts/create_clean_db.sh
+```
 
+Create a new file `karstography/settings_local.py` and put the following database settings into it):
+
+```
 DEBUG = TRUE
-
-## local db settings
-DATABASES['default']['NAME'] = 'karstography'
-DATABASES['default']['USER'] = 'karstographer'
-DATABASES['default']['PASSWORD'] = 'karstographer_pw'
+ALLOWED_HOSTS = ["*"]
 ```
+
+In production, you'll use this file for database user/password settings as well.
 
 Run the database initialization command:
 
@@ -99,9 +103,16 @@ npm run dev
 
 With the Django dev server running from the above step, you should now be able to open the web app in a browser at `localhost:8000`.
 
-### Pg_tileserv
+### pg_tileserv
 
 The database holds geospatial data, like sink locations, that needs to be served to the map. We use [pg_tileserv](https://access.crunchydata.com/documentation/pg_tileserv/1.0.11/introduction/) for this.
+
+Download the appropriate binary and run it like this:
+
+```
+export DATABASE_URL=postgresql://karstographer:karstographer_pw@localhost/karstography
+./pg_tileserv
+```
 
 ### Documentation
 
@@ -113,5 +124,6 @@ To regenerate docs after a modification, use:
 
 ```
 cd docs
+rm _build/html -r
 make html
 ```
