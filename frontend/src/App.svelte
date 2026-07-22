@@ -282,6 +282,7 @@ onMount(() => {
     <Navbar
         environment={CONTEXT.environment}
         user={CONTEXT.user}
+        csrfToken={CONTEXT.csrfToken}
         bind:showLayerPanel
         bind:showSinkPanel
         bind:showExamplePanel

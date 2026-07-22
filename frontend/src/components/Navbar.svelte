@@ -3,11 +3,13 @@
 
     export let user;
     export let environment;
+    export let csrfToken;
 
     export let showSinkPanel;
     export let showExamplePanel;
     export let showAboutModal;
     export let showLayerPanel;
+
 </script>
 
 
@@ -26,9 +28,12 @@
         <a href="/about/data.html">data</a> |
         <a href="/about">about</a> |
         {#if user.username}
-        <a href="/logout?next=/">logout</a>
+        <form method="post" action="/logout/?next=/">
+            <input type=hidden name="csrfmiddlewaretoken" value={csrfToken}/>
+            <button type="submit">logout</button>
+        </form>
         {:else}
-        <a href="/login?next=/">login</a>
+        <a href="/login/?next=/">login</a>
         {/if}
     </div>
 </div>
@@ -63,8 +68,25 @@
         text-decoration: underline;
     }
 
+    #navbar button {
+        background: none;
+        border: none;
+        font-family: "Raleway", sans-serif;
+        font-weight: 900;
+        font-size: 1em;
+        padding: 0;
+    }
+    #navbar button:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
     #navbar div h1 {
         margin: 0;
         font-size: 1.25em;
+    }
+
+    form {
+        display: inline
     }
 </style>

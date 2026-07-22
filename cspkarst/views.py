@@ -8,7 +8,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.core.serializers import serialize
 from django.conf import settings
 from django.views import View
-from django.http import HttpResponseBadRequest
+from django.middleware.csrf import get_token
 
 from cspkarst.models import Sink, Well, PointOfInterest
 
@@ -73,6 +73,7 @@ class Viewer(View):
             },
             'examples_geojson': pois_serialized,
             'environment': settings.ENVIRONMENT,
+            'csrfToken': get_token(request),
         }
 
         return render(request, "index.html", context={'SVELTE_PROPS': {'CONTEXT': context}})
