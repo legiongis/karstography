@@ -97,14 +97,14 @@ wheels = [
 
 [[package]]
 name = "django-docs"
-version = "0.3.1"
+version = "0.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1f/48/03d0b50ae2650d750f21c7d6a438239fd8ca3cbac6506c923d20c76c1d75/django-docs-0.3.1.tar.gz", hash = "sha256:5d2a240b1208a41a6c4d1bf6a4350260b34b2f274df2e27d5c4481e0a66d3bef", size = 6687, upload-time = "2018-11-19T15:04:24.694Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ba/91/571b5baf368ecf889472b0d4ca3cafe224add8544da6c05ee808c3de2d96/django-docs-0.3.3.tar.gz", hash = "sha256:f2b489ab122f6dc84a1a8f0e2be86dcc8b3958b31b2d0a4603570c47228408d0", size = 7554, upload-time = "2022-11-28T08:39:48.891Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/60/a3/e5911935c9476850d9c828cdcd5f36c3e3c4b09f6ed087d361e0dfdda238/django_docs-0.3.1-py3-none-any.whl", hash = "sha256:b233e0b30e2ad417787f0276c3750c90ed9d00cbb3bec1b63f10028c06e5bcdc", size = 8888, upload-time = "2018-11-19T15:04:23.189Z" },
+    { url = "https://files.pythonhosted.org/packages/c1/cb/69ea9a1b9af32b66cb2ecbeb4aae532a222dcf4bd8755f8e8054799819ae/django_docs-0.3.3-py3-none-any.whl", hash = "sha256:7e85c5b5dd0b9b4d24099740ab16ac0449ff8acdfe8b0e26c08f3a4e50e7e5e1", size = 8711, upload-time = "2022-11-28T08:39:44.935Z" },
 ]
 
 [[package]]
@@ -182,7 +182,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = "~=5.2" },
-    { name = "django-docs", specifier = "==0.3.1" },
+    { name = "django-docs", specifier = "==0.3.3" },
     { name = "geopandas" },
     { name = "markdown", specifier = "==3.2.1" },
     { name = "psycopg2-binary", specifier = "==2.8.4" },
