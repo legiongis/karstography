@@ -10,13 +10,13 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-terser": "^1.0.0",
+    "phosphor-svelte": "^2.0.1",
     "rollup": "^4.36.0",
     "rollup-plugin-css-only": "^4.5.2",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-svelte": "^7.2.2",
-    "svelte": "^5.23.2",
-    "phosphor-svelte": "^2.0.1"
+    "svelte": "^5"
   },
   "dependencies": {
     "ol": "^10.2.0",

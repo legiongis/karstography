@@ -4,11 +4,10 @@
     import LinkButton from './buttons/LinkButton.svelte';
     import CloseButton from './buttons/CloseButton.svelte';
 
-    export let visible;
-    export let currentSink;
-    
-    let showInstructions = false;
-    let disableInput = true;
+    let { visible, currentSink } = $props()
+
+    let showInstructions = $state(false);
+    let disableInput = $state(true);
 </script>
 
 {#if visible}

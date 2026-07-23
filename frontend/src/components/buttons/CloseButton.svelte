@@ -1,9 +1,11 @@
 <script>
-    export let closeBool;
+    let {
+        closeBool = $bindable()
+    } = $props()
     import XCircle from 'phosphor-svelte/lib/XCircle';
 </script>
 
-<button on:click={() => {closeBool=!closeBool}}>
+<button onclick={() => {closeBool=!closeBool}}>
     <XCircle />
 </button>
 

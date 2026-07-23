@@ -6,13 +6,15 @@
     import CloseButton from './buttons/CloseButton.svelte';
     import LinkButton from './buttons/LinkButton.svelte';
 
-    export let visible;
-    export let showLabelLayer;
-    export let currentBasemap;
-    export let overlayVisible;
-
-    export let baseLayers = [];
-    export let overlayGroups = [];
+    let {
+        visible = $bindable(),
+        showLabelLayer  = $bindable(),
+        currentBasemap = $bindable(),
+        overlayVisible = $bindable(),
+        updateOverlays = () => {},
+        baseLayers = [],
+        overlayGroups = [],
+    } = $props()
 
     function toggleInfo(layerid) {
         const disp = document.getElementById(layerid+"-info").style.display
@@ -57,7 +59,7 @@
         {#each overlayGroup.layers as layer}
         <div class="layer-item">
             <div style="display:flex; align-items:center;">
-                <label><input type=checkbox bind:checked={overlayVisible[layer.id]}>{layer.name}</label>
+                <label><input type=checkbox bind:checked={overlayVisible[layer.id]} onchange={updateOverlays}>{layer.name}</label>
                 {#if layer.info}
                 <LinkButton onClick={() => {toggleInfo(layer.id)}}>
                     <Info />

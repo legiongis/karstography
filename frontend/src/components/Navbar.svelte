@@ -1,13 +1,14 @@
 <script>
     import LinkButton from "./buttons/LinkButton.svelte";
 
-    export let user;
-    export let environment;
-    export let csrfToken;
-
-    export let showSinkPanel;
-    export let showExamplePanel;
-    export let showLayerPanel;
+    let {
+        user,
+        environment,
+        csrfToken,
+        showSinkPanel = $bindable(),
+        showExamplePanel = $bindable(),
+        showLayerPanel = $bindable(),
+    } = $props()
 
 </script>
 
