@@ -23,7 +23,6 @@ import sync from 'ol-hashed';
 
 import {LayerDefs, styleDefs} from './js/utils';
     import Navbar from './components/Navbar.svelte';
-    import Modals from './components/Modals.svelte';
     import LayerPanel from './components/LayerPanel.svelte';
     import ExamplePanel from './components/ExamplePanel.svelte';
     import SinkPanel from './components/SinkPanel.svelte';
@@ -274,11 +273,18 @@ let viewer;
 onMount(() => {
     viewer = new MapView();
     sync(viewer.map);
+    document.getElementById('info-modal').showModal()
 })
+
 </script>
 
 <main>
-    <Modals bind:showAboutModal />
+    <dialog id="info-modal" closedby="any">
+        <h2>Welcome</h2>
+        <p>The <em>Karst Geology Viewer</em> is a creation of the <a href="https://crawfordstewardship.org" rel="noreferrer" target="_blank">Crawford Stewardship Project</a> to map and explore the geology of southwestern Wisconsin.</p>
+        <p><a href="/about" target="_blank">click here to learn more</a></p>
+        <button commandfor="info-modal" command="close">Close</button>
+    </dialog>
     <Navbar
         environment={CONTEXT.environment}
         user={CONTEXT.user}
@@ -307,12 +313,33 @@ onMount(() => {
     />
     <div id="karstmap" class="map"></div>
     <div id="popup" class="ol-popup" style="">
+        <!-- svelte-ignore a11y_invalid_attribute -->
         <a href="#" title="Close popup" id="popup-closer" class="ol-popup-closer"></a>
         <div id="popup-content"></div>
     </div>
 </main>
 
 <style>
+
+
+    #info-modal {
+        border-radius: 4px;
+        width: 300px;
+        background: white;
+        box-shadow: 0px 0px 10px 2px #000000;
+        text-align:center;
+        border: none;
+        padding: 10px;
+        font-size: .9em;
+    }
+
+    #info-modal::backdrop {
+        background-color: rgba(255,255,255,.5);
+    }
+
+    #info-modal h2 {
+        margin: 10px;
+    }
 
 #karstmap {
     height: calc(100% - 2em);
