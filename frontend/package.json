@@ -21,6 +21,6 @@
   "dependencies": {
     "ol": "^10.2.0",
     "ol-hashed": "^2.1.0",
-    "ol-mapbox-style": "^9.2.0"
+    "ol-mapbox-style": "^13.4.0"
   }
 }
