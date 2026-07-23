@@ -3,7 +3,7 @@
 </script>
 
 {#if showAboutModal}
-<div class="modal-background" on:click={() => {showAboutModal=!showAboutModal}} on:keypress={() => {showAboutModal=!showAboutModal}}>
+<div class="modal-background" tabindex="0" role="button" on:click={() => {showAboutModal=!showAboutModal}} on:keypress={() => {showAboutModal=!showAboutModal}}>
     <div class="modal-content">
         <h2>Welcome</h2>
         <p>The <em>Karst Geology Viewer</em> is a creation of the <a href="https://crawfordstewardship.org" rel="noreferrer" target="_blank">Crawford Stewardship Project</a> to map and explore the geology of southwestern Wisconsin.</p>

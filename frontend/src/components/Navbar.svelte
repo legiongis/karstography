@@ -7,7 +7,6 @@
 
     export let showSinkPanel;
     export let showExamplePanel;
-    export let showAboutModal;
     export let showLayerPanel;
 
 </script>

@@ -100,7 +100,7 @@
 {/if}
 
 <style>
-    select.POSSIBLE, option[value="POSSIBLE"] {
+    option.POSSIBLE, option[value="POSSIBLE"] {
         color: white;
         background:black
     }
@@ -135,19 +135,9 @@
         padding-bottom: 10px;
     }
 
-    .numbers {
-        font-family: courier;
-    }
-
     .sink-update-section {
         background-color: #f3edd6;
         border-radius: 5px;
         box-shadow: 0 0 1px 1px grey;
-    }
-
-    #panel-content {
-        margin-left: -6px;
-        margin-right: -6px;
-
     }
 </style>
