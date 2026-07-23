@@ -172,7 +172,7 @@ dependencies = [
     { name = "django-docs" },
     { name = "geopandas" },
     { name = "markdown" },
-    { name = "psycopg2-binary" },
+    { name = "psycopg2" },
     { name = "pyshp" },
     { name = "recommonmark" },
     { name = "romnnn-sphinx-press-theme" },
@@ -185,7 +185,7 @@ requires-dist = [
     { name = "django-docs", specifier = "==0.3.3" },
     { name = "geopandas" },
     { name = "markdown", specifier = "==3.2.1" },
-    { name = "psycopg2-binary", specifier = "==2.8.4" },
+    { name = "psycopg2", specifier = "==2.9.5" },
     { name = "pyshp", specifier = "==2.1.0" },
     { name = "recommonmark", specifier = "==0.6.0" },
     { name = "romnnn-sphinx-press-theme", specifier = "==0.5.6" },
@@ -276,10 +276,14 @@ wheels = [
 ]
 
 [[package]]
-name = "psycopg2-binary"
-version = "2.8.4"
+name = "psycopg2"
+version = "2.9.5"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/00/7b/a623f49b3248957e7eaaac52eba1117209775d54e7a8501c460473a7ba4f/psycopg2-binary-2.8.4.tar.gz", hash = "sha256:3a2522b1d9178575acee4adf8fd9f979f9c0449b00b4164bb63c3475ea6528ed", size = 378741, upload-time = "2019-10-20T09:15:27.634Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/89/d6/cd8c46417e0f7a16b4b0fc321f4ab676a59250d08fce5b64921897fb07cc/psycopg2-2.9.5.tar.gz", hash = "sha256:a5246d2e683a972e2187a8714b5c2cf8156c064629f9a9b1a873c1730d9e245a", size = 384343, upload-time = "2022-10-25T12:34:08.874Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/04/51/00ed720de223485a56c28b404747b96806679e720f4c97a75bdd556a01f4/psycopg2-2.9.5-cp310-cp310-win32.whl", hash = "sha256:d3ef67e630b0de0779c42912fe2cbae3805ebaba30cda27fea2a3de650a9414f", size = 1032831, upload-time = "2022-10-25T16:59:46.728Z" },
+    { url = "https://files.pythonhosted.org/packages/af/4f/3abf262dc49cb70c2fbb6d38a9a8956a0c79ba2d102e457958bc4f21660f/psycopg2-2.9.5-cp310-cp310-win_amd64.whl", hash = "sha256:4cb9936316d88bfab614666eb9e32995e794ed0f8f6b3b718666c22819c1d7ee", size = 1171627, upload-time = "2022-10-25T16:59:49.855Z" },
+]
 
 [[package]]
 name = "pygments"
