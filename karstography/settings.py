@@ -63,7 +63,6 @@ ROOT_URLCONF = 'karstography.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['karstography/templates', 'cspkarst/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
