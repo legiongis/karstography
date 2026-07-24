@@ -1,0 +1,29 @@
+# [build-system]
+# requires = ["setuptools >= 40.6.0", "wheel"]
+# build-backend = "setuptools.build_meta"
+
+[project]
+name = "karstography"
+version = "2.0.0"
+description = "Karst geology mapping application for Crawford Stewardship Project"
+readme = "README.md"
+license = {text = "GNU GPL3"}
+requires-python = ">=3.10,<3.11"
+
+dependencies = [
+    "django~=5.2",
+    "Markdown==3.2.1",
+    "psycopg2==2.9.5",
+    "pyshp==2.1.0",
+    "geopandas",
+    "django-docs==0.3.3",
+    "Sphinx==5.0.2",
+    "recommonmark==0.6.0",
+    "romnnn-sphinx-press-theme==0.5.6",
+    "uwsgi",
+]
+
+[tool.setuptools]
+packages = [
+    "karstography"
+]

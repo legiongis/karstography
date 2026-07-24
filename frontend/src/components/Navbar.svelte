@@ -1,17 +1,19 @@
 <script>
     import LinkButton from "./buttons/LinkButton.svelte";
 
-    export let user;
-    export let environment;
+    let {
+        user,
+        environment,
+        csrfToken,
+        showSinkPanel = $bindable(),
+        showExamplePanel = $bindable(),
+        showLayerPanel = $bindable(),
+    } = $props()
 
-    export let showSinkPanel;
-    export let showExamplePanel;
-    export let showAboutModal;
-    export let showLayerPanel;
 </script>
 
 
-<div id="navbar">
+<nav>
     <div>
         <LinkButton bold={true} onClick={() => {showSinkPanel=!showSinkPanel}}>sink evaluation</LinkButton> |
         <LinkButton bold={true} onClick={() => {showExamplePanel=!showExamplePanel}}>examples</LinkButton>
@@ -24,17 +26,20 @@
     <div>
         <LinkButton bold={true} title="open layers panel" onClick={() => {showLayerPanel=!showLayerPanel}}>layers</LinkButton> |
         <a href="/about/data.html">data</a> |
-        <a href="/about">about</a> |
+        <button command="show-modal" commandfor="info-modal">about</button> |
         {#if user.username}
-        <a href="/logout?next=/">logout</a>
+        <form method="post" action="/logout/?next=/">
+            <input type=hidden name="csrfmiddlewaretoken" value={csrfToken}/>
+            <button type="submit">logout</button>
+        </form>
         {:else}
-        <a href="/login?next=/">login</a>
+        <a href="/login/?next=/">login</a>
         {/if}
     </div>
-</div>
+</nav>
 
 <style>
-    #navbar {
+    nav {
         min-height:2em;
         display:flex;
         align-items: center;
@@ -49,22 +54,38 @@
         font-weight: 900;
     }
 
-
-    #navbar div {
+    nav div {
         padding: 0px 10px;
         text-align: center;
     }
 
-    #navbar a {
+    nav a {
         color: black;
         text-decoration: none;
     }
-    #navbar a:hover {
+    nav a:hover {
         text-decoration: underline;
     }
 
-    #navbar div h1 {
+    nav button {
+        background: none;
+        border: none;
+        font-family: "Raleway", sans-serif;
+        font-weight: 900;
+        font-size: 1em;
+        padding: 0;
+    }
+    nav button:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    nav div h1 {
         margin: 0;
         font-size: 1.25em;
+    }
+
+    form {
+        display: inline
     }
 </style>

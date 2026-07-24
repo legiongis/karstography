@@ -8,14 +8,14 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.core.serializers import serialize
 from django.conf import settings
 from django.views import View
-from django.http import HttpResponseBadRequest
+from django.middleware.csrf import get_token
 
 from cspkarst.models import Sink, Well, PointOfInterest
 
 def well_update(request, well_id):
     """DEPRECATED: This view is not implemented anymore, but is retained as template for
     how the well updates can be managed in the future."""
-    from .forms import SinkForm, WellForm
+    from .forms import WellForm
     try:
         instance = Well.objects.get(wi_unique_well_no=well_id)
     except:
@@ -61,7 +61,7 @@ class Viewer(View):
 
         pois = PointOfInterest.objects.all()
         pois_serialized = serialize('geojson', pois, geometry_field='geom')
-        context = {
+        props = {
             "user": user,
             "mapbox_api_key": settings.MAPBOX_API_KEY,
             "pg_tileserv_url": settings.PG_TILESERV_URL,
@@ -73,9 +73,10 @@ class Viewer(View):
             },
             'examples_geojson': pois_serialized,
             'environment': settings.ENVIRONMENT,
+            'csrfToken': get_token(request),
         }
 
-        return render(request, "index.html", context={'SVELTE_PROPS': {'CONTEXT': context}})
+        return render(request, "index.html", context={'SVELTE_PROPS': props})
 
 class APIV1View(View):
 
@@ -87,7 +88,7 @@ class APIV1View(View):
             return HttpResponseBadRequest("<h1>Bad Request</h1><p>Incorrect url parameters, <code>format=geojson</code> must be present.</p>")
 
         valid_record_types = ['sinks', 'wells', 'pois']
-        if not record_type in valid_record_types:
+        if record_type not in valid_record_types:
             return HttpResponseBadRequest(f"""
             <h1>Bad Request</h1>
             <p>Incorrect record type. Supported values are: {", ".join(['<code>'+i+'</code>' for i in valid_record_types])}</p>

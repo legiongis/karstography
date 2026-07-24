@@ -63,7 +63,6 @@ ROOT_URLCONF = 'karstography.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['karstography/templates', 'cspkarst/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,14 +85,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'karstography',
-        'USER': 'xxxxxxxxxx',
-        'PASSWORD': 'xxxxxxxxxxxxx',
+        'USER': 'karstographer',
+        'PASSWORD': 'karstographer_pw',
         'HOST': '127.0.0.1',
         'PORT': '5432',
-        'POSTGIS_TEMPLATE': 'XXX-XX-XXXX',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

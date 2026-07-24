@@ -4,7 +4,7 @@ import { onMount } from 'svelte';
 import Map from 'ol/Map';
 import View from 'ol/View';
 
-import {fromLonLat, toLonLat} from 'ol/proj';
+import {fromLonLat} from 'ol/proj';
 import Overlay from 'ol/Overlay';
 
 import {Attribution, Zoom, ScaleLine} from 'ol/control';
@@ -17,46 +17,52 @@ import {MouseWheelZoom, defaults} from 'ol/interaction';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
-import {toStringHDMS} from 'ol/coordinate';
-
 import sync from 'ol-hashed';
 
 import {LayerDefs, styleDefs} from './js/utils';
     import Navbar from './components/Navbar.svelte';
-    import Modals from './components/Modals.svelte';
     import LayerPanel from './components/LayerPanel.svelte';
     import ExamplePanel from './components/ExamplePanel.svelte';
     import SinkPanel from './components/SinkPanel.svelte';
 
 const layerDefs = new LayerDefs();
 
-export let CONTEXT
+let {
+    user,
+    mapbox_api_key,
+    pg_tileserv_url,
+    titiler_url,
+    sinkhole_counts,
+    examples_geojson,
+    environment,
+    csrfToken,
+} = $props()
 
-let showLayerPanel = false;
-let showSinkPanel = false;
-let showExamplePanel = false;
-let showAboutModal = true;
+let showLayerPanel = $state(false);
+let showSinkPanel = $state(false);
+let showExamplePanel = $state(false);
 
 let container;
 let content;
 let closer;
 let overlay;
 
-let currentSink = null;
+let currentSink = $state(null);
 
-let poiList = [];
-const poiLayer = layerDefs.poiLayer(CONTEXT.examples_geojson)
-$: {
+let poiList = $state([]);
+const poiLayer = layerDefs.poiLayer(examples_geojson)
+$effect( () => {
     if (showExamplePanel) {
-        poiList = [];
+        const newList = [];
         poiLayer.layer.setVisible(true)
         poiLayer.layer.getSource().getFeatures().forEach(function(feature) {
-            poiList.push(feature)
+            newList.push(feature)
         })
+        poiList = newList;
     } else {
         poiLayer.layer.setVisible(false)
     }
-}
+})
 
 function zoomToPoi(pk) {
     poiLayer.layer.getSource().getFeatures().forEach(function(feature) {
@@ -69,45 +75,48 @@ function zoomToPoi(pk) {
 
 // This object holds the visibility boolean for each overlay layer, and these values
 // are bound to the checkbox for each layer. when a checkbox is changed it changes
-// a value in this object, which in turn triggers the function below to turn on or
-// off each layer as needed.
-let overlayVisible = {}
-$:  if (viewer) {
-    viewer.map.getLayers().forEach( function(layer) {
-        if (layer.get('id') in overlayVisible){
-            layer.setVisible(overlayVisible[layer.get('id')])
-        } 
-    })
+// a value in this object, and then the following function is called to reset the map
+let overlayVisible = $state({})
+function updateOverlays() {
+    if (viewer) {
+        viewer.map.getLayers().forEach( function(layer) {
+            if (layer.get('id') in overlayVisible){
+                layer.setVisible(overlayVisible[layer.get('id')])
+            } 
+        })
+    }
 }
 
-let showLabelLayer = true;
-const labelsLayer = layerDefs.labelLayer(CONTEXT.mapbox_api_key);
-$: {
-    labelsLayer.layer.setVisible(showLabelLayer)
-}
+let showLabelLayer = $state(true);
+const labelsLayer = layerDefs.labelLayer(mapbox_api_key);
+$effect( () => {
+        labelsLayer.layer.setVisible(showLabelLayer)
+})
 
-let currentBasemap = 'hillshade';
-const baseLayers = layerDefs.baseLayers(CONTEXT.mapbox_api_key, CONTEXT.titiler_url);
+let currentBasemap = $state('hillshade');
+const baseLayers = layerDefs.baseLayers(mapbox_api_key, titiler_url);
 function setBasemap(layerId) {
     baseLayers.forEach( function(layerObj) {
         layerObj.layer.setVisible(layerObj.id == layerId);
     });
 }
-$: setBasemap(currentBasemap);
+$effect(() => {
+    setBasemap(currentBasemap);
+})
 
-const karstLayers = layerDefs.karstLayers(CONTEXT.pg_tileserv_url)
+const karstLayers = layerDefs.karstLayers(pg_tileserv_url)
 karstLayers.forEach( function (layerObj) {
     layerObj.layer.setVisible(layerObj.visible);
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();
 });
 
-const civilLayers = layerDefs.civilLayers(CONTEXT.pg_tileserv_url)
+const civilLayers = layerDefs.civilLayers(pg_tileserv_url)
 civilLayers.forEach( function (layerObj) {
     layerObj.layer.setVisible(layerObj.visible);
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();
 });
 
-const naturalLayers = layerDefs.naturalLayers(CONTEXT.pg_tileserv_url, CONTEXT.mapbox_api_key)
+const naturalLayers = layerDefs.naturalLayers(pg_tileserv_url, mapbox_api_key)
 naturalLayers.forEach( function (layerObj) {
     layerObj.layer.setVisible(layerObj.visible);
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();
@@ -274,18 +283,25 @@ let viewer;
 onMount(() => {
     viewer = new MapView();
     sync(viewer.map);
+    document.getElementById('info-modal').showModal()
 })
+
 </script>
 
 <main>
-    <Modals bind:showAboutModal />
+    <dialog id="info-modal" closedby="any">
+        <h2>Welcome</h2>
+        <p>The <em>Karst Geology Viewer</em> is a creation of the <a href="https://crawfordstewardship.org" rel="noreferrer" target="_blank">Crawford Stewardship Project</a> to map and explore the geology of southwestern Wisconsin.</p>
+        <p><a href="/about" target="_blank">click here to learn more</a></p>
+        <button commandfor="info-modal" command="close">Close</button>
+    </dialog>
     <Navbar
-        environment={CONTEXT.environment}
-        user={CONTEXT.user}
+        environment={environment}
+        user={user}
+        csrfToken={csrfToken}
         bind:showLayerPanel
         bind:showSinkPanel
         bind:showExamplePanel
-        bind:showAboutModal
     />
     <SinkPanel
         bind:visible={showSinkPanel}
@@ -296,6 +312,7 @@ onMount(() => {
         bind:showLabelLayer
         bind:currentBasemap
         bind:overlayVisible
+        {updateOverlays}
         {baseLayers}
         {overlayGroups}
     />
@@ -306,12 +323,33 @@ onMount(() => {
     />
     <div id="karstmap" class="map"></div>
     <div id="popup" class="ol-popup" style="">
+        <!-- svelte-ignore a11y_invalid_attribute -->
         <a href="#" title="Close popup" id="popup-closer" class="ol-popup-closer"></a>
         <div id="popup-content"></div>
     </div>
 </main>
 
 <style>
+
+
+    #info-modal {
+        border-radius: 4px;
+        width: 300px;
+        background: white;
+        box-shadow: 0px 0px 10px 2px #000000;
+        text-align:center;
+        border: none;
+        padding: 10px;
+        font-size: .9em;
+    }
+
+    #info-modal::backdrop {
+        background-color: rgba(255,255,255,.5);
+    }
+
+    #info-modal h2 {
+        margin: 10px;
+    }
 
 #karstmap {
     height: calc(100% - 2em);

@@ -8,6 +8,10 @@ body {
   color: #003300;
 }
 
+section {
+    scroll-margin-top: 60px;
+}
+
 /* these classes mimic the header-row classes in the main app.*/
 .navbar {
     background-color: #85BF6F;

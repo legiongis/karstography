@@ -1,11 +1,12 @@
 <script>
     import {slide} from 'svelte/transition';
-    import Button from './buttons/Button.svelte';
     import CloseButton from "./buttons/CloseButton.svelte";
 
-    export let visible;
-    export let poiList;
-    export let zoomToPoi;
+    let {
+        poiList,
+        zoomToPoi,
+        visible = $bindable(),
+    } = $props();
 </script>
 
 {#if visible}
@@ -19,7 +20,7 @@
         </div>
         <div class="poi-list">
             {#each poiList as poi}
-            <Button onClick={() => {zoomToPoi(poi.getProperties().pk)}}>{poi.getProperties().name}</Button>
+            <button onclick={() => {zoomToPoi(poi.getProperties().pk)}}>{poi.getProperties().name}</button>
             {/each}
         </div>
     </div>

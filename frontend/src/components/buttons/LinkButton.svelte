@@ -1,11 +1,14 @@
 <script>
-    export let onClick;
-    export let bold = false;
-    export let title = "";
+    let {
+        onClick,
+        bold = false,
+        title = "",
+        children,
+    } = $props();
 </script>
 
-<button on:click={onClick} {title} style={bold ? 'font-weight:900' : ''}>
-    <slot/>
+<button onclick={onClick} {title} style={bold ? 'font-weight:900' : ''}>
+    {@render  children?.()}
 </button>
 <style>
     button {
