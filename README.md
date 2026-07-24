@@ -7,12 +7,11 @@ The most comprehensive description of the tech stack can currently be found in [
 This project was developed by [Crawford Stewardship Project](http://crawfordstewardship.org) and [Legion GIS](https://legiongis.com). Much credit is due to the open source software components that make it work:
 
 - [Postgres](https://www.postgresql.org/)/[PostGIS](https://postgis.net/)
-- [GDAL](https://gdal.org/)
 - [Django](https://www.djangoproject.com/)
 - [pg_tileserv](https://github.com/CrunchyData/pg_tileserv)
 - [OpenLayers](https://openlayers.org)
 - [ol-mapbox-style](https://github.com/openlayers/ol-mapbox-style)
-- [SvelteKit](https://kit.svelte.dev/)
+- [Svelte](https://svelte.dev/)
 
 ## Install
 
@@ -21,7 +20,7 @@ You can set up a local development version of this web application with these st
 ### System dependencies
 
 ```
-sudo apt install python3-venv libgdal-dev nodejs npm
+sudo apt install python3-dev libgpq-dev build-essential nodejs npm
 ```
 
 We also recommend [Docker](https://docs.docker.com/engine/install/debian/) for running Postgres/PostGIS, though there are other ways you can install that.
@@ -113,6 +112,8 @@ Download the appropriate binary and run it like this:
 export DATABASE_URL=postgresql://karstographer:karstographer_pw@localhost/karstography
 ./pg_tileserv
 ```
+
+In production, it's better to use the actual `config/pg_tileserv.toml` configuration file to set the db connection, ssl cert paths, and CORS.
 
 ### Documentation
 
