@@ -12,4 +12,4 @@ make html
 cd ..
 uv run manage.py collectstatic --noinput
 
-sudo service apache2 reload
+touch karstography/wsgi.py
