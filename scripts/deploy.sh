@@ -1,8 +1,7 @@
 # /usr/bin/bash
 
 cd frontend
-rm node_modules -r
-npm install
+npm ci
 npm run build
 
 cd ../docs
