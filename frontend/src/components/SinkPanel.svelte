@@ -99,9 +99,11 @@
 {/if}
 
 <style>
-    option.POSSIBLE, option[value="POSSIBLE"] {
-        color: white;
-        background:black
+    :global {
+        option.POSSIBLE, option[value="POSSIBLE"] {
+            color: white;
+            background:black
+        }
     }
 
     .input-form-panel {

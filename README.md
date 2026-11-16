@@ -33,16 +33,10 @@ Get the repo:
 git clone https://github.com/legiongis/karstography && cd karstography
 ```
 
-Create and activate virtual environment (there are other ways to do this too, like with Conda)
-
-```
-python3 -m venv env && source ./env/bin/activate
-```
-
 Install the Python dependencies:
 
 ```
-pip install -r requirements.txt
+uv sync
 ```
 
 ### Create database
@@ -76,13 +70,13 @@ In production, you'll use this file for database user/password settings as well.
 Run the database initialization command:
 
 ```
-python manage.py setup_db
+./manage.py setup_db
 ```
 
 You should now be able to run the Django dev server without error:
 
 ```
-python manage.py runserver
+./manage.py runserver
 ```
 
 ### Build frontend
