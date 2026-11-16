@@ -14,6 +14,7 @@ export default {
 		format: 'iife',
 		sourcemap: true,
 		name: 'app',
+        inlineDynamicImports: true,
 	},
 	plugins: [
 		svelte({
