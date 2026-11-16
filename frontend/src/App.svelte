@@ -50,6 +50,7 @@ let overlay;
 let currentSink = $state(null);
 
 let poiList = $state([]);
+// svelte-ignore state_referenced_locally
 const poiLayer = layerDefs.poiLayer(examples_geojson)
 $effect( () => {
     if (showExamplePanel) {
@@ -88,12 +89,14 @@ function updateOverlays() {
 }
 
 let showLabelLayer = $state(true);
+// svelte-ignore state_referenced_locally
 const labelsLayer = layerDefs.labelLayer(mapbox_api_key);
 $effect( () => {
         labelsLayer.layer.setVisible(showLabelLayer)
 })
 
 let currentBasemap = $state('hillshade');
+// svelte-ignore state_referenced_locally
 const baseLayers = layerDefs.baseLayers(mapbox_api_key, titiler_url);
 function setBasemap(layerId) {
     baseLayers.forEach( function(layerObj) {
@@ -104,18 +107,21 @@ $effect(() => {
     setBasemap(currentBasemap);
 })
 
+// svelte-ignore state_referenced_locally
 const karstLayers = layerDefs.karstLayers(pg_tileserv_url)
 karstLayers.forEach( function (layerObj) {
     layerObj.layer.setVisible(layerObj.visible);
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();
 });
 
+// svelte-ignore state_referenced_locally
 const civilLayers = layerDefs.civilLayers(pg_tileserv_url)
 civilLayers.forEach( function (layerObj) {
     layerObj.layer.setVisible(layerObj.visible);
     overlayVisible[layerObj.id] = layerObj.layer.getVisible();
 });
 
+// svelte-ignore state_referenced_locally
 const naturalLayers = layerDefs.naturalLayers(pg_tileserv_url, mapbox_api_key)
 naturalLayers.forEach( function (layerObj) {
     layerObj.layer.setVisible(layerObj.visible);
