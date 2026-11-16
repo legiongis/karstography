@@ -3,7 +3,7 @@ Data
 ====
 
 Sink Locations (Crawford Co.)
---------------
+-----------------------------
 
 Database exports to shapefile, 2024-09-30. Sink locations `derived from LiDAR <_static/files/Sinkhole_Methodology_Report.pdf>`_, categorized `by our volunteers <evaluating-sinks.html>`_.
 
